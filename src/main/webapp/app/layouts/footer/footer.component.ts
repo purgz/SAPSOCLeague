@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {
-  darkmode() {
+  darkmode(): void {
     let themeLink: HTMLLinkElement | null = document.head.querySelector('#theme');
 
     themeLink!.href = '../../../content/css/darkly.min.css';
