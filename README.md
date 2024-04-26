@@ -4,6 +4,8 @@ This application was generated using JHipster 7.9.4, you can find documentation 
 
 ## Project Structure
 
+ngrok http --domain=normal-haddock-nearly.ngrok-free.app 9000 --host-header="localhost:9000"
+
 Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
 
 In the project root, JHipster generates configuration files for tools like git, prettier, eslint, husky, and others that are well known and you can find references in the web.
