@@ -1,1 +1,1 @@
-org.springframework.test.context.ContextCustomizerFactory = io.purgz.config.TestContainersSpringContextCustomizerFactory
+org.springframework.test.context.ContextCustomizerFactory = io.github.purgz.config.TestContainersSpringContextCustomizerFactory
