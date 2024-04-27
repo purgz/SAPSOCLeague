@@ -6,6 +6,7 @@ entity LeaguePlayer {
     eloRating Float required min(0)
     dishes Integer min(0)
     rDishes Integer min(0)
+    photo ImageBlob
 }
 
 entity GameResult {
@@ -20,7 +21,39 @@ enum GameEnding {
     BYE
 }
 
+entity Round{
+    roundNo Integer required min(0)
+}
+
+entity Week{
+    weekNum Integer required min(0)
+    date LocalDate
+}
+
+entity Semester{
+    semesterNum Integer min(0) required
+}
+
+entity SemesterScore{
+    score Integer min(0)
+}
+
+entity LeagueYear{
+    yearStart Integer required
+    yearEnd Integer
+}
+
+
 relationship ManyToOne{
     GameResult{player1} to LeaguePlayer
     GameResult{player2} to LeaguePlayer
+    Round{week} to Week{rounds}
+    GameResult{round} to Round{roundResults}
+
+    LeaguePlayer{semester} to Semester{players}
+    Week{semester} to Semester{weeks}
+    Semester{year} to LeagueYear{semesters}
+    SemesterScore{semester} to Semester{semesterScores}
+    SemesterScore{player} to LeaguePlayer{semesterScores}
 }
+

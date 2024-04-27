@@ -38,6 +38,12 @@
             <a [routerLink]="['/league-player', gameResult.player2.id, 'view']">{{ gameResult.player2.id }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.gameResult.round">Round</span></dt>
+        <dd>
+          <div *ngIf="gameResult.round">
+            <a [routerLink]="['/round', gameResult.round.id, 'view']">{{ gameResult.round.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

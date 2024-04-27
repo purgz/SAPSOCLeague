@@ -68,6 +68,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="round.id">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.gameResult.round">Round</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -87,6 +93,11 @@
           <td>
             <div *ngIf="gameResult.player2">
               <a [routerLink]="['/league-player', gameResult.player2.id, 'view']">{{ gameResult.player2.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="gameResult.round">
+              <a [routerLink]="['/round', gameResult.round.id, 'view']">{{ gameResult.round.id }}</a>
             </div>
           </td>
           <td class="text-end">

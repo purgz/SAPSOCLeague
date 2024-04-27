@@ -38,6 +38,12 @@
       "otherEntityName": "leaguePlayer",
       "relationshipName": "player2",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "round",
+      "otherEntityRelationshipName": "roundResults",
+      "relationshipName": "round",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "no"

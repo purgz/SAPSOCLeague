@@ -180,6 +180,59 @@
             </small>
           </div>
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.leaguePlayer.photo" for="field_photo">Photo</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('photoContentType')!.value + ';base64,' + editForm.get('photo')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('photo')!.value"
+              alt="leaguePlayer image"
+            />
+            <div *ngIf="editForm.get('photo')!.value" class="form-text text-danger clearfix">
+              <span class="pull-start">{{ editForm.get('photoContentType')!.value }}, {{ byteSize(editForm.get('photo')!.value!) }}</span>
+              <button
+                type="button"
+                (click)="clearInputImage('photo', 'photoContentType', 'file_photo')"
+                class="btn btn-secondary btn-xs pull-end"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_photo"
+              data-cy="photo"
+              (change)="setFileData($event, 'photo', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="photo" id="field_photo" data-cy="photo" formControlName="photo" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="photoContentType"
+            id="field_photoContentType"
+            formControlName="photoContentType"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.leaguePlayer.semester" for="field_semester">Semester</label>
+          <select
+            class="form-control"
+            id="field_semester"
+            data-cy="semester"
+            name="semester"
+            formControlName="semester"
+            [compareWith]="compareSemester"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="semesterOption" *ngFor="let semesterOption of semestersSharedCollection">{{ semesterOption.id }}</option>
+          </select>
+        </div>
       </div>
 
       <div>

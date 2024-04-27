@@ -1,0 +1,47 @@
+{
+  "applications": "*",
+  "changelogDate": "20240427132406",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "semester",
+  "fields": [
+    {
+      "fieldName": "semesterNum",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "required"],
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Semester",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "leagueYear",
+      "otherEntityRelationshipName": "semesters",
+      "relationshipName": "year",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "leaguePlayer",
+      "otherEntityRelationshipName": "semester",
+      "relationshipName": "players",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "week",
+      "otherEntityRelationshipName": "semester",
+      "relationshipName": "weeks",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "semesterScore",
+      "otherEntityRelationshipName": "semester",
+      "relationshipName": "semesterScores",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

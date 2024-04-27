@@ -1,11 +1,1 @@
-id;first_name;last_name;wins;losses;elo_rating;dishes;r_dishes
-1;Norene;Halvorson;69548;89710;55026;60957;52599
-2;Tracy;Bashirian;52500;80617;11898;3351;88424
-3;Alivia;Wuckert;85390;26683;36811;47690;39148
-4;Marty;Treutel;53154;89514;94980;77507;89384
-5;Martine;Turner;80492;87603;42035;82983;99027
-6;Frankie;Prosacco;73033;52064;80476;80231;29473
-7;Prince;Langosh;88033;95488;49665;89554;27036
-8;Chauncey;Ziemann;23936;6811;60232;46963;12639
-9;Kaci;Champlin;48528;90537;40284;49770;93322
-10;Van;Hudson;82175;73748;60064;22358;50603
+id;first_name;last_name;wins;losses;elo_rating;dishes;r_dishes;photo;photo_content_type

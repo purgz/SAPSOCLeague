@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link LeaguePlayerResource} REST controller.
@@ -49,6 +50,11 @@ class LeaguePlayerResourceIT {
 
     private static final Integer DEFAULT_R_DISHES = 0;
     private static final Integer UPDATED_R_DISHES = 1;
+
+    private static final byte[] DEFAULT_PHOTO = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_PHOTO = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_PHOTO_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_PHOTO_CONTENT_TYPE = "image/png";
 
     private static final String ENTITY_API_URL = "/api/league-players";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -81,7 +87,9 @@ class LeaguePlayerResourceIT {
             .losses(DEFAULT_LOSSES)
             .eloRating(DEFAULT_ELO_RATING)
             .dishes(DEFAULT_DISHES)
-            .rDishes(DEFAULT_R_DISHES);
+            .rDishes(DEFAULT_R_DISHES)
+            .photo(DEFAULT_PHOTO)
+            .photoContentType(DEFAULT_PHOTO_CONTENT_TYPE);
         return leaguePlayer;
     }
 
@@ -99,7 +107,9 @@ class LeaguePlayerResourceIT {
             .losses(UPDATED_LOSSES)
             .eloRating(UPDATED_ELO_RATING)
             .dishes(UPDATED_DISHES)
-            .rDishes(UPDATED_R_DISHES);
+            .rDishes(UPDATED_R_DISHES)
+            .photo(UPDATED_PHOTO)
+            .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
         return leaguePlayer;
     }
 
@@ -128,6 +138,8 @@ class LeaguePlayerResourceIT {
         assertThat(testLeaguePlayer.getEloRating()).isEqualTo(DEFAULT_ELO_RATING);
         assertThat(testLeaguePlayer.getDishes()).isEqualTo(DEFAULT_DISHES);
         assertThat(testLeaguePlayer.getrDishes()).isEqualTo(DEFAULT_R_DISHES);
+        assertThat(testLeaguePlayer.getPhoto()).isEqualTo(DEFAULT_PHOTO);
+        assertThat(testLeaguePlayer.getPhotoContentType()).isEqualTo(DEFAULT_PHOTO_CONTENT_TYPE);
     }
 
     @Test
@@ -234,7 +246,9 @@ class LeaguePlayerResourceIT {
             .andExpect(jsonPath("$.[*].losses").value(hasItem(DEFAULT_LOSSES)))
             .andExpect(jsonPath("$.[*].eloRating").value(hasItem(DEFAULT_ELO_RATING.doubleValue())))
             .andExpect(jsonPath("$.[*].dishes").value(hasItem(DEFAULT_DISHES)))
-            .andExpect(jsonPath("$.[*].rDishes").value(hasItem(DEFAULT_R_DISHES)));
+            .andExpect(jsonPath("$.[*].rDishes").value(hasItem(DEFAULT_R_DISHES)))
+            .andExpect(jsonPath("$.[*].photoContentType").value(hasItem(DEFAULT_PHOTO_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].photo").value(hasItem(Base64Utils.encodeToString(DEFAULT_PHOTO))));
     }
 
     @Test
@@ -255,7 +269,9 @@ class LeaguePlayerResourceIT {
             .andExpect(jsonPath("$.losses").value(DEFAULT_LOSSES))
             .andExpect(jsonPath("$.eloRating").value(DEFAULT_ELO_RATING.doubleValue()))
             .andExpect(jsonPath("$.dishes").value(DEFAULT_DISHES))
-            .andExpect(jsonPath("$.rDishes").value(DEFAULT_R_DISHES));
+            .andExpect(jsonPath("$.rDishes").value(DEFAULT_R_DISHES))
+            .andExpect(jsonPath("$.photoContentType").value(DEFAULT_PHOTO_CONTENT_TYPE))
+            .andExpect(jsonPath("$.photo").value(Base64Utils.encodeToString(DEFAULT_PHOTO)));
     }
 
     @Test
@@ -284,7 +300,9 @@ class LeaguePlayerResourceIT {
             .losses(UPDATED_LOSSES)
             .eloRating(UPDATED_ELO_RATING)
             .dishes(UPDATED_DISHES)
-            .rDishes(UPDATED_R_DISHES);
+            .rDishes(UPDATED_R_DISHES)
+            .photo(UPDATED_PHOTO)
+            .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
 
         restLeaguePlayerMockMvc
             .perform(
@@ -305,6 +323,8 @@ class LeaguePlayerResourceIT {
         assertThat(testLeaguePlayer.getEloRating()).isEqualTo(UPDATED_ELO_RATING);
         assertThat(testLeaguePlayer.getDishes()).isEqualTo(UPDATED_DISHES);
         assertThat(testLeaguePlayer.getrDishes()).isEqualTo(UPDATED_R_DISHES);
+        assertThat(testLeaguePlayer.getPhoto()).isEqualTo(UPDATED_PHOTO);
+        assertThat(testLeaguePlayer.getPhotoContentType()).isEqualTo(UPDATED_PHOTO_CONTENT_TYPE);
     }
 
     @Test
@@ -375,7 +395,12 @@ class LeaguePlayerResourceIT {
         LeaguePlayer partialUpdatedLeaguePlayer = new LeaguePlayer();
         partialUpdatedLeaguePlayer.setId(leaguePlayer.getId());
 
-        partialUpdatedLeaguePlayer.firstName(UPDATED_FIRST_NAME).lastName(UPDATED_LAST_NAME).rDishes(UPDATED_R_DISHES);
+        partialUpdatedLeaguePlayer
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
+            .rDishes(UPDATED_R_DISHES)
+            .photo(UPDATED_PHOTO)
+            .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
 
         restLeaguePlayerMockMvc
             .perform(
@@ -396,6 +421,8 @@ class LeaguePlayerResourceIT {
         assertThat(testLeaguePlayer.getEloRating()).isEqualTo(DEFAULT_ELO_RATING);
         assertThat(testLeaguePlayer.getDishes()).isEqualTo(DEFAULT_DISHES);
         assertThat(testLeaguePlayer.getrDishes()).isEqualTo(UPDATED_R_DISHES);
+        assertThat(testLeaguePlayer.getPhoto()).isEqualTo(UPDATED_PHOTO);
+        assertThat(testLeaguePlayer.getPhotoContentType()).isEqualTo(UPDATED_PHOTO_CONTENT_TYPE);
     }
 
     @Test
@@ -417,7 +444,9 @@ class LeaguePlayerResourceIT {
             .losses(UPDATED_LOSSES)
             .eloRating(UPDATED_ELO_RATING)
             .dishes(UPDATED_DISHES)
-            .rDishes(UPDATED_R_DISHES);
+            .rDishes(UPDATED_R_DISHES)
+            .photo(UPDATED_PHOTO)
+            .photoContentType(UPDATED_PHOTO_CONTENT_TYPE);
 
         restLeaguePlayerMockMvc
             .perform(
@@ -438,6 +467,8 @@ class LeaguePlayerResourceIT {
         assertThat(testLeaguePlayer.getEloRating()).isEqualTo(UPDATED_ELO_RATING);
         assertThat(testLeaguePlayer.getDishes()).isEqualTo(UPDATED_DISHES);
         assertThat(testLeaguePlayer.getrDishes()).isEqualTo(UPDATED_R_DISHES);
+        assertThat(testLeaguePlayer.getPhoto()).isEqualTo(UPDATED_PHOTO);
+        assertThat(testLeaguePlayer.getPhotoContentType()).isEqualTo(UPDATED_PHOTO_CONTENT_TYPE);
     }
 
     @Test

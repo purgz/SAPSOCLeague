@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="semesterScore">
+      <h2 data-cy="semesterScoreDetailsHeading"><span jhiTranslate="sapsocLeagueApp.semesterScore.detail.title">Semester Score</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ semesterScore.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.semesterScore.score">Score</span></dt>
+        <dd>
+          <span>{{ semesterScore.score }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.semesterScore.semester">Semester</span></dt>
+        <dd>
+          <div *ngIf="semesterScore.semester">
+            <a [routerLink]="['/semester', semesterScore.semester.id, 'view']">{{ semesterScore.semester.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.semesterScore.player">Player</span></dt>
+        <dd>
+          <div *ngIf="semesterScore.player">
+            <a [routerLink]="['/league-player', semesterScore.player.id, 'view']">{{ semesterScore.player.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/semester-score', semesterScore.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

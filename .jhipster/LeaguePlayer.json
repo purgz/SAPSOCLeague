@@ -48,6 +48,11 @@
       "fieldType": "Integer",
       "fieldValidateRules": ["min"],
       "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "photo",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
     }
   ],
   "fluentMethods": true,
@@ -55,6 +60,19 @@
   "name": "LeaguePlayer",
   "pagination": "no",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "semester",
+      "otherEntityRelationshipName": "players",
+      "relationshipName": "semester",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "semesterScore",
+      "otherEntityRelationshipName": "player",
+      "relationshipName": "semesterScores",
+      "relationshipType": "one-to-many"
+    }
+  ],
   "service": "no"
 }

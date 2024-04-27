@@ -25,6 +25,7 @@ describe('GameResult Form Service', () => {
             p2Score: expect.any(Object),
             player1: expect.any(Object),
             player2: expect.any(Object),
+            round: expect.any(Object),
           })
         );
       });
@@ -40,6 +41,7 @@ describe('GameResult Form Service', () => {
             p2Score: expect.any(Object),
             player1: expect.any(Object),
             player2: expect.any(Object),
+            round: expect.any(Object),
           })
         );
       });

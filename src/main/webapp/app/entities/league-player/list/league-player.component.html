@@ -80,6 +80,18 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="photo">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.leaguePlayer.photo">Photo</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="semester.id">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.leaguePlayer.semester">Semester</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -95,6 +107,21 @@
           <td>{{ leaguePlayer.eloRating }}</td>
           <td>{{ leaguePlayer.dishes }}</td>
           <td>{{ leaguePlayer.rDishes }}</td>
+          <td>
+            <a *ngIf="leaguePlayer.photo" (click)="openFile(leaguePlayer.photo, leaguePlayer.photoContentType)">
+              <img
+                [src]="'data:' + leaguePlayer.photoContentType + ';base64,' + leaguePlayer.photo"
+                style="max-height: 30px"
+                alt="leaguePlayer image"
+              />
+            </a>
+            <span *ngIf="leaguePlayer.photo">{{ leaguePlayer.photoContentType }}, {{ byteSize(leaguePlayer.photo) }}</span>
+          </td>
+          <td>
+            <div *ngIf="leaguePlayer.semester">
+              <a [routerLink]="['/semester', leaguePlayer.semester.id, 'view']">{{ leaguePlayer.semester.id }}</a>
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

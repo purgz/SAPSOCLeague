@@ -35,6 +35,15 @@
             <column name="r_dishes" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="photo" type="${blobType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="photo_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="semester_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -63,6 +72,8 @@
             <column name="elo_rating" type="numeric"/>
             <column name="dishes" type="numeric"/>
             <column name="r_dishes" type="numeric"/>
+            <column name="photo" type="blob"/>
+            <column name="photo_content_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

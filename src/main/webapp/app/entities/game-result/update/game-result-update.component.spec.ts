@@ -11,6 +11,8 @@ import { GameResultService } from '../service/game-result.service';
 import { IGameResult } from '../game-result.model';
 import { ILeaguePlayer } from 'app/entities/league-player/league-player.model';
 import { LeaguePlayerService } from 'app/entities/league-player/service/league-player.service';
+import { IRound } from 'app/entities/round/round.model';
+import { RoundService } from 'app/entities/round/service/round.service';
 
 import { GameResultUpdateComponent } from './game-result-update.component';
 
@@ -21,6 +23,7 @@ describe('GameResult Management Update Component', () => {
   let gameResultFormService: GameResultFormService;
   let gameResultService: GameResultService;
   let leaguePlayerService: LeaguePlayerService;
+  let roundService: RoundService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,6 +47,7 @@ describe('GameResult Management Update Component', () => {
     gameResultFormService = TestBed.inject(GameResultFormService);
     gameResultService = TestBed.inject(GameResultService);
     leaguePlayerService = TestBed.inject(LeaguePlayerService);
+    roundService = TestBed.inject(RoundService);
 
     comp = fixture.componentInstance;
   });
@@ -73,18 +77,43 @@ describe('GameResult Management Update Component', () => {
       expect(comp.leaguePlayersSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call Round query and add missing value', () => {
+      const gameResult: IGameResult = { id: 456 };
+      const round: IRound = { id: 30604 };
+      gameResult.round = round;
+
+      const roundCollection: IRound[] = [{ id: 19533 }];
+      jest.spyOn(roundService, 'query').mockReturnValue(of(new HttpResponse({ body: roundCollection })));
+      const additionalRounds = [round];
+      const expectedCollection: IRound[] = [...additionalRounds, ...roundCollection];
+      jest.spyOn(roundService, 'addRoundToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ gameResult });
+      comp.ngOnInit();
+
+      expect(roundService.query).toHaveBeenCalled();
+      expect(roundService.addRoundToCollectionIfMissing).toHaveBeenCalledWith(
+        roundCollection,
+        ...additionalRounds.map(expect.objectContaining)
+      );
+      expect(comp.roundsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const gameResult: IGameResult = { id: 456 };
       const player1: ILeaguePlayer = { id: 7701 };
       gameResult.player1 = player1;
       const player2: ILeaguePlayer = { id: 81196 };
       gameResult.player2 = player2;
+      const round: IRound = { id: 37976 };
+      gameResult.round = round;
 
       activatedRoute.data = of({ gameResult });
       comp.ngOnInit();
 
       expect(comp.leaguePlayersSharedCollection).toContain(player1);
       expect(comp.leaguePlayersSharedCollection).toContain(player2);
+      expect(comp.roundsSharedCollection).toContain(round);
       expect(comp.gameResult).toEqual(gameResult);
     });
   });
@@ -165,6 +194,16 @@ describe('GameResult Management Update Component', () => {
         jest.spyOn(leaguePlayerService, 'compareLeaguePlayer');
         comp.compareLeaguePlayer(entity, entity2);
         expect(leaguePlayerService.compareLeaguePlayer).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareRound', () => {
+      it('Should forward to roundService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(roundService, 'compareRound');
+        comp.compareRound(entity, entity2);
+        expect(roundService.compareRound).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

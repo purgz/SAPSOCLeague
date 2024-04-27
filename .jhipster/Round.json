@@ -1,0 +1,35 @@
+{
+  "applications": "*",
+  "changelogDate": "20240427131213",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "round",
+  "fields": [
+    {
+      "fieldName": "roundNo",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Round",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "week",
+      "otherEntityRelationshipName": "rounds",
+      "relationshipName": "week",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "gameResult",
+      "otherEntityRelationshipName": "round",
+      "relationshipName": "roundResults",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

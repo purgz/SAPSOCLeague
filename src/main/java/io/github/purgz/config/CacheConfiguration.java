@@ -52,6 +52,18 @@ public class CacheConfiguration {
             createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName() + ".player1s");
             createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName() + ".player2s");
             createCache(cm, io.github.purgz.domain.GameResult.class.getName());
+            createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName() + ".semesterScores");
+            createCache(cm, io.github.purgz.domain.Round.class.getName());
+            createCache(cm, io.github.purgz.domain.Round.class.getName() + ".roundResults");
+            createCache(cm, io.github.purgz.domain.Week.class.getName());
+            createCache(cm, io.github.purgz.domain.Week.class.getName() + ".rounds");
+            createCache(cm, io.github.purgz.domain.Semester.class.getName());
+            createCache(cm, io.github.purgz.domain.Semester.class.getName() + ".players");
+            createCache(cm, io.github.purgz.domain.Semester.class.getName() + ".weeks");
+            createCache(cm, io.github.purgz.domain.Semester.class.getName() + ".semesterScores");
+            createCache(cm, io.github.purgz.domain.SemesterScore.class.getName());
+            createCache(cm, io.github.purgz.domain.LeagueYear.class.getName());
+            createCache(cm, io.github.purgz.domain.LeagueYear.class.getName() + ".semesters");
             // jhipster-needle-ehcache-add-entry
         };
     }

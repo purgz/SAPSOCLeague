@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20240427132408",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "league_year",
+  "fields": [
+    {
+      "fieldName": "yearStart",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "yearEnd",
+      "fieldType": "Integer"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LeagueYear",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "semester",
+      "otherEntityRelationshipName": "year",
+      "relationshipName": "semesters",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

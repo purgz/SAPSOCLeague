@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity SemesterScore.
+    -->
+    <changeSet id="20240427132407-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="semester_id"
+                                 baseTableName="semester_score"
+                                 constraintName="fk_semester_score__semester_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="semester"/>
+
+        <addForeignKeyConstraint baseColumnNames="player_id"
+                                 baseTableName="semester_score"
+                                 constraintName="fk_semester_score__player_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="league_player"/>
+    </changeSet>
+</databaseChangeLog>

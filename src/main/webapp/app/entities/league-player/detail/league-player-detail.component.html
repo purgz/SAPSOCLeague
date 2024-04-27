@@ -42,6 +42,25 @@
         <dd>
           <span>{{ leaguePlayer.rDishes }}</span>
         </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.photo">Photo</span></dt>
+        <dd>
+          <div *ngIf="leaguePlayer.photo">
+            <a (click)="openFile(leaguePlayer.photo, leaguePlayer.photoContentType)">
+              <img
+                [src]="'data:' + leaguePlayer.photoContentType + ';base64,' + leaguePlayer.photo"
+                style="max-width: 100%"
+                alt="leaguePlayer image"
+              />
+            </a>
+            {{ leaguePlayer.photoContentType }}, {{ byteSize(leaguePlayer.photo) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.semester">Semester</span></dt>
+        <dd>
+          <div *ngIf="leaguePlayer.semester">
+            <a [routerLink]="['/semester', leaguePlayer.semester.id, 'view']">{{ leaguePlayer.semester.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

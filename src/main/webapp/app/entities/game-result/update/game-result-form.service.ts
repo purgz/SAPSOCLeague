@@ -23,6 +23,7 @@ type GameResultFormGroupContent = {
   p2Score: FormControl<IGameResult['p2Score']>;
   player1: FormControl<IGameResult['player1']>;
   player2: FormControl<IGameResult['player2']>;
+  round: FormControl<IGameResult['round']>;
 };
 
 export type GameResultFormGroup = FormGroup<GameResultFormGroupContent>;
@@ -51,6 +52,7 @@ export class GameResultFormService {
       }),
       player1: new FormControl(gameResultRawValue.player1),
       player2: new FormControl(gameResultRawValue.player2),
+      round: new FormControl(gameResultRawValue.round),
     });
   }
 

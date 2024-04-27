@@ -1,0 +1,26 @@
+{
+  "sapsocLeagueApp": {
+    "round": {
+      "home": {
+        "title": "Rounds",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Round",
+        "createOrEditLabel": "Create or edit a Round",
+        "notFound": "No Rounds found"
+      },
+      "created": "A new Round is created with identifier {{ param }}",
+      "updated": "A Round is updated with identifier {{ param }}",
+      "deleted": "A Round is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Round {{ id }}?"
+      },
+      "detail": {
+        "title": "Round"
+      },
+      "id": "ID",
+      "roundNo": "Round No",
+      "week": "Week",
+      "roundResults": "Round Results"
+    }
+  }
+}

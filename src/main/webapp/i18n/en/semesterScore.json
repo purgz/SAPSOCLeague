@@ -1,0 +1,26 @@
+{
+  "sapsocLeagueApp": {
+    "semesterScore": {
+      "home": {
+        "title": "Semester Scores",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Semester Score",
+        "createOrEditLabel": "Create or edit a Semester Score",
+        "notFound": "No Semester Scores found"
+      },
+      "created": "A new Semester Score is created with identifier {{ param }}",
+      "updated": "A Semester Score is updated with identifier {{ param }}",
+      "deleted": "A Semester Score is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Semester Score {{ id }}?"
+      },
+      "detail": {
+        "title": "Semester Score"
+      },
+      "id": "ID",
+      "score": "Score",
+      "semester": "Semester",
+      "player": "Player"
+    }
+  }
+}

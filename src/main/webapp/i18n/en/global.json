@@ -9,6 +9,11 @@
         "main": "Entities",
         "leaguePlayer": "League Player",
         "gameResult": "Game Result",
+        "round": "Round",
+        "week": "Week",
+        "semester": "Semester",
+        "semesterScore": "Semester Score",
+        "leagueYear": "League Year",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

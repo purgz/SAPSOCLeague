@@ -22,7 +22,8 @@
       "p1Score": "P 1 Score",
       "p2Score": "P 2 Score",
       "player1": "Player 1",
-      "player2": "Player 2"
+      "player2": "Player 2",
+      "round": "Round"
     }
   }
 }

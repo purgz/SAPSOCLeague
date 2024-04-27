@@ -7,6 +7,7 @@ import { ILeaguePlayer } from '../league-player.model';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, LeaguePlayerService } from '../service/league-player.service';
 import { LeaguePlayerDeleteDialogComponent } from '../delete/league-player-delete-dialog.component';
+import { DataUtils } from 'app/core/util/data-util.service';
 import { SortService } from 'app/shared/sort/sort.service';
 
 @Component({
@@ -25,6 +26,7 @@ export class LeaguePlayerComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
+    protected dataUtils: DataUtils,
     protected modalService: NgbModal
   ) {}
 
@@ -32,6 +34,14 @@ export class LeaguePlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
   }
 
   delete(leaguePlayer: ILeaguePlayer): void {

@@ -1,0 +1,27 @@
+{
+  "sapsocLeagueApp": {
+    "week": {
+      "home": {
+        "title": "Weeks",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Week",
+        "createOrEditLabel": "Create or edit a Week",
+        "notFound": "No Weeks found"
+      },
+      "created": "A new Week is created with identifier {{ param }}",
+      "updated": "A Week is updated with identifier {{ param }}",
+      "deleted": "A Week is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Week {{ id }}?"
+      },
+      "detail": {
+        "title": "Week"
+      },
+      "id": "ID",
+      "weekNum": "Week Num",
+      "date": "Date",
+      "semester": "Semester",
+      "rounds": "Rounds"
+    }
+  }
+}

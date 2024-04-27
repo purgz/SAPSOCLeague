@@ -1,0 +1,35 @@
+{
+  "applications": "*",
+  "changelogDate": "20240427132407",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "semester_score",
+  "fields": [
+    {
+      "fieldName": "score",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "SemesterScore",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "semester",
+      "otherEntityRelationshipName": "semesterScores",
+      "relationshipName": "semester",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "leaguePlayer",
+      "otherEntityRelationshipName": "semesterScores",
+      "relationshipName": "player",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

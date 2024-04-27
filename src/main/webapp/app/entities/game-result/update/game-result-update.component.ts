@@ -9,6 +9,8 @@ import { IGameResult } from '../game-result.model';
 import { GameResultService } from '../service/game-result.service';
 import { ILeaguePlayer } from 'app/entities/league-player/league-player.model';
 import { LeaguePlayerService } from 'app/entities/league-player/service/league-player.service';
+import { IRound } from 'app/entities/round/round.model';
+import { RoundService } from 'app/entities/round/service/round.service';
 import { GameEnding } from 'app/entities/enumerations/game-ending.model';
 
 @Component({
@@ -21,6 +23,7 @@ export class GameResultUpdateComponent implements OnInit {
   gameEndingValues = Object.keys(GameEnding);
 
   leaguePlayersSharedCollection: ILeaguePlayer[] = [];
+  roundsSharedCollection: IRound[] = [];
 
   editForm: GameResultFormGroup = this.gameResultFormService.createGameResultFormGroup();
 
@@ -28,11 +31,14 @@ export class GameResultUpdateComponent implements OnInit {
     protected gameResultService: GameResultService,
     protected gameResultFormService: GameResultFormService,
     protected leaguePlayerService: LeaguePlayerService,
+    protected roundService: RoundService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
   compareLeaguePlayer = (o1: ILeaguePlayer | null, o2: ILeaguePlayer | null): boolean =>
     this.leaguePlayerService.compareLeaguePlayer(o1, o2);
+
+  compareRound = (o1: IRound | null, o2: IRound | null): boolean => this.roundService.compareRound(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ gameResult }) => {
@@ -87,6 +93,7 @@ export class GameResultUpdateComponent implements OnInit {
       gameResult.player1,
       gameResult.player2
     );
+    this.roundsSharedCollection = this.roundService.addRoundToCollectionIfMissing<IRound>(this.roundsSharedCollection, gameResult.round);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -103,5 +110,11 @@ export class GameResultUpdateComponent implements OnInit {
         )
       )
       .subscribe((leaguePlayers: ILeaguePlayer[]) => (this.leaguePlayersSharedCollection = leaguePlayers));
+
+    this.roundService
+      .query()
+      .pipe(map((res: HttpResponse<IRound[]>) => res.body ?? []))
+      .pipe(map((rounds: IRound[]) => this.roundService.addRoundToCollectionIfMissing<IRound>(rounds, this.gameResult?.round)))
+      .subscribe((rounds: IRound[]) => (this.roundsSharedCollection = rounds));
   }
 }

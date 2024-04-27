@@ -1,5 +1,6 @@
 package io.github.purgz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.github.purgz.domain.enumeration.GameEnding;
 import java.io.Serializable;
 import javax.persistence.*;
@@ -37,10 +38,16 @@ public class GameResult implements Serializable {
     private Float p2Score;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "semester", "semesterScores" }, allowSetters = true)
     private LeaguePlayer player1;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "semester", "semesterScores" }, allowSetters = true)
     private LeaguePlayer player2;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "week", "roundResults" }, allowSetters = true)
+    private Round round;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -119,6 +126,19 @@ public class GameResult implements Serializable {
 
     public GameResult player2(LeaguePlayer leaguePlayer) {
         this.setPlayer2(leaguePlayer);
+        return this;
+    }
+
+    public Round getRound() {
+        return this.round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
+    }
+
+    public GameResult round(Round round) {
+        this.setRound(round);
         return this;
     }
 

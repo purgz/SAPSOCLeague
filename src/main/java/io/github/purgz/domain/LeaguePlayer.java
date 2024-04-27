@@ -1,6 +1,9 @@
 package io.github.purgz.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -54,6 +57,22 @@ public class LeaguePlayer implements Serializable {
     @Min(value = 0)
     @Column(name = "r_dishes")
     private Integer rDishes;
+
+    @Lob
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name = "photo_content_type")
+    private String photoContentType;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "year", "players", "weeks", "semesterScores" }, allowSetters = true)
+    private Semester semester;
+
+    @OneToMany(mappedBy = "player")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "semester", "player" }, allowSetters = true)
+    private Set<SemesterScore> semesterScores = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -161,6 +180,76 @@ public class LeaguePlayer implements Serializable {
         this.rDishes = rDishes;
     }
 
+    public byte[] getPhoto() {
+        return this.photo;
+    }
+
+    public LeaguePlayer photo(byte[] photo) {
+        this.setPhoto(photo);
+        return this;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public String getPhotoContentType() {
+        return this.photoContentType;
+    }
+
+    public LeaguePlayer photoContentType(String photoContentType) {
+        this.photoContentType = photoContentType;
+        return this;
+    }
+
+    public void setPhotoContentType(String photoContentType) {
+        this.photoContentType = photoContentType;
+    }
+
+    public Semester getSemester() {
+        return this.semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public LeaguePlayer semester(Semester semester) {
+        this.setSemester(semester);
+        return this;
+    }
+
+    public Set<SemesterScore> getSemesterScores() {
+        return this.semesterScores;
+    }
+
+    public void setSemesterScores(Set<SemesterScore> semesterScores) {
+        if (this.semesterScores != null) {
+            this.semesterScores.forEach(i -> i.setPlayer(null));
+        }
+        if (semesterScores != null) {
+            semesterScores.forEach(i -> i.setPlayer(this));
+        }
+        this.semesterScores = semesterScores;
+    }
+
+    public LeaguePlayer semesterScores(Set<SemesterScore> semesterScores) {
+        this.setSemesterScores(semesterScores);
+        return this;
+    }
+
+    public LeaguePlayer addSemesterScores(SemesterScore semesterScore) {
+        this.semesterScores.add(semesterScore);
+        semesterScore.setPlayer(this);
+        return this;
+    }
+
+    public LeaguePlayer removeSemesterScores(SemesterScore semesterScore) {
+        this.semesterScores.remove(semesterScore);
+        semesterScore.setPlayer(null);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -192,6 +281,8 @@ public class LeaguePlayer implements Serializable {
             ", eloRating=" + getEloRating() +
             ", dishes=" + getDishes() +
             ", rDishes=" + getrDishes() +
+            ", photo='" + getPhoto() + "'" +
+            ", photoContentType='" + getPhotoContentType() + "'" +
             "}";
     }
 }

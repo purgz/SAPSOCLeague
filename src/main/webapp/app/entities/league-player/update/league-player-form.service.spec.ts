@@ -27,6 +27,8 @@ describe('LeaguePlayer Form Service', () => {
             eloRating: expect.any(Object),
             dishes: expect.any(Object),
             rDishes: expect.any(Object),
+            photo: expect.any(Object),
+            semester: expect.any(Object),
           })
         );
       });
@@ -44,6 +46,8 @@ describe('LeaguePlayer Form Service', () => {
             eloRating: expect.any(Object),
             dishes: expect.any(Object),
             rDishes: expect.any(Object),
+            photo: expect.any(Object),
+            semester: expect.any(Object),
           })
         );
       });

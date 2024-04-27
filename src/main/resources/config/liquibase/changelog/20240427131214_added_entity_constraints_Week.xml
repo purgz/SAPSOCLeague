@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Week.
+    -->
+    <changeSet id="20240427131214-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="semester_id"
+                                 baseTableName="week"
+                                 constraintName="fk_week__semester_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="semester"/>
+    </changeSet>
+</databaseChangeLog>

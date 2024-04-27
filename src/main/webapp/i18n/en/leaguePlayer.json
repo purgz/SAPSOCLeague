@@ -24,7 +24,10 @@
       "losses": "Losses",
       "eloRating": "Elo Rating",
       "dishes": "Dishes",
-      "rDishes": "R Dishes"
+      "rDishes": "R Dishes",
+      "photo": "Photo",
+      "semester": "Semester",
+      "semesterScores": "Semester Scores"
     }
   }
 }

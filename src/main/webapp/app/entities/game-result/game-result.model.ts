@@ -1,4 +1,5 @@
 import { ILeaguePlayer } from 'app/entities/league-player/league-player.model';
+import { IRound } from 'app/entities/round/round.model';
 import { GameEnding } from 'app/entities/enumerations/game-ending.model';
 
 export interface IGameResult {
@@ -8,6 +9,7 @@ export interface IGameResult {
   p2Score?: number | null;
   player1?: Pick<ILeaguePlayer, 'id'> | null;
   player2?: Pick<ILeaguePlayer, 'id'> | null;
+  round?: Pick<IRound, 'id'> | null;
 }
 
 export type NewGameResult = Omit<IGameResult, 'id'> & { id: null };

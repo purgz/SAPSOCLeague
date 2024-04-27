@@ -19,5 +19,11 @@
                                  constraintName="fk_game_result__player2_id"
                                  referencedColumnNames="id"
                                  referencedTableName="league_player"/>
+
+        <addForeignKeyConstraint baseColumnNames="round_id"
+                                 baseTableName="game_result"
+                                 constraintName="fk_game_result__round_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="round"/>
     </changeSet>
 </databaseChangeLog>

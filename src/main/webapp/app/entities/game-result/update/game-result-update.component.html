@@ -104,6 +104,14 @@
             </option>
           </select>
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.gameResult.round" for="field_round">Round</label>
+          <select class="form-control" id="field_round" data-cy="round" name="round" formControlName="round" [compareWith]="compareRound">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="roundOption" *ngFor="let roundOption of roundsSharedCollection">{{ roundOption.id }}</option>
+          </select>
+        </div>
       </div>
 
       <div>

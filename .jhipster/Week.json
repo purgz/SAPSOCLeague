@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20240427131214",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "week",
+  "fields": [
+    {
+      "fieldName": "weekNum",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Week",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "semester",
+      "otherEntityRelationshipName": "weeks",
+      "relationshipName": "semester",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "round",
+      "otherEntityRelationshipName": "week",
+      "relationshipName": "rounds",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "no"
+}

@@ -25,6 +25,9 @@ type LeaguePlayerFormGroupContent = {
   eloRating: FormControl<ILeaguePlayer['eloRating']>;
   dishes: FormControl<ILeaguePlayer['dishes']>;
   rDishes: FormControl<ILeaguePlayer['rDishes']>;
+  photo: FormControl<ILeaguePlayer['photo']>;
+  photoContentType: FormControl<ILeaguePlayer['photoContentType']>;
+  semester: FormControl<ILeaguePlayer['semester']>;
 };
 
 export type LeaguePlayerFormGroup = FormGroup<LeaguePlayerFormGroupContent>;
@@ -65,6 +68,9 @@ export class LeaguePlayerFormService {
       rDishes: new FormControl(leaguePlayerRawValue.rDishes, {
         validators: [Validators.min(0)],
       }),
+      photo: new FormControl(leaguePlayerRawValue.photo),
+      photoContentType: new FormControl(leaguePlayerRawValue.photoContentType),
+      semester: new FormControl(leaguePlayerRawValue.semester),
     });
   }
 

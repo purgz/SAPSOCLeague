@@ -9,30 +9,32 @@ export const sampleWithRequiredData: ILeaguePlayer = {
 };
 
 export const sampleWithPartialData: ILeaguePlayer = {
-  id: 33603,
-  firstName: 'Gonzalo',
-  wins: 88067,
-  losses: 38623,
-  eloRating: 23253,
-  rDishes: 90366,
+  id: 39599,
+  firstName: 'Shanie',
+  wins: 38623,
+  losses: 23253,
+  eloRating: 90366,
+  rDishes: 25131,
 };
 
 export const sampleWithFullData: ILeaguePlayer = {
-  id: 25131,
-  firstName: 'Kyra',
-  lastName: 'Kub',
-  wins: 12418,
-  losses: 99983,
-  eloRating: 92944,
-  dishes: 88054,
-  rDishes: 61458,
+  id: 58762,
+  firstName: 'Jaylen',
+  lastName: 'Casper',
+  wins: 99983,
+  losses: 92944,
+  eloRating: 88054,
+  dishes: 61458,
+  rDishes: 92490,
+  photo: '../fake-data/blob/hipster.png',
+  photoContentType: 'unknown',
 };
 
 export const sampleWithNewData: NewLeaguePlayer = {
-  firstName: 'Tia',
-  wins: 33581,
-  losses: 16648,
-  eloRating: 991,
+  firstName: 'Ethan',
+  wins: 16648,
+  losses: 991,
+  eloRating: 25012,
   id: null,
 };
 

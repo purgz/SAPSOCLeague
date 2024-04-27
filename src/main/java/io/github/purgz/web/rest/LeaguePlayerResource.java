@@ -146,6 +146,12 @@ public class LeaguePlayerResource {
                 if (leaguePlayer.getrDishes() != null) {
                     existingLeaguePlayer.setrDishes(leaguePlayer.getrDishes());
                 }
+                if (leaguePlayer.getPhoto() != null) {
+                    existingLeaguePlayer.setPhoto(leaguePlayer.getPhoto());
+                }
+                if (leaguePlayer.getPhotoContentType() != null) {
+                    existingLeaguePlayer.setPhotoContentType(leaguePlayer.getPhotoContentType());
+                }
 
                 return existingLeaguePlayer;
             })

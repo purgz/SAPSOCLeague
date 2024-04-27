@@ -1,0 +1,26 @@
+{
+  "sapsocLeagueApp": {
+    "leagueYear": {
+      "home": {
+        "title": "League Years",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new League Year",
+        "createOrEditLabel": "Create or edit a League Year",
+        "notFound": "No League Years found"
+      },
+      "created": "A new League Year is created with identifier {{ param }}",
+      "updated": "A League Year is updated with identifier {{ param }}",
+      "deleted": "A League Year is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete League Year {{ id }}?"
+      },
+      "detail": {
+        "title": "League Year"
+      },
+      "id": "ID",
+      "yearStart": "Year Start",
+      "yearEnd": "Year End",
+      "semesters": "Semesters"
+    }
+  }
+}
