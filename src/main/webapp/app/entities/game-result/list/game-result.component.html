@@ -1,0 +1,124 @@
+<div>
+  <h2 id="page-heading" data-cy="GameResultHeading">
+    <span jhiTranslate="sapsocLeagueApp.gameResult.home.title">Game Results</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="sapsocLeagueApp.gameResult.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-game-result"
+        [routerLink]="['/game-result/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="sapsocLeagueApp.gameResult.home.createLabel"> Create a new Game Result </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="gameResults?.length === 0">
+    <span jhiTranslate="sapsocLeagueApp.gameResult.home.notFound">No Game Results found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="gameResults && gameResults.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="gameEnding">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.gameResult.gameEnding">Game Ending</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="p1Score">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.gameResult.p1Score">P 1 Score</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="p2Score">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.gameResult.p2Score">P 2 Score</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="player1.id">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.gameResult.player1">Player 1</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="player2.id">
+            <div class="d-flex">
+              <span jhiTranslate="sapsocLeagueApp.gameResult.player2">Player 2</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let gameResult of gameResults; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/game-result', gameResult.id, 'view']">{{ gameResult.id }}</a>
+          </td>
+          <td jhiTranslate="{{ 'sapsocLeagueApp.GameEnding.' + gameResult.gameEnding }}">{{ gameResult.gameEnding }}</td>
+          <td>{{ gameResult.p1Score }}</td>
+          <td>{{ gameResult.p2Score }}</td>
+          <td>
+            <div *ngIf="gameResult.player1">
+              <a [routerLink]="['/league-player', gameResult.player1.id, 'view']">{{ gameResult.player1.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="gameResult.player2">
+              <a [routerLink]="['/league-player', gameResult.player2.id, 'view']">{{ gameResult.player2.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/game-result', gameResult.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/game-result', gameResult.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(gameResult)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

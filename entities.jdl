@@ -1,0 +1,26 @@
+entity LeaguePlayer {
+    firstName String required minlength(1) maxlength(50)
+    lastName String minlength(1) maxlength(50)
+    wins Integer required min(0)
+    losses Integer required min(0)
+    eloRating Float required min(0)
+    dishes Integer min(0)
+    rDishes Integer min(0)
+}
+
+entity GameResult {
+    gameEnding GameEnding
+    p1Score Float min(0)
+    p2Score Float min(0)
+}
+
+enum GameEnding {
+    DISH,
+    REVERSE_DISH,
+    BYE
+}
+
+relationship ManyToOne{
+    GameResult{player1} to LeaguePlayer
+    GameResult{player2} to LeaguePlayer
+}

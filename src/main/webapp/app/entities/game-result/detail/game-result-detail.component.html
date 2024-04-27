@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="gameResult">
+      <h2 data-cy="gameResultDetailsHeading"><span jhiTranslate="sapsocLeagueApp.gameResult.detail.title">Game Result</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ gameResult.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.gameResult.gameEnding">Game Ending</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'sapsocLeagueApp.GameEnding.' + gameResult.gameEnding }}">{{ gameResult.gameEnding }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.gameResult.p1Score">P 1 Score</span></dt>
+        <dd>
+          <span>{{ gameResult.p1Score }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.gameResult.p2Score">P 2 Score</span></dt>
+        <dd>
+          <span>{{ gameResult.p2Score }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.gameResult.player1">Player 1</span></dt>
+        <dd>
+          <div *ngIf="gameResult.player1">
+            <a [routerLink]="['/league-player', gameResult.player1.id, 'view']">{{ gameResult.player1.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.gameResult.player2">Player 2</span></dt>
+        <dd>
+          <div *ngIf="gameResult.player2">
+            <a [routerLink]="['/league-player', gameResult.player2.id, 'view']">{{ gameResult.player2.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/game-result', gameResult.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

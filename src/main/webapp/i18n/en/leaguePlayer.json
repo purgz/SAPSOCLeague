@@ -1,0 +1,30 @@
+{
+  "sapsocLeagueApp": {
+    "leaguePlayer": {
+      "home": {
+        "title": "League Players",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new League Player",
+        "createOrEditLabel": "Create or edit a League Player",
+        "notFound": "No League Players found"
+      },
+      "created": "A new League Player is created with identifier {{ param }}",
+      "updated": "A League Player is updated with identifier {{ param }}",
+      "deleted": "A League Player is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete League Player {{ id }}?"
+      },
+      "detail": {
+        "title": "League Player"
+      },
+      "id": "ID",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "wins": "Wins",
+      "losses": "Losses",
+      "eloRating": "Elo Rating",
+      "dishes": "Dishes",
+      "rDishes": "R Dishes"
+    }
+  }
+}

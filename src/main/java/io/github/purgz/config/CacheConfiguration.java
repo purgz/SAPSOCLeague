@@ -48,6 +48,10 @@ public class CacheConfiguration {
             createCache(cm, io.github.purgz.domain.User.class.getName());
             createCache(cm, io.github.purgz.domain.Authority.class.getName());
             createCache(cm, io.github.purgz.domain.User.class.getName() + ".authorities");
+            createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName());
+            createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName() + ".player1s");
+            createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName() + ".player2s");
+            createCache(cm, io.github.purgz.domain.GameResult.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

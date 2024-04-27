@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="leaguePlayer">
+      <h2 data-cy="leaguePlayerDetailsHeading"><span jhiTranslate="sapsocLeagueApp.leaguePlayer.detail.title">League Player</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.firstName">First Name</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.firstName }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.lastName">Last Name</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.lastName }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.wins">Wins</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.wins }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.losses">Losses</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.losses }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.eloRating">Elo Rating</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.eloRating }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.dishes">Dishes</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.dishes }}</span>
+        </dd>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.rDishes">R Dishes</span></dt>
+        <dd>
+          <span>{{ leaguePlayer.rDishes }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/league-player', leaguePlayer.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

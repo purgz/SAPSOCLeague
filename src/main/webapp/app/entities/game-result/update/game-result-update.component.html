@@ -1,0 +1,126 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-game-result-heading"
+        data-cy="GameResultCreateUpdateHeading"
+        jhiTranslate="sapsocLeagueApp.gameResult.home.createOrEditLabel"
+      >
+        Create or edit a Game Result
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.gameResult.gameEnding" for="field_gameEnding">Game Ending</label>
+          <select class="form-control" name="gameEnding" formControlName="gameEnding" id="field_gameEnding" data-cy="gameEnding">
+            <option [ngValue]="null">{{ 'sapsocLeagueApp.GameEnding.null' | translate }}</option>
+            <option *ngFor="let gameEnding of gameEndingValues" [value]="gameEnding">
+              {{ 'sapsocLeagueApp.GameEnding.' + gameEnding | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.gameResult.p1Score" for="field_p1Score">P 1 Score</label>
+          <input type="number" class="form-control" name="p1Score" id="field_p1Score" data-cy="p1Score" formControlName="p1Score" />
+          <div *ngIf="editForm.get('p1Score')!.invalid && (editForm.get('p1Score')!.dirty || editForm.get('p1Score')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('p1Score')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              This field should be at least 0.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('p1Score')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.gameResult.p2Score" for="field_p2Score">P 2 Score</label>
+          <input type="number" class="form-control" name="p2Score" id="field_p2Score" data-cy="p2Score" formControlName="p2Score" />
+          <div *ngIf="editForm.get('p2Score')!.invalid && (editForm.get('p2Score')!.dirty || editForm.get('p2Score')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('p2Score')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              This field should be at least 0.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('p2Score')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.gameResult.player1" for="field_player1">Player 1</label>
+          <select
+            class="form-control"
+            id="field_player1"
+            data-cy="player1"
+            name="player1"
+            formControlName="player1"
+            [compareWith]="compareLeaguePlayer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="leaguePlayerOption" *ngFor="let leaguePlayerOption of leaguePlayersSharedCollection">
+              {{ leaguePlayerOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="sapsocLeagueApp.gameResult.player2" for="field_player2">Player 2</label>
+          <select
+            class="form-control"
+            id="field_player2"
+            data-cy="player2"
+            name="player2"
+            formControlName="player2"
+            [compareWith]="compareLeaguePlayer"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="leaguePlayerOption" *ngFor="let leaguePlayerOption of leaguePlayersSharedCollection">
+              {{ leaguePlayerOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

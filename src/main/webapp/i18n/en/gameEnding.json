@@ -1,0 +1,10 @@
+{
+  "sapsocLeagueApp": {
+    "GameEnding": {
+      "null": "",
+      "DISH": "DISH",
+      "REVERSE_DISH": "REVERSE_DISH",
+      "BYE": "BYE"
+    }
+  }
+}

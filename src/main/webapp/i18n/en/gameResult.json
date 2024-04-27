@@ -1,0 +1,28 @@
+{
+  "sapsocLeagueApp": {
+    "gameResult": {
+      "home": {
+        "title": "Game Results",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Game Result",
+        "createOrEditLabel": "Create or edit a Game Result",
+        "notFound": "No Game Results found"
+      },
+      "created": "A new Game Result is created with identifier {{ param }}",
+      "updated": "A Game Result is updated with identifier {{ param }}",
+      "deleted": "A Game Result is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Game Result {{ id }}?"
+      },
+      "detail": {
+        "title": "Game Result"
+      },
+      "id": "ID",
+      "gameEnding": "Game Ending",
+      "p1Score": "P 1 Score",
+      "p2Score": "P 2 Score",
+      "player1": "Player 1",
+      "player2": "Player 2"
+    }
+  }
+}

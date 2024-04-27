@@ -1,0 +1,44 @@
+{
+  "applications": "*",
+  "changelogDate": "20240427124551",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "game_result",
+  "fields": [
+    {
+      "fieldName": "gameEnding",
+      "fieldType": "GameEnding",
+      "fieldValues": "DISH,REVERSE_DISH,BYE"
+    },
+    {
+      "fieldName": "p1Score",
+      "fieldType": "Float",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "p2Score",
+      "fieldType": "Float",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "GameResult",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "leaguePlayer",
+      "relationshipName": "player1",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "leaguePlayer",
+      "relationshipName": "player2",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}
