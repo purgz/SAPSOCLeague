@@ -41,5 +41,17 @@ jobs:
           npm run java:docker
           docker tag sapsocleague henrybrooks/sapsoc:latest
           docker push henrybrooks/sapsoc:latest
+      - 
+        name: Create ssh key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ../private.key
+          sudo chmod 600 ../private.key
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.RSAKEY_IONOS}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+          
       
       
