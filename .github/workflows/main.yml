@@ -52,6 +52,12 @@ jobs:
           SSH_PRIVATE_KEY: ${{secrets.RSAKEY_IONOS}}
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
           SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+      -
+        name: Deploy container
+        run: |
+          ssh -i $SSH_KEY_PATH ${{IONOS_USER}}@${{IONOS_IP}}
+        env:
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
           
       
       
