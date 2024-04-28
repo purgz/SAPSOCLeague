@@ -5,7 +5,7 @@ services:
     image: henrybrooks/sapsoc
     environment:
       - _JAVA_OPTIONS=-Xmx128m -Xms64m
-      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - SPRING_PROFILES_ACTIVE=prod,api-docs,tls
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://sapsocleague-postgresql:5432/SapsocLeague
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://sapsocleague-postgresql:5432/SapsocLeague
