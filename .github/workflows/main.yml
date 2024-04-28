@@ -55,7 +55,7 @@ jobs:
       -
         name: Deploy container
         run: |
-          ssh -i $SSH_KEY_PATH root@194.164.24.169 "docker-compose -f ~/sapsoc/app.yml -d"
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH root@194.164.24.169 "docker-compose -f ~/sapsoc/app.yml -d"
         env:
           SSH_KEY_PATH: ${{ github.workspace }}/../private.key
           
