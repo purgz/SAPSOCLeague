@@ -10,6 +10,20 @@ Main page styles
   background-size: contain;
 }
 
+.coming-soon {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
+  background: url('../../content/images/coming-soon.png') no-repeat center top;
+  background-size: contain;
+}
+
+.content-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (-moz-min-device-pixel-ratio: 2),

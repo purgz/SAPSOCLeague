@@ -1,4 +1,4 @@
-# SapsocLeague
+npm # SapsocLeague
 
 Boilerplate generated using JHipster
 
