@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.github.purgz.IntegrationTest;
 import io.github.purgz.domain.SemesterScore;
 import io.github.purgz.repository.SemesterScoreRepository;
+import io.github.purgz.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class SemesterScoreResourceIT {
 
     private static final Integer DEFAULT_SCORE = 0;

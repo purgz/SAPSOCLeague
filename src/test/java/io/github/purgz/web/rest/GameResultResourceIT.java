@@ -9,6 +9,7 @@ import io.github.purgz.IntegrationTest;
 import io.github.purgz.domain.GameResult;
 import io.github.purgz.domain.enumeration.GameEnding;
 import io.github.purgz.repository.GameResultRepository;
+import io.github.purgz.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 class GameResultResourceIT {
 
     private static final GameEnding DEFAULT_GAME_ENDING = GameEnding.DISH;
