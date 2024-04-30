@@ -32,6 +32,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(m => m.EntityRoutingModule),
         },
+        {
+          path: 'league',
+          loadChildren: () => import(`./league-dashboard/league-dashboard.module`).then(m => m.LeagueDashboardModule),
+        },
         navbarRoute,
         ...errorRoute,
       ],
