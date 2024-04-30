@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+@WithMockUser
 class SemesterResourceIT {
 
     private static final Integer DEFAULT_SEMESTER_NUM = 0;

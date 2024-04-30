@@ -28,7 +28,7 @@ import org.springframework.util.Base64Utils;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+@WithMockUser
 class LeaguePlayerResourceIT {
 
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";

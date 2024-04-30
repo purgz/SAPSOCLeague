@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+@WithMockUser
 class LeagueYearResourceIT {
 
     private static final Integer DEFAULT_YEAR_START = 1;

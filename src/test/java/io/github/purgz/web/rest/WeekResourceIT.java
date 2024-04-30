@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @IntegrationTest
 @AutoConfigureMockMvc
-@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
+@WithMockUser
 class WeekResourceIT {
 
     private static final Integer DEFAULT_WEEK_NUM = 0;
