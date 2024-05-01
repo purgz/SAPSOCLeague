@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Subscription, take } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-home',
@@ -18,11 +19,20 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private accountService: AccountService, private router: Router) {}
 
+  isDataLoaded$: boolean = false;
+
   ngOnInit(): void {
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(account => (this.account = account));
+      .subscribe(account => {
+        this.account = account;
+        this.isDataLoaded$ = true;
+      });
+  }
+
+  showIsData(): void {
+    console.log(this.isDataLoaded$);
   }
 
   login(): void {
