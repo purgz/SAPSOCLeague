@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { LeagueYearsRoute } from './league-years/league-years.route';
+import { LeagueMainRoute } from './league-main.route';
 
-const routes = [LeagueYearsRoute];
+const routes = [LeagueMainRoute];
 
 export const leagueRoutes: Routes = [
   {
