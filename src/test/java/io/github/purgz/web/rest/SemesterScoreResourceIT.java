@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.github.purgz.IntegrationTest;
 import io.github.purgz.domain.SemesterScore;
 import io.github.purgz.repository.SemesterScoreRepository;
-import io.github.purgz.security.AuthoritiesConstants;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -30,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class SemesterScoreResourceIT {
 
-    private static final Integer DEFAULT_SCORE = 0;
-    private static final Integer UPDATED_SCORE = 1;
+    private static final Float DEFAULT_SCORE = 0F;
+    private static final Float UPDATED_SCORE = 1F;
 
     private static final String ENTITY_API_URL = "/api/semester-scores";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -123,7 +122,7 @@ class SemesterScoreResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(semesterScore.getId().intValue())))
-            .andExpect(jsonPath("$.[*].score").value(hasItem(DEFAULT_SCORE)));
+            .andExpect(jsonPath("$.[*].score").value(hasItem(DEFAULT_SCORE.doubleValue())));
     }
 
     @Test
@@ -138,7 +137,7 @@ class SemesterScoreResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(semesterScore.getId().intValue()))
-            .andExpect(jsonPath("$.score").value(DEFAULT_SCORE));
+            .andExpect(jsonPath("$.score").value(DEFAULT_SCORE.doubleValue()));
     }
 
     @Test

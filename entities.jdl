@@ -35,7 +35,7 @@ entity Semester{
 }
 
 entity SemesterScore{
-    score Integer min(0)
+    score Float min(0)
 }
 
 entity LeagueYear{

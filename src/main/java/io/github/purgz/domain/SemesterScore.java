@@ -24,9 +24,9 @@ public class SemesterScore implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Min(value = 0)
+    @DecimalMin(value = "0")
     @Column(name = "score")
-    private Integer score;
+    private Float score;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "year", "players", "weeks", "semesterScores" }, allowSetters = true)
@@ -51,16 +51,16 @@ public class SemesterScore implements Serializable {
         this.id = id;
     }
 
-    public Integer getScore() {
+    public Float getScore() {
         return this.score;
     }
 
-    public SemesterScore score(Integer score) {
+    public SemesterScore score(Float score) {
         this.setScore(score);
         return this;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Float score) {
         this.score = score;
     }
 

@@ -7,7 +7,7 @@
   "fields": [
     {
       "fieldName": "score",
-      "fieldType": "Integer",
+      "fieldType": "Float",
       "fieldValidateRules": ["min"],
       "fieldValidateRulesMin": "0"
     }

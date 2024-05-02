@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.github.purgz.IntegrationTest;
 import io.github.purgz.domain.Week;
 import io.github.purgz.repository.WeekRepository;
-import io.github.purgz.security.AuthoritiesConstants;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;

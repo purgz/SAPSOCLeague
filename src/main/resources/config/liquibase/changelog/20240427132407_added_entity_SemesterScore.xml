@@ -14,7 +14,7 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="score" type="integer">
+            <column name="score" type="${floatType}">
                 <constraints nullable="true" />
             </column>
             <column name="semester_id" type="bigint">
