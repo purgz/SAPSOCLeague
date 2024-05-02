@@ -19,20 +19,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private accountService: AccountService, private router: Router) {}
 
-  isDataLoaded$: boolean = false;
-
   ngOnInit(): void {
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => {
         this.account = account;
-        this.isDataLoaded$ = true;
       });
-  }
-
-  showIsData(): void {
-    console.log(this.isDataLoaded$);
   }
 
   login(): void {
