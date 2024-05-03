@@ -64,8 +64,9 @@
     {
       "otherEntityName": "semester",
       "otherEntityRelationshipName": "players",
-      "relationshipName": "semester",
-      "relationshipType": "many-to-one"
+      "ownerSide": true,
+      "relationshipName": "semesters",
+      "relationshipType": "many-to-many"
     },
     {
       "otherEntityName": "semesterScore",

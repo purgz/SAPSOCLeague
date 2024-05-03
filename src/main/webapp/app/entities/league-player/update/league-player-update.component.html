@@ -220,16 +220,16 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="sapsocLeagueApp.leaguePlayer.semester" for="field_semester">Semester</label>
+          <label jhiTranslate="sapsocLeagueApp.leaguePlayer.semesters" for="field_semesters">Semesters</label>
           <select
             class="form-control"
-            id="field_semester"
-            data-cy="semester"
-            name="semester"
-            formControlName="semester"
+            id="field_semesters"
+            data-cy="semesters"
+            multiple
+            name="semesters"
+            formControlName="semesters"
             [compareWith]="compareSemester"
           >
-            <option [ngValue]="null"></option>
             <option [ngValue]="semesterOption" *ngFor="let semesterOption of semestersSharedCollection">{{ semesterOption.id }}</option>
           </select>
         </div>

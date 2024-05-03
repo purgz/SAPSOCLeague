@@ -64,6 +64,7 @@ public class CacheConfiguration {
             createCache(cm, io.github.purgz.domain.SemesterScore.class.getName());
             createCache(cm, io.github.purgz.domain.LeagueYear.class.getName());
             createCache(cm, io.github.purgz.domain.LeagueYear.class.getName() + ".semesters");
+            createCache(cm, io.github.purgz.domain.LeaguePlayer.class.getName() + ".semesters");
             // jhipster-needle-ehcache-add-entry
         };
     }

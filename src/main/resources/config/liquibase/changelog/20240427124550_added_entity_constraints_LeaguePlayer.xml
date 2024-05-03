@@ -8,9 +8,15 @@
     -->
     <changeSet id="20240427124550-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="semester_id"
-                                 baseTableName="league_player"
-                                 constraintName="fk_league_player__semester_id"
+        <addForeignKeyConstraint baseColumnNames="league_player_id"
+                                 baseTableName="rel_league_player__semesters"
+                                 constraintName="fk_rel_league_player__semesters__league_player_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="league_player"/>
+
+        <addForeignKeyConstraint baseColumnNames="semesters_id"
+                                 baseTableName="rel_league_player__semesters"
+                                 constraintName="fk_rel_league_player__semesters__semesters_id"
                                  referencedColumnNames="id"
                                  referencedTableName="semester"/>
     </changeSet>

@@ -1,8 +1,6 @@
 package io.github.purgz.repository;
 
-import io.github.purgz.domain.LeaguePlayer;
 import io.github.purgz.domain.LeagueYear;
-import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

@@ -25,12 +25,6 @@
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "leaguePlayer",
-      "otherEntityRelationshipName": "semester",
-      "relationshipName": "players",
-      "relationshipType": "one-to-many"
-    },
-    {
       "otherEntityName": "week",
       "otherEntityRelationshipName": "semester",
       "relationshipName": "weeks",
@@ -41,6 +35,13 @@
       "otherEntityRelationshipName": "semester",
       "relationshipName": "semesterScores",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "leaguePlayer",
+      "otherEntityRelationshipName": "semesters",
+      "ownerSide": false,
+      "relationshipName": "players",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "no"

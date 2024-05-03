@@ -86,9 +86,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="semester.id">
+          <th scope="col" jhiSortBy="semesters.id">
             <div class="d-flex">
-              <span jhiTranslate="sapsocLeagueApp.leaguePlayer.semester">Semester</span>
+              <span jhiTranslate="sapsocLeagueApp.leaguePlayer.semesters">Semesters</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -118,9 +118,10 @@
             <span *ngIf="leaguePlayer.photo">{{ leaguePlayer.photoContentType }}, {{ byteSize(leaguePlayer.photo) }}</span>
           </td>
           <td>
-            <div *ngIf="leaguePlayer.semester">
-              <a [routerLink]="['/semester', leaguePlayer.semester.id, 'view']">{{ leaguePlayer.semester.id }}</a>
-            </div>
+            <span *ngFor="let semesters of leaguePlayer.semesters; let last = last">
+              <a class="form-control-static" [routerLink]="['/semester', semesters.id, 'view']">{{ semesters.id }}</a
+              >{{ last ? '' : ', ' }}
+            </span>
           </td>
           <td class="text-end">
             <div class="btn-group">

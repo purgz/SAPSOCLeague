@@ -28,7 +28,7 @@ describe('LeaguePlayer Form Service', () => {
             dishes: expect.any(Object),
             rDishes: expect.any(Object),
             photo: expect.any(Object),
-            semester: expect.any(Object),
+            semesters: expect.any(Object),
           })
         );
       });
@@ -47,7 +47,7 @@ describe('LeaguePlayer Form Service', () => {
             dishes: expect.any(Object),
             rDishes: expect.any(Object),
             photo: expect.any(Object),
-            semester: expect.any(Object),
+            semesters: expect.any(Object),
           })
         );
       });

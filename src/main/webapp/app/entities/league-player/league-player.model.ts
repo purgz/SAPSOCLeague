@@ -11,7 +11,7 @@ export interface ILeaguePlayer {
   rDishes?: number | null;
   photo?: string | null;
   photoContentType?: string | null;
-  semester?: Pick<ISemester, 'id'> | null;
+  semesters?: Pick<ISemester, 'id'>[] | null;
 }
 
 export type NewLeaguePlayer = Omit<ILeaguePlayer, 'id'> & { id: null };

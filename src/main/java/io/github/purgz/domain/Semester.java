@@ -37,11 +37,6 @@ public class Semester implements Serializable {
 
     @OneToMany(mappedBy = "semester")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "semester", "semesterScores" }, allowSetters = true)
-    private Set<LeaguePlayer> players = new HashSet<>();
-
-    @OneToMany(mappedBy = "semester")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "semester", "rounds" }, allowSetters = true)
     private Set<Week> weeks = new HashSet<>();
 
@@ -49,6 +44,11 @@ public class Semester implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "semester", "player" }, allowSetters = true)
     private Set<SemesterScore> semesterScores = new HashSet<>();
+
+    @ManyToMany(mappedBy = "semesters")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "semesters", "semesterScores" }, allowSetters = true)
+    private Set<LeaguePlayer> players = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -88,37 +88,6 @@ public class Semester implements Serializable {
 
     public Semester year(LeagueYear leagueYear) {
         this.setYear(leagueYear);
-        return this;
-    }
-
-    public Set<LeaguePlayer> getPlayers() {
-        return this.players;
-    }
-
-    public void setPlayers(Set<LeaguePlayer> leaguePlayers) {
-        if (this.players != null) {
-            this.players.forEach(i -> i.setSemester(null));
-        }
-        if (leaguePlayers != null) {
-            leaguePlayers.forEach(i -> i.setSemester(this));
-        }
-        this.players = leaguePlayers;
-    }
-
-    public Semester players(Set<LeaguePlayer> leaguePlayers) {
-        this.setPlayers(leaguePlayers);
-        return this;
-    }
-
-    public Semester addPlayers(LeaguePlayer leaguePlayer) {
-        this.players.add(leaguePlayer);
-        leaguePlayer.setSemester(this);
-        return this;
-    }
-
-    public Semester removePlayers(LeaguePlayer leaguePlayer) {
-        this.players.remove(leaguePlayer);
-        leaguePlayer.setSemester(null);
         return this;
     }
 
@@ -181,6 +150,37 @@ public class Semester implements Serializable {
     public Semester removeSemesterScores(SemesterScore semesterScore) {
         this.semesterScores.remove(semesterScore);
         semesterScore.setSemester(null);
+        return this;
+    }
+
+    public Set<LeaguePlayer> getPlayers() {
+        return this.players;
+    }
+
+    public void setPlayers(Set<LeaguePlayer> leaguePlayers) {
+        if (this.players != null) {
+            this.players.forEach(i -> i.removeSemesters(this));
+        }
+        if (leaguePlayers != null) {
+            leaguePlayers.forEach(i -> i.addSemesters(this));
+        }
+        this.players = leaguePlayers;
+    }
+
+    public Semester players(Set<LeaguePlayer> leaguePlayers) {
+        this.setPlayers(leaguePlayers);
+        return this;
+    }
+
+    public Semester addPlayers(LeaguePlayer leaguePlayer) {
+        this.players.add(leaguePlayer);
+        leaguePlayer.getSemesters().add(this);
+        return this;
+    }
+
+    public Semester removePlayers(LeaguePlayer leaguePlayer) {
+        this.players.remove(leaguePlayer);
+        leaguePlayer.getSemesters().remove(this);
         return this;
     }
 

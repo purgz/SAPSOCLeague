@@ -55,11 +55,12 @@
             {{ leaguePlayer.photoContentType }}, {{ byteSize(leaguePlayer.photo) }}
           </div>
         </dd>
-        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.semester">Semester</span></dt>
+        <dt><span jhiTranslate="sapsocLeagueApp.leaguePlayer.semesters">Semesters</span></dt>
         <dd>
-          <div *ngIf="leaguePlayer.semester">
-            <a [routerLink]="['/semester', leaguePlayer.semester.id, 'view']">{{ leaguePlayer.semester.id }}</a>
-          </div>
+          <span *ngFor="let semesters of leaguePlayer.semesters; let last = last">
+            <a [routerLink]="['/semester', semesters.id, 'view']">{{ semesters.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
         </dd>
       </dl>
 

@@ -51,12 +51,12 @@ describe('LeaguePlayer Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Semester query and add missing value', () => {
       const leaguePlayer: ILeaguePlayer = { id: 456 };
-      const semester: ISemester = { id: 15445 };
-      leaguePlayer.semester = semester;
+      const semesters: ISemester[] = [{ id: 15445 }];
+      leaguePlayer.semesters = semesters;
 
       const semesterCollection: ISemester[] = [{ id: 77966 }];
       jest.spyOn(semesterService, 'query').mockReturnValue(of(new HttpResponse({ body: semesterCollection })));
-      const additionalSemesters = [semester];
+      const additionalSemesters = [...semesters];
       const expectedCollection: ISemester[] = [...additionalSemesters, ...semesterCollection];
       jest.spyOn(semesterService, 'addSemesterToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -73,13 +73,13 @@ describe('LeaguePlayer Management Update Component', () => {
 
     it('Should update editForm', () => {
       const leaguePlayer: ILeaguePlayer = { id: 456 };
-      const semester: ISemester = { id: 204 };
-      leaguePlayer.semester = semester;
+      const semesters: ISemester = { id: 204 };
+      leaguePlayer.semesters = [semesters];
 
       activatedRoute.data = of({ leaguePlayer });
       comp.ngOnInit();
 
-      expect(comp.semestersSharedCollection).toContain(semester);
+      expect(comp.semestersSharedCollection).toContain(semesters);
       expect(comp.leaguePlayer).toEqual(leaguePlayer);
     });
   });

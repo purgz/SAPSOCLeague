@@ -22,6 +22,7 @@ describe('Semester Form Service', () => {
             id: expect.any(Object),
             semesterNum: expect.any(Object),
             year: expect.any(Object),
+            players: expect.any(Object),
           })
         );
       });
@@ -34,6 +35,7 @@ describe('Semester Form Service', () => {
             id: expect.any(Object),
             semesterNum: expect.any(Object),
             year: expect.any(Object),
+            players: expect.any(Object),
           })
         );
       });

@@ -38,11 +38,11 @@ public class GameResult implements Serializable {
     private Float p2Score;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "semester", "semesterScores" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "semesters", "semesterScores" }, allowSetters = true)
     private LeaguePlayer player1;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "semester", "semesterScores" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "semesters", "semesterScores" }, allowSetters = true)
     private LeaguePlayer player2;
 
     @ManyToOne

@@ -35,7 +35,7 @@ public class LeagueYear implements Serializable {
 
     @OneToMany(mappedBy = "year")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "year", "players", "weeks", "semesterScores" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "year", "weeks", "semesterScores", "players" }, allowSetters = true)
     private Set<Semester> semesters = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

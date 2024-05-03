@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type LeaguePlayerFormGroupInput = ILeaguePlayer | PartialWithRequiredKeyOf<NewLeaguePlayer>;
 
-type LeaguePlayerFormDefaults = Pick<NewLeaguePlayer, 'id'>;
+type LeaguePlayerFormDefaults = Pick<NewLeaguePlayer, 'id' | 'semesters'>;
 
 type LeaguePlayerFormGroupContent = {
   id: FormControl<ILeaguePlayer['id'] | NewLeaguePlayer['id']>;
@@ -27,7 +27,7 @@ type LeaguePlayerFormGroupContent = {
   rDishes: FormControl<ILeaguePlayer['rDishes']>;
   photo: FormControl<ILeaguePlayer['photo']>;
   photoContentType: FormControl<ILeaguePlayer['photoContentType']>;
-  semester: FormControl<ILeaguePlayer['semester']>;
+  semesters: FormControl<ILeaguePlayer['semesters']>;
 };
 
 export type LeaguePlayerFormGroup = FormGroup<LeaguePlayerFormGroupContent>;
@@ -70,7 +70,7 @@ export class LeaguePlayerFormService {
       }),
       photo: new FormControl(leaguePlayerRawValue.photo),
       photoContentType: new FormControl(leaguePlayerRawValue.photoContentType),
-      semester: new FormControl(leaguePlayerRawValue.semester),
+      semesters: new FormControl(leaguePlayerRawValue.semesters ?? []),
     });
   }
 
@@ -91,6 +91,7 @@ export class LeaguePlayerFormService {
   private getFormDefaults(): LeaguePlayerFormDefaults {
     return {
       id: null,
+      semesters: [],
     };
   }
 }

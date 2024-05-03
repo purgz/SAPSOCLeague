@@ -1,13 +1,10 @@
 package io.github.purgz.web.rest;
 
-import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
-import io.github.purgz.repository.LeagueYearRepository;
 import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,7 +13,6 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +35,9 @@ public class SemesterResource {
     private String applicationName;
 
     private final SemesterRepository semesterRepository;
-    private final LeagueYearRepository leagueYearRepository;
 
-    public SemesterResource(SemesterRepository semesterRepository, LeagueYearRepository leagueYearRepository) {
+    public SemesterResource(SemesterRepository semesterRepository) {
         this.semesterRepository = semesterRepository;
-        this.leagueYearRepository = leagueYearRepository;
     }
 
     /**
@@ -183,21 +177,5 @@ public class SemesterResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    @GetMapping("/semesters/year/{yearId}")
-    public ResponseEntity<List<Semester>> getSemestersByYear(@PathVariable Long yearId) {
-        System.out.println("TEST" + yearId);
-        Optional<LeagueYear> leagueYear = leagueYearRepository.findById(yearId);
-
-        List<Semester> semesters;
-
-        if (leagueYear.isPresent()) {
-            semesters = semesterRepository.findAllByYear(leagueYear.get());
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(semesters, HttpStatus.OK);
     }
 }

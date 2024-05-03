@@ -65,9 +65,15 @@ public class LeaguePlayer implements Serializable {
     @Column(name = "photo_content_type")
     private String photoContentType;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "year", "players", "weeks", "semesterScores" }, allowSetters = true)
-    private Semester semester;
+    @ManyToMany
+    @JoinTable(
+        name = "rel_league_player__semesters",
+        joinColumns = @JoinColumn(name = "league_player_id"),
+        inverseJoinColumns = @JoinColumn(name = "semesters_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "year", "weeks", "semesterScores", "players" }, allowSetters = true)
+    private Set<Semester> semesters = new HashSet<>();
 
     @OneToMany(mappedBy = "player")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -206,16 +212,28 @@ public class LeaguePlayer implements Serializable {
         this.photoContentType = photoContentType;
     }
 
-    public Semester getSemester() {
-        return this.semester;
+    public Set<Semester> getSemesters() {
+        return this.semesters;
     }
 
-    public void setSemester(Semester semester) {
-        this.semester = semester;
+    public void setSemesters(Set<Semester> semesters) {
+        this.semesters = semesters;
     }
 
-    public LeaguePlayer semester(Semester semester) {
-        this.setSemester(semester);
+    public LeaguePlayer semesters(Set<Semester> semesters) {
+        this.setSemesters(semesters);
+        return this;
+    }
+
+    public LeaguePlayer addSemesters(Semester semester) {
+        this.semesters.add(semester);
+        semester.getPlayers().add(this);
+        return this;
+    }
+
+    public LeaguePlayer removeSemesters(Semester semester) {
+        this.semesters.remove(semester);
+        semester.getPlayers().remove(this);
         return this;
     }
 

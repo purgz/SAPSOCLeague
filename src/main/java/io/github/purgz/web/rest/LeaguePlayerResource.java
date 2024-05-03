@@ -1,22 +1,18 @@
 package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.LeaguePlayer;
-import io.github.purgz.domain.Semester;
 import io.github.purgz.repository.LeaguePlayerRepository;
-import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +35,9 @@ public class LeaguePlayerResource {
     private String applicationName;
 
     private final LeaguePlayerRepository leaguePlayerRepository;
-    private final SemesterRepository semesterRepository;
 
-    public LeaguePlayerResource(LeaguePlayerRepository leaguePlayerRepository, SemesterRepository semesterRepository) {
+    public LeaguePlayerResource(LeaguePlayerRepository leaguePlayerRepository) {
         this.leaguePlayerRepository = leaguePlayerRepository;
-
-        this.semesterRepository = semesterRepository;
     }
 
     /**
@@ -173,12 +166,17 @@ public class LeaguePlayerResource {
     /**
      * {@code GET  /league-players} : get all the leaguePlayers.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of leaguePlayers in body.
      */
     @GetMapping("/league-players")
-    public List<LeaguePlayer> getAllLeaguePlayers() {
+    public List<LeaguePlayer> getAllLeaguePlayers(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all LeaguePlayers");
-        return leaguePlayerRepository.findAll();
+        if (eagerload) {
+            return leaguePlayerRepository.findAllWithEagerRelationships();
+        } else {
+            return leaguePlayerRepository.findAll();
+        }
     }
 
     /**
@@ -190,7 +188,7 @@ public class LeaguePlayerResource {
     @GetMapping("/league-players/{id}")
     public ResponseEntity<LeaguePlayer> getLeaguePlayer(@PathVariable Long id) {
         log.debug("REST request to get LeaguePlayer : {}", id);
-        Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findById(id);
+        Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(leaguePlayer);
     }
 
@@ -208,18 +206,5 @@ public class LeaguePlayerResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    @GetMapping("/league-players/semester/{id}")
-    public ResponseEntity<List<LeaguePlayer>> getPlayersBySemester(@PathVariable Long id) {
-        Optional<Semester> semester = semesterRepository.findById(id);
-
-        if (!semester.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        List<LeaguePlayer> leaguePlayers = leaguePlayerRepository.findAllBySemester(semester.get());
-
-        return new ResponseEntity<>(leaguePlayers, HttpStatus.OK);
     }
 }

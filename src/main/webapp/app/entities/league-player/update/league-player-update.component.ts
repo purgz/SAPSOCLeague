@@ -112,7 +112,7 @@ export class LeaguePlayerUpdateComponent implements OnInit {
 
     this.semestersSharedCollection = this.semesterService.addSemesterToCollectionIfMissing<ISemester>(
       this.semestersSharedCollection,
-      leaguePlayer.semester
+      ...(leaguePlayer.semesters ?? [])
     );
   }
 
@@ -122,7 +122,7 @@ export class LeaguePlayerUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ISemester[]>) => res.body ?? []))
       .pipe(
         map((semesters: ISemester[]) =>
-          this.semesterService.addSemesterToCollectionIfMissing<ISemester>(semesters, this.leaguePlayer?.semester)
+          this.semesterService.addSemesterToCollectionIfMissing<ISemester>(semesters, ...(this.leaguePlayer?.semesters ?? []))
         )
       )
       .subscribe((semesters: ISemester[]) => (this.semestersSharedCollection = semesters));

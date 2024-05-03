@@ -37,37 +37,10 @@ export class LeagueDataService {
     this.leagueYearService.find(yearId).subscribe(value => {
       if (value.body != null && value.status == HttpStatusCode.Ok) {
         yearData.year = value.body;
+
+        this.leagueData[yearId] = yearData;
       }
-
-      //find semesters in the year - can run async
-      this.semesterService.findByYear(yearId).subscribe(value => {
-        if (value.body != null && value.status == HttpStatusCode.Ok) {
-          yearData.semesters = value.body;
-
-          yearData.semesters.forEach(semester => {
-            this.leaguePlayerService.findBySemester(semester.id).subscribe(value => {
-              if (value.body != null && value.status == HttpStatusCode.Ok) {
-                value.body.forEach(player => {
-                  const playerAndScore: { player: ILeaguePlayer; score: ISemesterScore[] } = {} as {
-                    player: ILeaguePlayer;
-                    score: ISemesterScore[];
-                  };
-
-                  playerAndScore.player = player;
-                  yearData.players.push(playerAndScore);
-                });
-              }
-              this.leagueData[yearId] = yearData;
-              console.log(this.leagueData);
-            });
-          });
-        }
-      });
     });
-    //find players and their semester scores by the year (year id)
-    //find players
-
-    //find semester score for each player.
 
     return false;
   }

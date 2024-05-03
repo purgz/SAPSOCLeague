@@ -41,11 +41,22 @@
             <column name="photo_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="semester_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+    </changeSet>
+
+    <changeSet id="20240427124550-1-relations" author="jhipster">
+
+        <createTable tableName="rel_league_player__semesters">
+            <column name="semesters_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="league_player_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="league_player_id, semesters_id" tableName="rel_league_player__semesters"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

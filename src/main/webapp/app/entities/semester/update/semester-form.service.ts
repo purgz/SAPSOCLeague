@@ -14,12 +14,13 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type SemesterFormGroupInput = ISemester | PartialWithRequiredKeyOf<NewSemester>;
 
-type SemesterFormDefaults = Pick<NewSemester, 'id'>;
+type SemesterFormDefaults = Pick<NewSemester, 'id' | 'players'>;
 
 type SemesterFormGroupContent = {
   id: FormControl<ISemester['id'] | NewSemester['id']>;
   semesterNum: FormControl<ISemester['semesterNum']>;
   year: FormControl<ISemester['year']>;
+  players: FormControl<ISemester['players']>;
 };
 
 export type SemesterFormGroup = FormGroup<SemesterFormGroupContent>;
@@ -43,6 +44,7 @@ export class SemesterFormService {
         validators: [Validators.required, Validators.min(0)],
       }),
       year: new FormControl(semesterRawValue.year),
+      players: new FormControl(semesterRawValue.players ?? []),
     });
   }
 
@@ -63,6 +65,7 @@ export class SemesterFormService {
   private getFormDefaults(): SemesterFormDefaults {
     return {
       id: null,
+      players: [],
     };
   }
 }

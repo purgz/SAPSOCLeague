@@ -29,11 +29,11 @@ public class SemesterScore implements Serializable {
     private Float score;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "year", "players", "weeks", "semesterScores" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "year", "weeks", "semesterScores", "players" }, allowSetters = true)
     private Semester semester;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "semester", "semesterScores" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "semesters", "semesterScores" }, allowSetters = true)
     private LeaguePlayer player;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
