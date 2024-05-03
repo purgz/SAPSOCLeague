@@ -12,7 +12,7 @@ import { LeagueDataService } from '../service/league-data.service';
   templateUrl: './league-years.component.html',
 })
 export class LeagueYearsComponent implements OnInit {
-  constructor(private leagueYearService: LeagueYearService, private leagueDataService: LeagueDataService) {}
+  constructor(private leagueYearService: LeagueYearService, public leagueDataService: LeagueDataService) {}
 
   isDataLoaded$: boolean = false;
 

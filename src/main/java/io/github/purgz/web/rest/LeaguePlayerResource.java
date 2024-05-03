@@ -1,18 +1,22 @@
 package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.LeaguePlayer;
+import io.github.purgz.domain.Semester;
 import io.github.purgz.repository.LeaguePlayerRepository;
+import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +39,11 @@ public class LeaguePlayerResource {
     private String applicationName;
 
     private final LeaguePlayerRepository leaguePlayerRepository;
+    private final SemesterRepository semesterRepository;
 
-    public LeaguePlayerResource(LeaguePlayerRepository leaguePlayerRepository) {
+    public LeaguePlayerResource(LeaguePlayerRepository leaguePlayerRepository, SemesterRepository semesterRepository) {
         this.leaguePlayerRepository = leaguePlayerRepository;
+        this.semesterRepository = semesterRepository;
     }
 
     /**
@@ -206,5 +212,16 @@ public class LeaguePlayerResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/league-players/semester/{id}")
+    public ResponseEntity<Set<LeaguePlayer>> getBySem(@PathVariable Long id) {
+        Optional<Semester> semester = semesterRepository.findById(id);
+
+        if (!semester.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(semester.get().getPlayers(), HttpStatus.OK);
     }
 }

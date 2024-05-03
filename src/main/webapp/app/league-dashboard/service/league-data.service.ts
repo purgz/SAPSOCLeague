@@ -27,12 +27,10 @@ export class LeagueDataService {
     console.info('Attempting to add year ' + yearId + ' to the cached years.');
     //if a year is already found, then refresh it from backend
 
-    const players: { player: ILeaguePlayer; score: ISemesterScore[] }[] = [];
-
     const yearData: LeagueDataModel = {} as LeagueDataModel;
     yearData.year = {} as ILeagueYear;
     yearData.semesters = [];
-    yearData.players = players;
+    yearData.players = {};
 
     this.leagueYearService.find(yearId).subscribe(value => {
       if (value.body != null && value.status == HttpStatusCode.Ok) {
@@ -43,10 +41,25 @@ export class LeagueDataService {
         this.semesterService.findByYear(yearId).subscribe(value => {
           if (value != null && value.status == HttpStatusCode.Ok) {
             yearData.semesters = value.body!;
-          }
 
-          this.leagueData[yearId] = yearData;
-          console.log(this.leagueData);
+            yearData.semesters.forEach(semester => {
+              this.leaguePlayerService.findBySemester(semester.id).subscribe(value => {
+                if (value.body != null) {
+                  value.body.forEach(player => {
+                    //generate player extract to function later
+                    const newPlayer: { player: ILeaguePlayer; score: ISemesterScore[] } = {} as {
+                      player: ILeaguePlayer;
+                      score: ISemesterScore[];
+                    };
+                    newPlayer.player = player;
+                    yearData.players[newPlayer.player.id] = newPlayer;
+                  });
+
+                  this.leagueData[yearId] = yearData;
+                }
+              });
+            });
+          }
         });
       }
     });
@@ -56,5 +69,19 @@ export class LeagueDataService {
 
   refresh(year: any): void {
     //refreshes a years data
+  }
+
+  getYears(id: number): void {
+    this.leagueData[id].year;
+  }
+
+  getSemesters(id: number): void {
+    this.leagueData[id].semesters;
+  }
+
+  getPlayersWithScore(id: number): void {
+    for (let playersKey in this.leagueData[id].players) {
+      console.log(this.leagueData[id].players[playersKey]);
+    }
   }
 }

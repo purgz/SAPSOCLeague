@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ILeaguePlayer, NewLeaguePlayer } from '../league-player.model';
+import { ILeagueYear } from '../../league-year/league-year.model';
 
 export type PartialUpdateLeaguePlayer = Partial<ILeaguePlayer> & Pick<ILeaguePlayer, 'id'>;
 
@@ -36,6 +37,10 @@ export class LeaguePlayerService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<ILeaguePlayer>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findBySemester(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<ILeaguePlayer[]>(`${this.resourceUrl}/semester/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

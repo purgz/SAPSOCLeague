@@ -17,6 +17,10 @@
     </div>
   </div>
 
+  <div *ngFor="let player of this.leagueDataService.leagueData[this.selectedYear!.id].players | keyvalue">
+    {{ player.value.player.firstName }}
+  </div>
+
   <ng-template #noYearsFound>
     <p>There are no years to display</p>
   </ng-template>
