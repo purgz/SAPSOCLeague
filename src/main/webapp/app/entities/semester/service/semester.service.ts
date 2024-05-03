@@ -39,6 +39,10 @@ export class SemesterService {
     return this.http.get<ISemester[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  findByYear(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<ISemester[]>(`${this.resourceUrl}/year/${id}`, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

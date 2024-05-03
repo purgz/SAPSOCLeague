@@ -38,7 +38,16 @@ export class LeagueDataService {
       if (value.body != null && value.status == HttpStatusCode.Ok) {
         yearData.year = value.body;
 
-        this.leagueData[yearId] = yearData;
+        //get all semesters in this year.
+
+        this.semesterService.findByYear(yearId).subscribe(value => {
+          if (value != null && value.status == HttpStatusCode.Ok) {
+            yearData.semesters = value.body!;
+          }
+
+          this.leagueData[yearId] = yearData;
+          console.log(this.leagueData);
+        });
       }
     });
 
