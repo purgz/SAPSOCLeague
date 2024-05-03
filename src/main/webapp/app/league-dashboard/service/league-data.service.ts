@@ -12,6 +12,7 @@ import { LeagueYearService } from '../../entities/league-year/service/league-yea
 import { SemesterService } from '../../entities/semester/service/semester.service';
 import { LeaguePlayerService } from '../../entities/league-player/service/league-player.service';
 import { HttpStatusCode } from '@angular/common/http';
+import { SemesterScoreService } from '../../entities/semester-score/service/semester-score.service';
 
 @Injectable({ providedIn: 'root' })
 export class LeagueDataService {
@@ -20,7 +21,8 @@ export class LeagueDataService {
   constructor(
     private leaguePlayerService: LeaguePlayerService,
     private leagueYearService: LeagueYearService,
-    private semesterService: SemesterService
+    private semesterService: SemesterService,
+    private semesterScoreService: SemesterScoreService
   ) {}
 
   addYear(yearId: number): boolean {
@@ -30,7 +32,12 @@ export class LeagueDataService {
     const yearData: LeagueDataModel = {} as LeagueDataModel;
     yearData.year = {} as ILeagueYear;
     yearData.semesters = [];
-    yearData.players = {};
+    yearData.players = {} as {
+      [playerId: number]: {
+        player: ILeaguePlayer;
+        score: Array<ISemesterScore>;
+      };
+    };
 
     this.leagueYearService.find(yearId).subscribe(value => {
       if (value.body != null && value.status == HttpStatusCode.Ok) {
@@ -52,10 +59,18 @@ export class LeagueDataService {
                       score: ISemesterScore[];
                     };
                     newPlayer.player = player;
-                    yearData.players[newPlayer.player.id] = newPlayer;
-                  });
+                    if (!yearData.players[newPlayer.player.id]) {
+                      yearData.players[newPlayer.player.id] = newPlayer;
+                      yearData.players[newPlayer.player.id].score = [];
+                    }
 
-                  this.leagueData[yearId] = yearData;
+                    this.semesterScoreService.findByPlayerAndSem(player.id, semester.id).subscribe(value => {
+                      //if you want to show separate scores
+                      yearData.players[newPlayer.player.id].score.push(value.body![0]);
+                      this.leagueData[yearId] = yearData;
+                      console.log(this.leagueData);
+                    });
+                  });
                 }
               });
             });
@@ -83,5 +98,13 @@ export class LeagueDataService {
     for (let playersKey in this.leagueData[id].players) {
       console.log(this.leagueData[id].players[playersKey]);
     }
+  }
+
+  sumScores(scores: ISemesterScore[]): number {
+    let total = 0;
+    for (let i = 0; i < scores.length; i++) {
+      total += scores[i].score!;
+    }
+    return total;
   }
 }

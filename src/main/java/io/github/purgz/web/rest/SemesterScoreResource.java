@@ -1,6 +1,10 @@
 package io.github.purgz.web.rest;
 
+import io.github.purgz.domain.LeaguePlayer;
+import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.SemesterScore;
+import io.github.purgz.repository.LeaguePlayerRepository;
+import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.repository.SemesterScoreRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -13,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +40,17 @@ public class SemesterScoreResource {
     private String applicationName;
 
     private final SemesterScoreRepository semesterScoreRepository;
+    private final SemesterRepository semesterRepository;
+    private final LeaguePlayerRepository leaguePlayerRepository;
 
-    public SemesterScoreResource(SemesterScoreRepository semesterScoreRepository) {
+    public SemesterScoreResource(
+        SemesterScoreRepository semesterScoreRepository,
+        SemesterRepository semesterRepository,
+        LeaguePlayerRepository leaguePlayerRepository
+    ) {
         this.semesterScoreRepository = semesterScoreRepository;
+        this.semesterRepository = semesterRepository;
+        this.leaguePlayerRepository = leaguePlayerRepository;
     }
 
     /**
@@ -177,5 +190,13 @@ public class SemesterScoreResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/semester-scores/{playerId}/{semesterId}")
+    public ResponseEntity<List<SemesterScore>> getByPlayerAndSem(@PathVariable Long playerId, @PathVariable Long semesterId) {
+        Optional<Semester> semester = semesterRepository.findById(semesterId);
+        Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findById(playerId);
+
+        return new ResponseEntity<>(semesterScoreRepository.findAllBySemesterAndPlayer(semester.get(), leaguePlayer.get()), HttpStatus.OK);
     }
 }

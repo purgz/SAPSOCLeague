@@ -1,6 +1,9 @@
 package io.github.purgz.repository;
 
+import io.github.purgz.domain.LeaguePlayer;
+import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.SemesterScore;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +12,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SemesterScoreRepository extends JpaRepository<SemesterScore, Long> {}
+public interface SemesterScoreRepository extends JpaRepository<SemesterScore, Long> {
+    List<SemesterScore> findAllBySemesterAndPlayer(Semester semester, LeaguePlayer player);
+}

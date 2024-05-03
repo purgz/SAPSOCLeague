@@ -19,6 +19,12 @@
 
   <div *ngFor="let player of this.leagueDataService.leagueData[this.selectedYear!.id].players | keyvalue">
     {{ player.value.player.firstName }}
+    <div>
+      Score:
+      {{ player.value.score[0].score }}
+      {{ player.value.score[1].score }}
+      <div *ngIf="player.value.score">Total score for Year: {{ leagueDataService.sumScores(player.value.score) }}</div>
+    </div>
   </div>
 
   <ng-template #noYearsFound>
