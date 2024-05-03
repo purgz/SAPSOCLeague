@@ -4,12 +4,15 @@ import { LeagueYearService } from '../../entities/league-year/service/league-yea
 import { ILeagueYear } from '../../entities/league-year/league-year.model';
 import { ISemester } from '../../entities/semester/semester.model';
 
+//service
+import { LeagueDataService } from '../service/league-data.service';
+
 @Component({
   selector: 'league-years',
   templateUrl: './league-years.component.html',
 })
 export class LeagueYearsComponent implements OnInit {
-  constructor(private leagueYearService: LeagueYearService) {}
+  constructor(private leagueYearService: LeagueYearService, private leagueDataService: LeagueDataService) {}
 
   isDataLoaded$: boolean = false;
 
@@ -21,24 +24,20 @@ export class LeagueYearsComponent implements OnInit {
     this.leagueYearService.query().subscribe(value => {
       if (value.body != null) {
         this.leagueYears = value.body;
-        this.isDataLoaded$ = true;
-        this.selectedYear = this.leagueYears[0];
 
         //largest year first
         this.leagueYears.sort((a, b): number => {
           return b!.yearStart! - a!.yearStart!;
         });
+        this.isDataLoaded$ = true;
+        this.selectedYear = this.leagueYears[0];
+
+        this.leagueDataService.addYear(this.selectedYear.id);
       }
     });
   }
 
-  /*
-  want to have a dict of    year: [semesters....]
-
-  so need method to get semesters BY year.
-
-  display semesters for each year.
-
-
-   */
+  switchYear(): void {
+    this.leagueDataService.addYear(this.selectedYear.id);
+  }
 }

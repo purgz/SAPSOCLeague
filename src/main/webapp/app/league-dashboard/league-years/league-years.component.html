@@ -3,15 +3,21 @@
     <fa-icon icon="spinner" [spin]="true"></fa-icon>
   </div>
 
-  <div *ngIf="isDataLoaded$" class="form-floating">
-    <select [(ngModel)]="selectedYear" id="year-select" class="form-select">
-      <option [ngValue]="year" *ngFor="let year of leagueYears">{{ year.yearStart }}/{{ year.yearEnd }}</option>
-    </select>
-    <label for="year-select">Year</label>
+  <div *ngIf="leagueYears.length > 0; else noYearsFound">
+    <div *ngIf="isDataLoaded$" class="form-floating">
+      <select [(ngModel)]="selectedYear" id="year-select" class="form-select">
+        <option (click)="switchYear()" [ngValue]="year" *ngFor="let year of leagueYears">{{ year.yearStart }}/{{ year.yearEnd }}</option>
+      </select>
+      <label for="year-select">Year</label>
+    </div>
+
+    <div>
+      Select year {{ this.selectedYear!.yearStart }}/{{ this.selectedYear!.yearEnd }}
+      <p>Display this years data component</p>
+    </div>
   </div>
 
-  <div>
-    Select year {{ this.selectedYear!.yearStart }}/{{ this.selectedYear!.yearEnd }}
-    <p>Display this years data component</p>
-  </div>
+  <ng-template #noYearsFound>
+    <p>There are no years to display</p>
+  </ng-template>
 </div>
