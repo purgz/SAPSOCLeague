@@ -50,10 +50,14 @@ relationship ManyToOne{
     Round{week} to Week{rounds}
     GameResult{round} to Round{roundResults}
 
-    LeaguePlayer{semester} to Semester{players}
+    
     Week{semester} to Semester{weeks}
     Semester{year} to LeagueYear{semesters}
     SemesterScore{semester} to Semester{semesterScores}
     SemesterScore{player} to LeaguePlayer{semesterScores}
+}
+
+relationship ManyToMany{
+    LeaguePlayer{semesters} to Semester{players}
 }
 

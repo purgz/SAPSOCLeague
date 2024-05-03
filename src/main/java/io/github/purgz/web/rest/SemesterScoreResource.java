@@ -1,6 +1,8 @@
 package io.github.purgz.web.rest;
 
+import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.SemesterScore;
+import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.repository.SemesterScoreRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -8,12 +10,15 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -35,9 +40,11 @@ public class SemesterScoreResource {
     private String applicationName;
 
     private final SemesterScoreRepository semesterScoreRepository;
+    private final SemesterRepository semesterRepository;
 
-    public SemesterScoreResource(SemesterScoreRepository semesterScoreRepository) {
+    public SemesterScoreResource(SemesterScoreRepository semesterScoreRepository, SemesterRepository semesterRepository) {
         this.semesterScoreRepository = semesterScoreRepository;
+        this.semesterRepository = semesterRepository;
     }
 
     /**
@@ -177,5 +184,18 @@ public class SemesterScoreResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/semester-scores/semester/{semId}")
+    public ResponseEntity<List<SemesterScore>> getSemesterScoresBySemester(@PathVariable Long semId) {
+        Optional<Semester> semester = semesterRepository.findById(semId);
+
+        if (!semester.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<SemesterScore> semesterScores = semesterScoreRepository.getSemesterScoreBySemester(semester.get());
+
+        return new ResponseEntity<>(semesterScores, HttpStatus.OK);
     }
 }
