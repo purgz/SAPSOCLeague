@@ -5,11 +5,9 @@ import { ISemesterScore } from '../../entities/semester-score/semester-score.mod
 
 export interface LeagueDataModel {
   year: ILeagueYear;
-  semesters: [ISemester];
-  players: [
-    {
-      player: ILeaguePlayer;
-      score: [ISemesterScore];
-    }
-  ];
+  semesters: Array<ISemester>;
+  players: Array<{
+    player: ILeaguePlayer;
+    score: Array<ISemesterScore>;
+  }>;
 }
