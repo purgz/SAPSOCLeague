@@ -1,16 +1,15 @@
 package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.LeaguePlayer;
+import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
 import io.github.purgz.repository.LeaguePlayerRepository;
+import io.github.purgz.repository.LeagueYearRepository;
 import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -40,10 +39,16 @@ public class LeaguePlayerResource {
 
     private final LeaguePlayerRepository leaguePlayerRepository;
     private final SemesterRepository semesterRepository;
+    private final LeagueYearRepository leagueYearRepository;
 
-    public LeaguePlayerResource(LeaguePlayerRepository leaguePlayerRepository, SemesterRepository semesterRepository) {
+    public LeaguePlayerResource(
+        LeaguePlayerRepository leaguePlayerRepository,
+        SemesterRepository semesterRepository,
+        LeagueYearRepository leagueYearRepository
+    ) {
         this.leaguePlayerRepository = leaguePlayerRepository;
         this.semesterRepository = semesterRepository;
+        this.leagueYearRepository = leagueYearRepository;
     }
 
     /**
@@ -223,5 +228,27 @@ public class LeaguePlayerResource {
         }
 
         return new ResponseEntity<>(semester.get().getPlayers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/league-players/year/{id}")
+    public ResponseEntity<Set<LeaguePlayer>> getbyYear(@PathVariable Long id) {
+        Optional<LeagueYear> leagueYear = leagueYearRepository.findById(id);
+
+        if (!leagueYear.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Set<LeaguePlayer> leaguePlayers = new HashSet<>();
+
+        //rework into a service probably.
+
+        leagueYear
+            .get()
+            .getSemesters()
+            .forEach(semester -> {
+                leaguePlayers.addAll(semester.getPlayers());
+            });
+
+        return new ResponseEntity<>(leaguePlayers, HttpStatus.OK);
     }
 }

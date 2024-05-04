@@ -15,17 +15,24 @@
       Select year {{ this.selectedYear!.yearStart }}/{{ this.selectedYear!.yearEnd }}
       <p>Display this years data component</p>
     </div>
-  </div>
 
-  <div *ngFor="let player of this.leagueDataService.leagueData[this.selectedYear!.id].players | keyvalue">
-    {{ player.value.player.firstName }}
-    <div>
-      Score:
-      {{ player.value.score[0].score }}
-      {{ player.value.score[1].score }}
-      <div *ngIf="player.value.score">Total score for Year: {{ leagueDataService.sumScores(player.value.score) }}</div>
+    <div *ngIf="leagueDataService.leagueData[selectedYear!.id]; else loadingSpinner">
+      <div *ngIf="leagueDataService.leagueData[selectedYear!.id].semesters">
+        <div *ngFor="let semester of leagueDataService.leagueData[selectedYear!.id].semesters">Semester: {{ semester.semesterNum }}</div>
+      </div>
+
+      <div *ngIf="leagueDataService.leagueData[selectedYear!.id].players; else loadingSpinner">
+        <div *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore">
+          {{ player.player.firstName }}
+          {{ player.score | sumScore }}
+        </div>
+      </div>
     </div>
   </div>
+
+  <ng-template #loadingSpinner>
+    <fa-icon icon="spinner" [spin]="true"></fa-icon>
+  </ng-template>
 
   <ng-template #noYearsFound>
     <p>There are no years to display</p>

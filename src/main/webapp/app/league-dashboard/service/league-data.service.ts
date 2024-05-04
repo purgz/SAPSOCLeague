@@ -13,10 +13,18 @@ import { SemesterService } from '../../entities/semester/service/semester.servic
 import { LeaguePlayerService } from '../../entities/league-player/service/league-player.service';
 import { HttpStatusCode } from '@angular/common/http';
 import { SemesterScoreService } from '../../entities/semester-score/service/semester-score.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LeagueDataService {
   leagueData: { [yearId: number]: LeagueDataModel } = {};
+
+  leaderBoard: [ILeaguePlayer, ISemesterScore[]][] = [];
+
+  //used to check if all the players have been found yet
+  //calling .closed? in the template allows for pipe to use all values
+  //and not render too early.
+  playerSubscription: Subscription | undefined;
 
   constructor(
     private leaguePlayerService: LeaguePlayerService,
@@ -26,6 +34,9 @@ export class LeagueDataService {
   ) {}
 
   addYear(yearId: number): boolean {
+    if (this.leagueData[yearId]) {
+      return false;
+    }
     console.info('Attempting to add year ' + yearId + ' to the cached years.');
     //if a year is already found, then refresh it from backend
 
@@ -39,38 +50,32 @@ export class LeagueDataService {
       };
     };
 
+    //add years
     this.leagueYearService.find(yearId).subscribe(value => {
       if (value.body != null && value.status == HttpStatusCode.Ok) {
         yearData.year = value.body;
+      }
+    });
 
-        //get all semesters in this year.
+    this.semesterService.findByYear(yearId).subscribe(value => {
+      if (value.body != null) {
+        yearData.semesters = value.body;
 
-        this.semesterService.findByYear(yearId).subscribe(value => {
-          if (value != null && value.status == HttpStatusCode.Ok) {
-            yearData.semesters = value.body!;
+        this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
+          if (value.body != null) {
+            value.body.forEach(player => {
+              yearData.players[player.id] = {} as any;
+              yearData.players[player.id].player = player;
+              yearData.players[player.id].score = [];
 
-            yearData.semesters.forEach(semester => {
-              this.leaguePlayerService.findBySemester(semester.id).subscribe(value => {
+              this.semesterScoreService.findByPlayerAndYear(player.id, yearId).subscribe(value => {
                 if (value.body != null) {
-                  value.body.forEach(player => {
-                    //generate player extract to function later
-                    const newPlayer: { player: ILeaguePlayer; score: ISemesterScore[] } = {} as {
-                      player: ILeaguePlayer;
-                      score: ISemesterScore[];
-                    };
-                    newPlayer.player = player;
-                    if (!yearData.players[newPlayer.player.id]) {
-                      yearData.players[newPlayer.player.id] = newPlayer;
-                      yearData.players[newPlayer.player.id].score = [];
-                    }
+                  if (value.body.length > 0) {
+                    yearData.players[player.id].score = value.body;
 
-                    this.semesterScoreService.findByPlayerAndSem(player.id, semester.id).subscribe(value => {
-                      //if you want to show separate scores
-                      yearData.players[newPlayer.player.id].score.push(value.body![0]);
-                      this.leagueData[yearId] = yearData;
-                      console.log(this.leagueData);
-                    });
-                  });
+                    this.leaderBoard.push([player, value.body]);
+                    // this.sortLeaderboard();
+                  }
                 }
               });
             });
@@ -78,33 +83,21 @@ export class LeagueDataService {
         });
       }
     });
-
+    this.leagueData[yearId] = yearData;
     return false;
   }
 
-  refresh(year: any): void {
-    //refreshes a years data
-  }
+  //todo pipe to sort the score data and also return the total score
+  //todo - refresh the data when navigating to the page in general.
 
-  getYears(id: number): void {
-    this.leagueData[id].year;
-  }
-
-  getSemesters(id: number): void {
-    this.leagueData[id].semesters;
-  }
-
-  getPlayersWithScore(id: number): void {
-    for (let playersKey in this.leagueData[id].players) {
-      console.log(this.leagueData[id].players[playersKey]);
-    }
-  }
-
-  sumScores(scores: ISemesterScore[]): number {
+  sumScores(scores: any): number {
     let total = 0;
     for (let i = 0; i < scores.length; i++) {
-      total += scores[i].score!;
+      total += scores[i].score;
     }
+
     return total;
   }
+
+  refresh(year: any): void {}
 }

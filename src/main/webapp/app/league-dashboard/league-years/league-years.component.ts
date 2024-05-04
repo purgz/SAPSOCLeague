@@ -6,7 +6,6 @@ import { ISemester } from '../../entities/semester/semester.model';
 
 //service
 import { LeagueDataService } from '../service/league-data.service';
-
 @Component({
   selector: 'league-years',
   templateUrl: './league-years.component.html',

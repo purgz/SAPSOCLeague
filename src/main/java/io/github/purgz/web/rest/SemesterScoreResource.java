@@ -1,17 +1,17 @@
 package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.LeaguePlayer;
+import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.SemesterScore;
 import io.github.purgz.repository.LeaguePlayerRepository;
+import io.github.purgz.repository.LeagueYearRepository;
 import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.repository.SemesterScoreRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -42,15 +42,18 @@ public class SemesterScoreResource {
     private final SemesterScoreRepository semesterScoreRepository;
     private final SemesterRepository semesterRepository;
     private final LeaguePlayerRepository leaguePlayerRepository;
+    private final LeagueYearRepository leagueYearRepository;
 
     public SemesterScoreResource(
         SemesterScoreRepository semesterScoreRepository,
         SemesterRepository semesterRepository,
-        LeaguePlayerRepository leaguePlayerRepository
+        LeaguePlayerRepository leaguePlayerRepository,
+        LeagueYearRepository leagueYearRepository
     ) {
         this.semesterScoreRepository = semesterScoreRepository;
         this.semesterRepository = semesterRepository;
         this.leaguePlayerRepository = leaguePlayerRepository;
+        this.leagueYearRepository = leagueYearRepository;
     }
 
     /**
@@ -193,10 +196,31 @@ public class SemesterScoreResource {
     }
 
     @GetMapping("/semester-scores/{playerId}/{semesterId}")
-    public ResponseEntity<List<SemesterScore>> getByPlayerAndSem(@PathVariable Long playerId, @PathVariable Long semesterId) {
+    public ResponseEntity<Set<SemesterScore>> getByPlayerAndSem(@PathVariable Long playerId, @PathVariable Long semesterId) {
         Optional<Semester> semester = semesterRepository.findById(semesterId);
         Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findById(playerId);
 
         return new ResponseEntity<>(semesterScoreRepository.findAllBySemesterAndPlayer(semester.get(), leaguePlayer.get()), HttpStatus.OK);
+    }
+
+    @GetMapping("/semester-scores/year/{playerId}/{yearId}")
+    public ResponseEntity<Set<SemesterScore>> getByPlayerAndYear(@PathVariable Long playerId, @PathVariable Long yearId) {
+        Optional<LeagueYear> leagueYear = leagueYearRepository.findById(yearId);
+        Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findById(playerId);
+
+        if (!leagueYear.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Set<SemesterScore> scores = new HashSet<>();
+
+        leagueYear
+            .get()
+            .getSemesters()
+            .forEach(semester -> {
+                scores.addAll(semesterScoreRepository.findAllBySemesterAndPlayer(semester, leaguePlayer.get()));
+            });
+
+        return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 }
