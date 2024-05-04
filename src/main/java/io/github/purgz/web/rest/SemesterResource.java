@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -194,6 +195,7 @@ public class SemesterResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        Hibernate.initialize(leagueYear.get().getSemesters());
         Set<Semester> semesters = leagueYear.get().getSemesters();
 
         return new ResponseEntity<>(semesters, HttpStatus.OK);
