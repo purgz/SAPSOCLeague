@@ -19,8 +19,6 @@ import { Subscription } from 'rxjs';
 export class LeagueDataService {
   leagueData: { [yearId: number]: LeagueDataModel } = {};
 
-  leaderBoard: [ILeaguePlayer, ISemesterScore[]][] = [];
-
   //used to check if all the players have been found yet
   //calling .closed? in the template allows for pipe to use all values
   //and not render too early.
@@ -34,11 +32,6 @@ export class LeagueDataService {
   ) {}
 
   addYear(yearId: number): boolean {
-    //going to move this so it's dealt with in another function because sometimes
-    //want to refresh the data.
-    if (this.leagueData[yearId]) {
-      return false;
-    }
     console.info('Attempting to add year ' + yearId + ' to the cached years.');
     //if a year is already found, then refresh it from backend
 
@@ -66,28 +59,27 @@ export class LeagueDataService {
     this.semesterService.findByYear(yearId).subscribe(value => {
       if (value.body != null) {
         yearData.semesters = value.body;
+      }
+    });
 
-        this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
-          if (value.body != null) {
-            value.body.forEach(player => {
-              yearData.players[player.id] = {} as any;
-              yearData.players[player.id].player = player;
-              yearData.players[player.id].score = [];
+    this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
+      if (value.body != null) {
+        value.body.forEach(player => {
+          yearData.players[player.id] = {} as any;
+          yearData.players[player.id].player = player;
+          yearData.players[player.id].score = [];
 
-              this.semesterScoreService.findByPlayerAndYear(player.id, yearId).subscribe(value => {
-                if (value.body != null) {
-                  if (value.body.length > 0) {
-                    yearData.players[player.id].score = value.body;
-
-                    this.leaderBoard.push([player, value.body]);
-                  }
-                }
-              });
-            });
-          }
+          this.semesterScoreService.findByPlayerAndYear(player.id, yearId).subscribe(value => {
+            if (value.body != null) {
+              if (value.body.length > 0) {
+                yearData.players[player.id].score = value.body;
+              }
+            }
+          });
         });
       }
     });
+
     this.leagueData[yearId] = yearData;
     return false;
   }

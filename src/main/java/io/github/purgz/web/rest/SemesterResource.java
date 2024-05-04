@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import javax.swing.text.html.Option;
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -191,13 +190,16 @@ public class SemesterResource {
     public ResponseEntity<Set<Semester>> getSemsByYear(@PathVariable Long id) {
         Optional<LeagueYear> leagueYear = leagueYearRepository.findById(id);
 
-        if (!leagueYear.isPresent()) {
+        if (leagueYear.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Hibernate.initialize(leagueYear.get().getSemesters());
-        Set<Semester> semesters = leagueYear.get().getSemesters();
+        Optional<Set<Semester>> semesters = semesterRepository.findByYear(leagueYear.get());
 
-        return new ResponseEntity<>(semesters, HttpStatus.OK);
+        if (semesters.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(semesters.get(), HttpStatus.OK);
     }
 }

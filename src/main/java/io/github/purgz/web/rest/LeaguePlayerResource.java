@@ -10,11 +10,13 @@ import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,14 +44,18 @@ public class LeaguePlayerResource {
     private final SemesterRepository semesterRepository;
     private final LeagueYearRepository leagueYearRepository;
 
+    private final EntityManager entityManager;
+
     public LeaguePlayerResource(
         LeaguePlayerRepository leaguePlayerRepository,
         SemesterRepository semesterRepository,
-        LeagueYearRepository leagueYearRepository
+        LeagueYearRepository leagueYearRepository,
+        EntityManager entityManager
     ) {
         this.leaguePlayerRepository = leaguePlayerRepository;
         this.semesterRepository = semesterRepository;
         this.leagueYearRepository = leagueYearRepository;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -235,20 +241,23 @@ public class LeaguePlayerResource {
     public ResponseEntity<Set<LeaguePlayer>> getbyYear(@PathVariable Long id) {
         Optional<LeagueYear> leagueYear = leagueYearRepository.findById(id);
 
-        if (!leagueYear.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        if (leagueYear.isEmpty()) {}
 
         Set<LeaguePlayer> leaguePlayers = new HashSet<>();
 
         //rework into a service probably.
 
-        Hibernate.initialize(leagueYear.get().getSemesters());
+        Optional<Set<Semester>> semesters = semesterRepository.findByYear(leagueYear.get());
 
-        leagueYear
+        if (semesters.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        semesters
             .get()
-            .getSemesters()
             .forEach(semester -> {
+                Hibernate.initialize(semester.getPlayers());
+                entityManager.refresh(semester);
                 leaguePlayers.addAll(semester.getPlayers());
             });
 

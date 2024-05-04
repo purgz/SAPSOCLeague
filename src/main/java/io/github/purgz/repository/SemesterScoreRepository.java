@@ -13,6 +13,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SemesterScoreRepository extends JpaRepository<SemesterScore, Long> {
-    Set<SemesterScore> findAllBySemesterAndPlayer(Semester semester, LeaguePlayer player);
-}
+public interface SemesterScoreRepository extends JpaRepository<SemesterScore, Long> {}
