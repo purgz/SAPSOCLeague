@@ -35,6 +35,10 @@ export class LeagueDataService {
     console.info('Attempting to add year ' + yearId + ' to the cached years.');
     //if a year is already found, then refresh it from backend
 
+    if (this.leagueData[yearId]) {
+      return false;
+    }
+
     const yearData: LeagueDataModel = {} as LeagueDataModel;
     yearData.year = {} as ILeagueYear;
     yearData.semesters = [];
