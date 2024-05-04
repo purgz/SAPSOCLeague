@@ -34,6 +34,8 @@ export class LeagueDataService {
   ) {}
 
   addYear(yearId: number): boolean {
+    //going to move this so it's dealt with in another function because sometimes
+    //want to refresh the data.
     if (this.leagueData[yearId]) {
       return false;
     }
@@ -57,6 +59,10 @@ export class LeagueDataService {
       }
     });
 
+    /*
+     This finds all the semesters by the year, then all the players, then their scores.
+     Caches this data in one large object to prevent too many api requests unnecessarily.
+     */
     this.semesterService.findByYear(yearId).subscribe(value => {
       if (value.body != null) {
         yearData.semesters = value.body;
@@ -74,7 +80,6 @@ export class LeagueDataService {
                     yearData.players[player.id].score = value.body;
 
                     this.leaderBoard.push([player, value.body]);
-                    // this.sortLeaderboard();
                   }
                 }
               });
@@ -85,18 +90,6 @@ export class LeagueDataService {
     });
     this.leagueData[yearId] = yearData;
     return false;
-  }
-
-  //todo pipe to sort the score data and also return the total score
-  //todo - refresh the data when navigating to the page in general.
-
-  sumScores(scores: any): number {
-    let total = 0;
-    for (let i = 0; i < scores.length; i++) {
-      total += scores[i].score;
-    }
-
-    return total;
   }
 
   refresh(year: any): void {}

@@ -23,7 +23,11 @@
 
       <div *ngIf="leagueDataService.leagueData[selectedYear!.id].players; else loadingSpinner">
         <div *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore">
-          {{ player.player.firstName }}
+          Name: {{ player.player.firstName }}
+          Semester scores:
+          <span *ngFor="let score of player.score">
+            {{ score.score }} </span
+          >: Total score for this year
           {{ player.score | sumScore }}
         </div>
       </div>

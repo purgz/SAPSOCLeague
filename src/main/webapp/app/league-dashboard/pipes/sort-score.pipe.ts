@@ -23,7 +23,6 @@ export class SortScorePipe implements PipeTransform {
       return this.sumScores(b.score) - this.sumScores(a.score);
     });
 
-    console.log(items);
     return items;
   }
 
