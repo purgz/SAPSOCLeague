@@ -25,9 +25,7 @@
         <div *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore">
           Name: {{ player.player.firstName }}
           Semester scores:
-          <span *ngFor="let score of player.score">
-            {{ score.score }} </span
-          >: Total score for this year
+          <span *ngFor="let score of player.score"> {{ score.score }} </span>: Total score for this year
           {{ player.score | sumScore }}
         </div>
       </div>
@@ -41,4 +39,6 @@
   <ng-template #noYearsFound>
     <p>There are no years to display</p>
   </ng-template>
+
+  <button class="btn btn-secondary" (click)="leagueDataService.refresh()">Refresh</button>
 </div>

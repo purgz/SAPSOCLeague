@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { forkJoin } from 'rxjs';
 
 //entities
 import { ILeagueYear } from '../../entities/league-year/league-year.model';
@@ -32,12 +33,18 @@ export class LeagueDataService {
   ) {}
 
   addYear(yearId: number): boolean {
-    console.info('Attempting to add year ' + yearId + ' to the cached years.');
-    //if a year is already found, then refresh it from backend
-
     if (this.leagueData[yearId]) {
       return false;
     }
+
+    return this.refreshYear(yearId);
+  }
+
+  refreshYear(yearId: number): boolean {
+    console.info('Attempting to add year ' + yearId + ' to the cached years.');
+    //if a year is already found, then refresh it from backend
+
+    const sources = [this.leagueYearService.find(yearId), this.semesterService.findByYear(yearId)];
 
     const yearData: LeagueDataModel = {} as LeagueDataModel;
     yearData.year = {} as ILeagueYear;
@@ -49,20 +56,15 @@ export class LeagueDataService {
       };
     };
 
-    //add years
-    this.leagueYearService.find(yearId).subscribe(value => {
-      if (value.body != null && value.status == HttpStatusCode.Ok) {
-        yearData.year = value.body;
-      }
-    });
+    forkJoin(sources).subscribe(value => {
+      console.log(value);
 
-    /*
-     This finds all the semesters by the year, then all the players, then their scores.
-     Caches this data in one large object to prevent too many api requests unnecessarily.
-     */
-    this.semesterService.findByYear(yearId).subscribe(value => {
-      if (value.body != null) {
-        yearData.semesters = value.body;
+      if (value[0].body != null) {
+        yearData.year = value[0].body as ILeagueYear;
+      }
+
+      if (value[1].body != null) {
+        yearData.semesters = value[1].body as ISemester[];
       }
     });
 
@@ -88,5 +90,9 @@ export class LeagueDataService {
     return false;
   }
 
-  refresh(year: any): void {}
+  refresh(): void {
+    Object.keys(this.leagueData).forEach(key => {
+      this.refreshYear(parseInt(key));
+    });
+  }
 }

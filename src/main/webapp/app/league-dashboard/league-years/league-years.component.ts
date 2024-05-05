@@ -31,7 +31,7 @@ export class LeagueYearsComponent implements OnInit {
         this.isDataLoaded$ = true;
         this.selectedYear = this.leagueYears[0];
 
-        this.leagueDataService.addYear(this.selectedYear.id);
+        this.leagueDataService.refreshYear(this.selectedYear.id);
       }
     });
   }
