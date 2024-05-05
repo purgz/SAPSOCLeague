@@ -12,22 +12,46 @@
     </div>
 
     <div>
-      Select year {{ this.selectedYear!.yearStart }}/{{ this.selectedYear!.yearEnd }}
-      <p>Display this years data component</p>
+      <h4>Year: {{ this.selectedYear!.yearStart }}/{{ this.selectedYear!.yearEnd }}</h4>
     </div>
 
     <div *ngIf="leagueDataService.leagueData[selectedYear!.id]; else loadingSpinner">
-      <div *ngIf="leagueDataService.leagueData[selectedYear!.id].semesters">
-        <div *ngFor="let semester of leagueDataService.leagueData[selectedYear!.id].semesters">Semester: {{ semester.semesterNum }}</div>
+      <div class="semesters-container" *ngIf="leagueDataService.leagueData[selectedYear!.id].semesters">
+        <div *ngFor="let semester of leagueDataService.leagueData[selectedYear!.id].semesters">
+          <div class="card text-center" style="width: 15rem">
+            <div class="card-body">
+              <h5 class="display-7 card-title">Semester {{ semester.semesterNum }}</h5>
+              <button class="btn btn-primary">view semester</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div *ngIf="leagueDataService.leagueData[selectedYear!.id].players; else loadingSpinner">
-        <div *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore">
-          Name: {{ player.player.firstName }}
-          Semester scores:
-          <span *ngFor="let score of player.score"> {{ score.score }} </span>: Total score for this year
-          {{ player.score | sumScore }}
-        </div>
+        <table id="leaderboard" class="table table-hover table-sm">
+          <caption>
+            Leaderboard for Year
+            {{
+              selectedYear.yearStart
+            }}/{{
+              selectedYear.yearEnd
+            }}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Total Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <th>{{ player.player.firstName }} {{ player.player.lastName }}</th>
+              <th>{{ player.score | sumScore }}</th>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

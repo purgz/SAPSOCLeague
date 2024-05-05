@@ -9,6 +9,7 @@ import { LeagueDataService } from '../service/league-data.service';
 @Component({
   selector: 'league-years',
   templateUrl: './league-years.component.html',
+  styleUrls: ['./league-years.component.scss'],
 })
 export class LeagueYearsComponent implements OnInit {
   constructor(private leagueYearService: LeagueYearService, public leagueDataService: LeagueDataService) {}

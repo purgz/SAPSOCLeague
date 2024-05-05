@@ -56,6 +56,7 @@ export class LeagueDataService {
       };
     };
 
+    //find semesters and years
     forkJoin(sources).subscribe(value => {
       console.log(value);
 
@@ -68,6 +69,7 @@ export class LeagueDataService {
       }
     });
 
+    //find each player and their scores for the year
     this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
       if (value.body != null) {
         value.body.forEach(player => {
