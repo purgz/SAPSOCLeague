@@ -30,4 +30,6 @@ public interface LeaguePlayerRepository extends LeaguePlayerRepositoryWithBagRel
     default Page<LeaguePlayer> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    Optional<LeaguePlayer> findAllByFirstNameAndLastName(String firstname, String lastname);
 }
