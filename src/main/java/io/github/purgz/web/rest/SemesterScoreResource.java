@@ -233,7 +233,6 @@ public class SemesterScoreResource {
 
         Hibernate.initialize(leagueYear.get().getSemesters());
         entityManager.refresh(leagueYear.get());
-
         Set<SemesterScore> scores = new HashSet<>();
 
         //O(n^2)
