@@ -20,6 +20,8 @@ import { Subscription } from 'rxjs';
 export class LeagueDataService {
   leagueData: { [yearId: number]: LeagueDataModel } = {};
 
+  selectedSemesterData: LeagueDataModel = {} as LeagueDataModel;
+
   //used to check if all the players have been found yet
   //calling .closed? in the template allows for pipe to use all values
   //and not render too early.
@@ -90,6 +92,51 @@ export class LeagueDataService {
 
     this.leagueData[yearId] = yearData;
     return false;
+  }
+
+  setSemesterDetails(semId: number, yearId: number): void {
+    this.selectedSemesterData.year = {} as ILeagueYear;
+    this.selectedSemesterData.semesters = [];
+    this.selectedSemesterData.players = {} as {
+      [playerId: number]: {
+        player: ILeaguePlayer;
+        score: Array<ISemesterScore>;
+      };
+    };
+
+    console.log('getting semester specific info');
+
+    this.selectedSemesterData.year = this.leagueData[yearId].year;
+
+    this.semesterService.find(semId).subscribe(value => {
+      if (value.body != null) {
+        this.selectedSemesterData.semesters = [value.body];
+      }
+    });
+
+    this.leaguePlayerService.findBySemester(semId).subscribe(value => {
+      if (value.body != null) {
+        value.body.forEach(player => {
+          this.selectedSemesterData.players[player.id] = {} as any;
+          this.selectedSemesterData.players[player.id].player = player;
+          this.selectedSemesterData.players[player.id].score = [];
+
+          this.semesterScoreService.findByPlayerAndSem(player.id, semId).subscribe(value => {
+            if (value.body != null) {
+              if (value.body.length > 0) {
+                this.selectedSemesterData.players[player.id].score = value.body;
+              }
+            }
+          });
+        });
+      }
+    });
+
+    console.log(this.selectedSemesterData);
+  }
+
+  clearSemesterData(): void {
+    this.selectedSemesterData = {} as LeagueDataModel;
   }
 
   refresh(): void {

@@ -21,6 +21,8 @@ export class LeagueYearsComponent implements OnInit {
   selectedYear: ILeagueYear = {} as ILeagueYear;
 
   ngOnInit(): void {
+    this.leagueDataService.clearSemesterData();
+
     this.leagueYearService.query().subscribe(value => {
       if (value.body != null) {
         this.leagueYears = value.body;
@@ -35,6 +37,10 @@ export class LeagueYearsComponent implements OnInit {
         this.leagueDataService.refreshYear(this.selectedYear.id);
       }
     });
+  }
+
+  selectSemester(id: number): void {
+    this.leagueDataService.setSemesterDetails(id, this.selectedYear.id);
   }
 
   switchYear(): void {

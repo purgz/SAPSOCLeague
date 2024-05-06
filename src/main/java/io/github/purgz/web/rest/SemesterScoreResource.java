@@ -208,6 +208,7 @@ public class SemesterScoreResource {
         }
 
         Hibernate.initialize(leaguePlayer.get().getSemesterScores());
+        entityManager.refresh(leaguePlayer.get());
 
         Set<SemesterScore> scores = new HashSet<>();
 
@@ -215,7 +216,9 @@ public class SemesterScoreResource {
             .get()
             .getSemesterScores()
             .forEach(semesterScore -> {
-                if (Objects.equals(semesterScore.getId(), semesterId)) {
+                Hibernate.initialize(semesterScore.getSemester());
+                entityManager.refresh(semesterScore);
+                if (Objects.equals(semesterScore.getSemester().getId(), semesterId)) {
                     scores.add(semesterScore);
                 }
             });
