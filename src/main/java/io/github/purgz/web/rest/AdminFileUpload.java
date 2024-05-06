@@ -78,6 +78,7 @@ public class AdminFileUpload {
                     semesterScore.setPlayer(leaguePlayer.get());
                     semesterScore.setSemester(semesterOptional.get());
                     semesterScoreRepository.save(semesterScore);
+                    System.out.println(semesterScore);
 
                     Hibernate.initialize(leaguePlayer.get().getSemesters());
                     leaguePlayer.get().getSemesters().add(semesterOptional.get());
@@ -113,7 +114,6 @@ public class AdminFileUpload {
             return new ResponseEntity<>("Failed to upload file", HttpStatus.BAD_REQUEST);
         }
 
-        entityManager.clear();
         return new ResponseEntity<>("Added scores", HttpStatus.ACCEPTED);
     }
 }
