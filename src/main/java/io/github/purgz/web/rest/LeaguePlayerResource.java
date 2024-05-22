@@ -234,6 +234,8 @@ public class LeaguePlayerResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        Hibernate.initialize(semester.get().getPlayers());
+
         return new ResponseEntity<>(semester.get().getPlayers(), HttpStatus.OK);
     }
 
