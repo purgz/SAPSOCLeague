@@ -164,7 +164,10 @@ public class LeagueYearResource {
     public ResponseEntity<LeagueYear> getLeagueYear(@PathVariable Long id) {
         log.debug("REST request to get LeagueYear : {}", id);
         Optional<LeagueYear> leagueYear = leagueYearRepository.findById(id);
-        Hibernate.initialize(leagueYear.get().getSemesters());
+        if (leagueYear.isPresent()) {
+            Hibernate.initialize(leagueYear.get().getSemesters());
+        }
+
         return ResponseUtil.wrapOrNotFound(leagueYear);
     }
 
