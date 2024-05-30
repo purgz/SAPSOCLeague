@@ -9,6 +9,7 @@ import { LeagueDataService } from '../service/league-data.service';
 @Component({
   selector: 'league-years',
   templateUrl: './league-years.component.html',
+  styleUrls: ['./league-years.component.scss'],
 })
 export class LeagueYearsComponent implements OnInit {
   constructor(private leagueYearService: LeagueYearService, public leagueDataService: LeagueDataService) {}
@@ -20,6 +21,8 @@ export class LeagueYearsComponent implements OnInit {
   selectedYear: ILeagueYear = {} as ILeagueYear;
 
   ngOnInit(): void {
+    this.leagueDataService.clearSemesterData();
+
     this.leagueYearService.query().subscribe(value => {
       if (value.body != null) {
         this.leagueYears = value.body;
@@ -31,9 +34,13 @@ export class LeagueYearsComponent implements OnInit {
         this.isDataLoaded$ = true;
         this.selectedYear = this.leagueYears[0];
 
-        this.leagueDataService.addYear(this.selectedYear.id);
+        this.leagueDataService.refreshYear(this.selectedYear.id);
       }
     });
+  }
+
+  selectSemester(id: number): void {
+    this.leagueDataService.setSemesterDetails(id, this.selectedYear.id);
   }
 
   switchYear(): void {

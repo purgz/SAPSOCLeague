@@ -1,0 +1,22 @@
+Semester view
+
+{{ leagueDataService.selectedSemesterData.year.yearStart }}/{{ leagueDataService.selectedSemesterData.year.yearEnd }}
+
+{{ leagueDataService.selectedSemesterData.semesters[0].semesterNum }}
+
+<table id="leaderboard" class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Total Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of leagueDataService.selectedSemesterData.players | sortScore; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <th>{{ player.player.firstName }} {{ player.player.lastName }}</th>
+      <th>{{ player.score | sumScore }}</th>
+    </tr>
+  </tbody>
+</table>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { forkJoin } from 'rxjs';
 
 //entities
 import { ILeagueYear } from '../../entities/league-year/league-year.model';
@@ -19,7 +20,7 @@ import { Subscription } from 'rxjs';
 export class LeagueDataService {
   leagueData: { [yearId: number]: LeagueDataModel } = {};
 
-  leaderBoard: [ILeaguePlayer, ISemesterScore[]][] = [];
+  selectedSemesterData: LeagueDataModel = {} as LeagueDataModel;
 
   //used to check if all the players have been found yet
   //calling .closed? in the template allows for pipe to use all values
@@ -34,13 +35,18 @@ export class LeagueDataService {
   ) {}
 
   addYear(yearId: number): boolean {
-    //going to move this so it's dealt with in another function because sometimes
-    //want to refresh the data.
     if (this.leagueData[yearId]) {
       return false;
     }
+
+    return this.refreshYear(yearId);
+  }
+
+  refreshYear(yearId: number): boolean {
     console.info('Attempting to add year ' + yearId + ' to the cached years.');
     //if a year is already found, then refresh it from backend
+
+    const sources = [this.leagueYearService.find(yearId), this.semesterService.findByYear(yearId)];
 
     const yearData: LeagueDataModel = {} as LeagueDataModel;
     yearData.year = {} as ILeagueYear;
@@ -52,45 +58,90 @@ export class LeagueDataService {
       };
     };
 
-    //add years
-    this.leagueYearService.find(yearId).subscribe(value => {
-      if (value.body != null && value.status == HttpStatusCode.Ok) {
-        yearData.year = value.body;
+    //find semesters and years
+    forkJoin(sources).subscribe(value => {
+      console.log(value);
+
+      if (value[0].body != null) {
+        yearData.year = value[0].body as ILeagueYear;
+      }
+
+      if (value[1].body != null) {
+        yearData.semesters = value[1].body as ISemester[];
       }
     });
 
-    /*
-     This finds all the semesters by the year, then all the players, then their scores.
-     Caches this data in one large object to prevent too many api requests unnecessarily.
-     */
-    this.semesterService.findByYear(yearId).subscribe(value => {
+    //find each player and their scores for the year
+    this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
       if (value.body != null) {
-        yearData.semesters = value.body;
+        value.body.forEach(player => {
+          yearData.players[player.id] = {} as any;
+          yearData.players[player.id].player = player;
+          yearData.players[player.id].score = [];
 
-        this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
-          if (value.body != null) {
-            value.body.forEach(player => {
-              yearData.players[player.id] = {} as any;
-              yearData.players[player.id].player = player;
-              yearData.players[player.id].score = [];
-
-              this.semesterScoreService.findByPlayerAndYear(player.id, yearId).subscribe(value => {
-                if (value.body != null) {
-                  if (value.body.length > 0) {
-                    yearData.players[player.id].score = value.body;
-
-                    this.leaderBoard.push([player, value.body]);
-                  }
-                }
-              });
-            });
-          }
+          this.semesterScoreService.findByPlayerAndYear(player.id, yearId).subscribe(value => {
+            if (value.body != null) {
+              if (value.body.length > 0) {
+                yearData.players[player.id].score = value.body;
+              }
+            }
+          });
         });
       }
     });
+
     this.leagueData[yearId] = yearData;
     return false;
   }
 
-  refresh(year: any): void {}
+  setSemesterDetails(semId: number, yearId: number): void {
+    this.selectedSemesterData.year = {} as ILeagueYear;
+    this.selectedSemesterData.semesters = [];
+    this.selectedSemesterData.players = {} as {
+      [playerId: number]: {
+        player: ILeaguePlayer;
+        score: Array<ISemesterScore>;
+      };
+    };
+
+    console.log('getting semester specific info');
+
+    this.selectedSemesterData.year = this.leagueData[yearId].year;
+
+    this.semesterService.find(semId).subscribe(value => {
+      if (value.body != null) {
+        this.selectedSemesterData.semesters = [value.body];
+      }
+    });
+
+    this.leaguePlayerService.findBySemester(semId).subscribe(value => {
+      if (value.body != null) {
+        value.body.forEach(player => {
+          this.selectedSemesterData.players[player.id] = {} as any;
+          this.selectedSemesterData.players[player.id].player = player;
+          this.selectedSemesterData.players[player.id].score = [];
+
+          this.semesterScoreService.findByPlayerAndSem(player.id, semId).subscribe(value => {
+            if (value.body != null) {
+              if (value.body.length > 0) {
+                this.selectedSemesterData.players[player.id].score = value.body;
+              }
+            }
+          });
+        });
+      }
+    });
+
+    console.log(this.selectedSemesterData);
+  }
+
+  clearSemesterData(): void {
+    this.selectedSemesterData = {} as LeagueDataModel;
+  }
+
+  refresh(): void {
+    Object.keys(this.leagueData).forEach(key => {
+      this.refreshYear(parseInt(key));
+    });
+  }
 }

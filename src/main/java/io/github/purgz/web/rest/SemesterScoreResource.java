@@ -2,7 +2,6 @@ package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.LeaguePlayer;
 import io.github.purgz.domain.LeagueYear;
-import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.SemesterScore;
 import io.github.purgz.repository.LeaguePlayerRepository;
 import io.github.purgz.repository.LeagueYearRepository;
@@ -12,6 +11,7 @@ import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.Hibernate;
@@ -44,17 +44,20 @@ public class SemesterScoreResource {
     private final SemesterRepository semesterRepository;
     private final LeaguePlayerRepository leaguePlayerRepository;
     private final LeagueYearRepository leagueYearRepository;
+    private final EntityManager entityManager;
 
     public SemesterScoreResource(
         SemesterScoreRepository semesterScoreRepository,
         SemesterRepository semesterRepository,
         LeaguePlayerRepository leaguePlayerRepository,
-        LeagueYearRepository leagueYearRepository
+        LeagueYearRepository leagueYearRepository,
+        EntityManager entityManager
     ) {
         this.semesterScoreRepository = semesterScoreRepository;
         this.semesterRepository = semesterRepository;
         this.leaguePlayerRepository = leaguePlayerRepository;
         this.leagueYearRepository = leagueYearRepository;
+        this.entityManager = entityManager;
     }
 
     /**
@@ -198,30 +201,59 @@ public class SemesterScoreResource {
 
     @GetMapping("/semester-scores/{playerId}/{semesterId}")
     public ResponseEntity<Set<SemesterScore>> getByPlayerAndSem(@PathVariable Long playerId, @PathVariable Long semesterId) {
-        Optional<Semester> semester = semesterRepository.findById(semesterId);
         Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findById(playerId);
 
-        return new ResponseEntity<>(semesterScoreRepository.findAllBySemesterAndPlayer(semester.get(), leaguePlayer.get()), HttpStatus.OK);
+        if (leaguePlayer.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Hibernate.initialize(leaguePlayer.get().getSemesterScores());
+        entityManager.refresh(leaguePlayer.get());
+
+        Set<SemesterScore> scores = new HashSet<>();
+
+        leaguePlayer
+            .get()
+            .getSemesterScores()
+            .forEach(semesterScore -> {
+                Hibernate.initialize(semesterScore.getSemester());
+                entityManager.refresh(semesterScore);
+                if (Objects.equals(semesterScore.getSemester().getId(), semesterId)) {
+                    scores.add(semesterScore);
+                }
+            });
+
+        return new ResponseEntity<>(scores, HttpStatus.OK);
     }
 
     @GetMapping("/semester-scores/year/{playerId}/{yearId}")
     public ResponseEntity<Set<SemesterScore>> getByPlayerAndYear(@PathVariable Long playerId, @PathVariable Long yearId) {
         Optional<LeagueYear> leagueYear = leagueYearRepository.findById(yearId);
-        Optional<LeaguePlayer> leaguePlayer = leaguePlayerRepository.findById(playerId);
 
-        if (!leagueYear.isPresent()) {
+        if (leagueYear.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        Hibernate.initialize(leagueYear.get().getSemesters());
+        entityManager.refresh(leagueYear.get());
         Set<SemesterScore> scores = new HashSet<>();
 
-        Hibernate.initialize(leagueYear.get().getSemesters());
-
+        //O(n^2)
         leagueYear
             .get()
             .getSemesters()
             .forEach(semester -> {
-                scores.addAll(semesterScoreRepository.findAllBySemesterAndPlayer(semester, leaguePlayer.get()));
+                Hibernate.initialize(semester.getSemesterScores());
+                entityManager.refresh(semester);
+                semester
+                    .getSemesterScores()
+                    .forEach(semesterScore -> {
+                        Hibernate.initialize(semesterScore.getPlayer());
+                        entityManager.refresh(semesterScore);
+                        if (Objects.equals(semesterScore.getPlayer().getId(), playerId)) {
+                            scores.add(semesterScore);
+                        }
+                    });
             });
 
         return new ResponseEntity<>(scores, HttpStatus.OK);
