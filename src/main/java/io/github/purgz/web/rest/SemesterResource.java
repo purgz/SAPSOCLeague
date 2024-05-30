@@ -191,7 +191,7 @@ public class SemesterResource {
     public ResponseEntity<Set<Semester>> getSemsByYear(@PathVariable Long id) {
         Optional<LeagueYear> leagueYear = leagueYearRepository.findById(id);
 
-        if (!leagueYear.isPresent()) {
+        if (leagueYear.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
