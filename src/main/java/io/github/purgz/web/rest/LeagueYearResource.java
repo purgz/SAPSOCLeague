@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -163,6 +164,10 @@ public class LeagueYearResource {
     public ResponseEntity<LeagueYear> getLeagueYear(@PathVariable Long id) {
         log.debug("REST request to get LeagueYear : {}", id);
         Optional<LeagueYear> leagueYear = leagueYearRepository.findById(id);
+        if (leagueYear.isPresent()) {
+            Hibernate.initialize(leagueYear.get().getSemesters());
+        }
+
         return ResponseUtil.wrapOrNotFound(leagueYear);
     }
 
