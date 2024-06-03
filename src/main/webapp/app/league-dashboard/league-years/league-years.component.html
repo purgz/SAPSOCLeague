@@ -52,9 +52,7 @@
               <th scope="row">{{ i + 1 }}</th>
               <th>{{ player.player.firstName }} {{ player.player.lastName }}</th>
               <th *ngFor="let sem of leagueDataService.leagueData[selectedYear!.id].semesters; let i = index">
-                <div *ngIf="player.score[i]; else loadingSpinner">
-                  {{ player.score[i].score }}
-                </div>
+                <div>{{ player.score | semesterScore: sem.id }}</div>
               </th>
               <th>{{ player.score | sumScore }}</th>
             </tr>

@@ -13,6 +13,6 @@ export class SumScorePipe implements PipeTransform {
       total += scores[i].score!;
     }
 
-    return total;
+    return Math.round(total * 100) / 100;
   }
 }
