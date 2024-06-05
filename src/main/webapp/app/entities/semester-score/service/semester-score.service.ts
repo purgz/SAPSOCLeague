@@ -7,6 +7,8 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { ISemesterScore, NewSemesterScore } from '../semester-score.model';
 
+import { HttpHeaders } from '@angular/common/http';
+
 export type PartialUpdateSemesterScore = Partial<ISemesterScore> & Pick<ISemesterScore, 'id'>;
 
 export type EntityResponseType = HttpResponse<ISemesterScore>;
@@ -16,10 +18,18 @@ export type EntityArrayResponseType = HttpResponse<ISemesterScore[]>;
 export class SemesterScoreService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/semester-scores');
 
+  protected adminUrl = this.applicationConfigService.getEndpointFor('/api/admin');
+
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(semesterScore: NewSemesterScore): Observable<EntityResponseType> {
     return this.http.post<ISemesterScore>(this.resourceUrl, semesterScore, { observe: 'response' });
+  }
+
+  uploadScoresFile(scoresFile: FormData, semesterId: number): Observable<HttpResponse<String>> {
+    return this.http.post<any>(`${this.adminUrl}/upload-score-csv`, JSON.stringify({ file: scoresFile, semester: semesterId }), {
+      observe: 'response',
+    });
   }
 
   update(semesterScore: ISemesterScore): Observable<EntityResponseType> {

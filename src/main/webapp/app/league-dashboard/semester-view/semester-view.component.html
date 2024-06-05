@@ -1,5 +1,14 @@
 Semester view
 
+<div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+  <form (ngSubmit)="upload()">
+    <label for="fileUpload">Scores file</label>
+    <input (change)="onFileSelect($event)" id="fileUpload" type="file" [formControl]="scoresFile" />
+
+    <button type="submit">Upload</button>
+  </form>
+</div>
+
 {{ leagueDataService.selectedSemesterData.year.yearStart }}/{{ leagueDataService.selectedSemesterData.year.yearEnd }}
 
 {{ leagueDataService.selectedSemesterData.semesters[0].semesterNum }}
