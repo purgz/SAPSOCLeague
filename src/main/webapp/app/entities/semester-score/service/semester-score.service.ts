@@ -26,8 +26,8 @@ export class SemesterScoreService {
     return this.http.post<ISemesterScore>(this.resourceUrl, semesterScore, { observe: 'response' });
   }
 
-  uploadScoresFile(scoresFile: FormData, semesterId: number): Observable<HttpResponse<String>> {
-    return this.http.post<any>(`${this.adminUrl}/upload-score-csv`, JSON.stringify({ file: scoresFile, semester: semesterId }), {
+  uploadScoresFile(scoresFile: FormData): Observable<HttpResponse<String>> {
+    return this.http.post<any>(`${this.adminUrl}/upload-score-csv`, scoresFile, {
       observe: 'response',
     });
   }
