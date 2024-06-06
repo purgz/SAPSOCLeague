@@ -31,10 +31,14 @@ export class SemesterViewComponent implements OnInit {
     //check if selected semester is set
     //otherwise grab fromn local storage
 
-    const saved = JSON.parse(localStorage.getItem('selectedSemesterData') || '{}') as LeagueDataModel;
-    console.log('HELLO');
-    console.log(saved);
-    this.leagueDataService.selectedSemesterData = saved;
+    if (Object.keys(this.leagueDataService.selectedSemesterData).length === 0) {
+      console.log('Semester data is empty');
+      const saved = JSON.parse(localStorage.getItem('selectedSemesterData') || '{}') as LeagueDataModel;
+      this.leagueDataService.selectedSemesterData.year = saved.year;
+      this.leagueDataService.selectedSemesterData.players = saved.players;
+      this.leagueDataService.selectedSemesterData.semesters = saved.semesters;
+      console.log(saved);
+    }
   }
 
   onFileSelect(event: Event): void {

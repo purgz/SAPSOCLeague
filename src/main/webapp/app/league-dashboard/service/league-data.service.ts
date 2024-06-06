@@ -125,7 +125,6 @@ export class LeagueDataService {
             if (value.body != null) {
               if (value.body.length > 0) {
                 this.selectedSemesterData.players[player.id].score = value.body;
-
                 localStorage.setItem('selectedSemesterData', JSON.stringify(this.selectedSemesterData));
               }
             }
