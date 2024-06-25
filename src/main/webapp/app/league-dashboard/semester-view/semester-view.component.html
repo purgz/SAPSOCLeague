@@ -9,6 +9,10 @@ Semester view
   </form>
 </div>
 
+<div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+  <button routerLink="new-round">Create a new round</button>
+</div>
+
 {{ leagueDataService.selectedSemesterData.year.yearStart }}/{{ leagueDataService.selectedSemesterData.year.yearEnd }}
 
 {{ leagueDataService.selectedSemesterData.semesters[0].semesterNum }}
