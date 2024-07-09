@@ -17,6 +17,12 @@
         </div>
         <div class="modal-body">
           list of semester players
+
+          <div *ngFor="let player of this.newRoundService.getAvailablePlayers()">
+            {{ player.firstName }}
+            {{ player.lastName }}
+            {{ player.id }}
+          </div>
           <br />
           list of players added to this week
         </div>

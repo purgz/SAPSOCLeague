@@ -13,6 +13,7 @@ import { LeagueDataService } from '../service/league-data.service';
 import { SemesterScoreService } from '../../entities/semester-score/service/semester-score.service';
 
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NewRoundService } from './new-round.service';
 @Component({
   selector: 'new-round',
   templateUrl: './new-round.component.html',
@@ -22,7 +23,8 @@ export class NewRoundComponent implements OnInit {
     private leagueYearService: LeagueYearService,
     public leagueDataService: LeagueDataService,
     public semesterScoreService: SemesterScoreService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public newRoundService: NewRoundService
   ) {}
 
   //work on modal for new match results
