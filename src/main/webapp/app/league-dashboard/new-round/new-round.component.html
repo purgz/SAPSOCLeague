@@ -18,13 +18,20 @@
         <div class="modal-body">
           list of semester players
 
-          <div *ngFor="let player of this.newRoundService.getAvailablePlayers()">
+          <div *ngFor="let player of this.newRoundService.allPlayers">
             {{ player.firstName }}
             {{ player.lastName }}
             {{ player.id }}
+            <button (click)="this.newRoundService.addToWeek(player)">Select</button>
           </div>
           <br />
           list of players added to this week
+
+          <div *ngFor="let player of this.newRoundService.selectedRoundPlayers">
+            {{ player.firstName }}
+            {{ player.lastName }}
+            <button (click)="this.newRoundService.removePlayer(player)">remove</button>
+          </div>
         </div>
         <div class="modal-footer">
           <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

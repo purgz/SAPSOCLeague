@@ -34,7 +34,18 @@ export class NewRoundComponent implements OnInit {
 
   playerModalRef?: NgbModalRef;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (Object.keys(this.leagueDataService.selectedSemesterData).length === 0) {
+      console.log('Semester data is empty');
+      const saved = JSON.parse(localStorage.getItem('selectedSemesterData') || '{}') as LeagueDataModel;
+      this.leagueDataService.selectedSemesterData.year = saved.year;
+      this.leagueDataService.selectedSemesterData.players = saved.players;
+      this.leagueDataService.selectedSemesterData.semesters = saved.semesters;
+      console.log(saved);
+    }
+
+    this.newRoundService.initAllPlayers();
+  }
 
   openModal(): void {
     this.playerModalRef = this.modalService.open(this.playerModal);
