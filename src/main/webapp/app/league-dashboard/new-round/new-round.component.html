@@ -32,6 +32,8 @@
             {{ player.lastName }}
             <button (click)="this.newRoundService.removePlayer(player)">remove</button>
           </div>
+          <button (click)="this.newRoundService.randomizeSelectedPlayers()">Test randomize button</button>
+          <button (click)="this.newRoundService.rotateSelectedPlayers()">Test rotate button</button>
         </div>
         <div class="modal-footer">
           <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
