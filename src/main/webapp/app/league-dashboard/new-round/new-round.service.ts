@@ -21,14 +21,23 @@ export class NewRoundService {
     });
   }
 
+  setLocalStorage(): void {
+    localStorage.setItem('selectedRoundPlayers', JSON.stringify(this.selectedRoundPlayers));
+    localStorage.setItem('allPlayers', JSON.stringify(this.allPlayers));
+  }
+
   addToWeek(player: ILeaguePlayer): void {
     this.selectedRoundPlayers.push(player);
-    this.allPlayers.splice(this.allPlayers.indexOf(player));
+    this.allPlayers.splice(this.allPlayers.indexOf(player), 1);
+    this.setLocalStorage();
   }
 
   removePlayer(player: ILeaguePlayer): void {
     this.allPlayers.push(player);
-    this.selectedRoundPlayers.splice(this.selectedRoundPlayers.indexOf(player));
+    this.selectedRoundPlayers.splice(this.selectedRoundPlayers.indexOf(player), 1);
+    console.log(this.selectedRoundPlayers);
+    console.log(this.allPlayers);
+    this.setLocalStorage();
   }
 
   //round-robin generation
@@ -43,6 +52,7 @@ export class NewRoundService {
       this.selectedRoundPlayers[i] = this.selectedRoundPlayers[j];
       this.selectedRoundPlayers[j] = temp;
     }
+    this.setLocalStorage();
   }
 
   //rotate players
@@ -52,6 +62,7 @@ export class NewRoundService {
     }
     const end = this.selectedRoundPlayers.pop()!;
     this.selectedRoundPlayers.unshift(end);
+    this.setLocalStorage();
   }
 
   //Todo add the selected and remaning players to the local storage.

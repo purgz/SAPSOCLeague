@@ -14,6 +14,7 @@ import { SemesterScoreService } from '../../entities/semester-score/service/seme
 
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NewRoundService } from './new-round.service';
+import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
 @Component({
   selector: 'new-round',
   templateUrl: './new-round.component.html',
@@ -43,6 +44,12 @@ export class NewRoundComponent implements OnInit {
       this.leagueDataService.selectedSemesterData.semesters = saved.semesters;
       console.log(saved);
     }
+
+    const players = JSON.parse(localStorage.getItem('selectedRoundPlayers') || '{}') as ILeaguePlayer[];
+    this.newRoundService.selectedRoundPlayers = players;
+
+    const allPlayers = JSON.parse(localStorage.getItem('allPlayers') || '{}') as ILeaguePlayer[];
+    this.newRoundService.allPlayers = allPlayers;
 
     this.newRoundService.initAllPlayers();
   }
