@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LeagueDataService } from '../service/league-data.service';
 import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
+import { NewWeekModel } from './new-week.model';
 
 @Injectable({ providedIn: 'root' })
 export class NewRoundService {
@@ -9,6 +10,8 @@ export class NewRoundService {
   public selectedRoundPlayers: ILeaguePlayer[] = [];
 
   public allPlayers: ILeaguePlayer[] = [];
+
+  public newWeekData: NewWeekModel | null = null;
 
   //list the current semesters players;
 
@@ -65,5 +68,16 @@ export class NewRoundService {
     this.setLocalStorage();
   }
 
-  //Todo add the selected and remaning players to the local storage.
+  //need to create new round object in backend.
+  //each round - many match results
+  generateNewRound(): void {
+    if (this.newWeekData == null) {
+      this.newWeekData = {} as NewWeekModel;
+      this.newWeekData.rounds = [];
+    }
+
+    //figure out later
+
+    console.log(this.newWeekData);
+  }
 }

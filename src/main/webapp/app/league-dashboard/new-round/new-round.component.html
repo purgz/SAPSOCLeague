@@ -1,7 +1,7 @@
 <div>
   New round
 
-  <button>New round</button>
+  <button (click)="this.newRoundService.generateNewRound()">New round</button>
 
   <!-- Button trigger modal -->
   <button (click)="openModal()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
