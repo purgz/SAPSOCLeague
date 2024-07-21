@@ -43,11 +43,19 @@
     </div>
   </ng-template>
 
-  <div>
-    <div style="width: 200px; height: 200px" class="card">
-      <div class="card-body">Match result</div>
-    </div>
+  <div *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue">
+    <hr />
+    <div *ngFor="let match of round.value | keyvalue">
+      {{ match.key }}
+      {{ match.value.player1.firstName }}
+      {{ match.value.player1.lastName }}
+      {{ match.value.player2.firstName }}
+      {{ match.value.player2.lastName }}
 
-    <button>Add result</button>
+      <input type="number" placeholder="score p1" />
+      <input type="number" placeholder="score p2" />
+
+      <p>Add form things here to edit the values for each match</p>
+    </div>
   </div>
 </div>

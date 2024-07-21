@@ -99,5 +99,9 @@ export class NewRoundService {
     }
     //rotate players for next generation
     this.rotateSelectedPlayers();
+
+    //todo Add bye to the round model.
+    //todo Add the week data results to local storage
+    //todo Add a button to clear the week data
   }
 }
