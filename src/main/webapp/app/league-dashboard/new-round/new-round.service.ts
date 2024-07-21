@@ -31,7 +31,7 @@ export class NewRoundService {
   }
 
   addToWeek(player: ILeaguePlayer): void {
-    this.selectedRoundPlayers.push(player);
+    this.selectedRoundPlayers.unshift(player);
     this.allPlayers.splice(this.allPlayers.indexOf(player), 1);
     this.setLocalStorage();
   }
@@ -72,12 +72,32 @@ export class NewRoundService {
   //need to create new round object in backend.
   //each round - many match results
   generateNewRound(): void {
-    this.newWeekData.rounds[1] = [];
+    if (Object.keys(this.newWeekData.rounds).length < 1) {
+      console.log('First round randomizing players');
+      this.randomizeSelectedPlayers();
+    }
+    const roundCount = Object.keys(this.newWeekData.rounds).length;
+    this.newWeekData.rounds[roundCount] = [];
 
-    this.newWeekData.rounds[1][1] = {} as MatchModel;
+    //loop through each pair of players;
 
-    this.newWeekData.rounds[1][1].player1 = this.selectedRoundPlayers[0];
-
+    let matchNo = 0;
+    let byeCheck = 2;
+    if (this.selectedRoundPlayers.length % 2 === 0) {
+      byeCheck = 1;
+    }
+    for (let i = 0; i < this.selectedRoundPlayers.length - byeCheck; i++) {
+      this.newWeekData.rounds[roundCount][matchNo] = {} as MatchModel;
+      this.newWeekData.rounds[roundCount][matchNo].player1 = this.selectedRoundPlayers[i];
+      this.newWeekData.rounds[roundCount][matchNo].player2 = this.selectedRoundPlayers[++i];
+      matchNo++;
+    }
     console.log(this.newWeekData);
+    if (byeCheck === 2) {
+      console.log('Odd number of players');
+      console.log('Bye is given to ' + this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1].firstName);
+    }
+    //rotate players for next generation
+    this.rotateSelectedPlayers();
   }
 }
