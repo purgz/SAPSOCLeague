@@ -7,7 +7,8 @@ import { MatchModel } from './match.model';
 export interface NewWeekModel {
   rounds: {
     [roundNo: number]: {
-      [matchNo: number]: MatchModel;
+      matches: { [matchNo: number]: MatchModel };
+      bye: ILeaguePlayer | null;
     };
   };
 }

@@ -45,7 +45,7 @@
 
   <div *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue">
     <hr />
-    <div *ngFor="let match of round.value | keyvalue">
+    <div *ngFor="let match of round.value.matches | keyvalue">
       {{ match.key }}
       {{ match.value.player1.firstName }}
       {{ match.value.player1.lastName }}
@@ -54,8 +54,11 @@
 
       <input type="number" placeholder="score p1" />
       <input type="number" placeholder="score p2" />
-
-      <p>Add form things here to edit the values for each match</p>
+    </div>
+    <div *ngIf="round.value.bye">
+      bye:
+      <div>{{ round.value.bye.firstName }}</div>
+      <div>{{ round.value.bye.lastName }}</div>
     </div>
   </div>
 </div>

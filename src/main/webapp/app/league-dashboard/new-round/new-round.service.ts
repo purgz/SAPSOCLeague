@@ -77,7 +77,7 @@ export class NewRoundService {
       this.randomizeSelectedPlayers();
     }
     const roundCount = Object.keys(this.newWeekData.rounds).length;
-    this.newWeekData.rounds[roundCount] = [];
+    this.newWeekData.rounds[roundCount] = { matches: [], bye: null };
 
     //loop through each pair of players;
 
@@ -87,20 +87,22 @@ export class NewRoundService {
       byeCheck = 1;
     }
     for (let i = 0; i < this.selectedRoundPlayers.length - byeCheck; i++) {
-      this.newWeekData.rounds[roundCount][matchNo] = {} as MatchModel;
-      this.newWeekData.rounds[roundCount][matchNo].player1 = this.selectedRoundPlayers[i];
-      this.newWeekData.rounds[roundCount][matchNo].player2 = this.selectedRoundPlayers[++i];
+      this.newWeekData.rounds[roundCount].matches[matchNo] = {} as MatchModel;
+      this.newWeekData.rounds[roundCount].matches[matchNo].player1 = this.selectedRoundPlayers[i];
+      this.newWeekData.rounds[roundCount].matches[matchNo].player2 = this.selectedRoundPlayers[++i];
       matchNo++;
     }
     console.log(this.newWeekData);
     if (byeCheck === 2) {
       console.log('Odd number of players');
       console.log('Bye is given to ' + this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1].firstName);
+      this.newWeekData.rounds[roundCount].bye = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1];
+    } else {
+      this.newWeekData.rounds[roundCount].bye = null;
     }
     //rotate players for next generation
     this.rotateSelectedPlayers();
 
-    //todo Add bye to the round model.
     //todo Add the week data results to local storage
     //todo Add a button to clear the week data
   }
