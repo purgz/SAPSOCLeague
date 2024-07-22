@@ -44,14 +44,17 @@ export class NewRoundComponent implements OnInit {
       this.leagueDataService.selectedSemesterData.semesters = saved.semesters;
       console.log(saved);
     }
-
     const players = JSON.parse(localStorage.getItem('selectedRoundPlayers') || '{}') as ILeaguePlayer[];
     this.newRoundService.selectedRoundPlayers = players;
 
     const allPlayers = JSON.parse(localStorage.getItem('allPlayers') || '{}') as ILeaguePlayer[];
     this.newRoundService.allPlayers = allPlayers;
 
-    this.newRoundService.initAllPlayers();
+    //check if there is already values stored
+    if (Object.keys(localStorage.getItem('selectedRoundPlayers') || '{}').length === 0) {
+      //no selected round players
+      this.newRoundService.initAllPlayers();
+    }
   }
 
   openModal(): void {

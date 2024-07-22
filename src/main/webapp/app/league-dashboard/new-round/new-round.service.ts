@@ -18,6 +18,8 @@ export class NewRoundService {
 
   initAllPlayers(): void {
     this.allPlayers = this.getAvailablePlayers();
+    this.selectedRoundPlayers = [];
+    this.setLocalStorage();
   }
   getAvailablePlayers(): ILeaguePlayer[] {
     return Object.values(this.leagueDataService.selectedSemesterData.players).map(value => {
@@ -105,5 +107,6 @@ export class NewRoundService {
 
     //todo Add the week data results to local storage
     //todo Add a button to clear the week data
+    //todo make pipe to sort the players in the selection MODAL
   }
 }
