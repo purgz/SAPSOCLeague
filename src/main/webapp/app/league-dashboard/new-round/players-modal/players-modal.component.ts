@@ -10,7 +10,10 @@ import { NewRoundService } from '../new-round.service';
 export class PlayersModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, public newRoundService: NewRoundService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('HELLO WORLD');
+    console.log(this.newRoundService.allPlayers);
+  }
 
   modalSave(): void {
     //save changes to players and close
