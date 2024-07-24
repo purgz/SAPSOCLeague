@@ -10,7 +10,7 @@ Semester view
 </div>
 
 <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
-  <button routerLink="new-round">Create a new round</button>
+  <button (click)="clearRoundStorage()" routerLink="new-round">Create a new round</button>
 </div>
 
 {{ leagueDataService.selectedSemesterData.year.yearStart }}/{{ leagueDataService.selectedSemesterData.year.yearEnd }}

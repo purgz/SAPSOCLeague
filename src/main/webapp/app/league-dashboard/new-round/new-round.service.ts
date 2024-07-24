@@ -105,6 +105,8 @@ export class NewRoundService {
     //rotate players for next generation
     this.rotateSelectedPlayers();
 
+    //todo fix local storage issue with all players list on production
+    //clear localstorage when saving week result
     //todo Add the week data results to local storage
     //todo Add a button to clear the week data
     //todo make pipe to sort the players in the selection MODAL

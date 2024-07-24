@@ -41,6 +41,11 @@ export class SemesterViewComponent implements OnInit {
     }
   }
 
+  clearRoundStorage(): void {
+    localStorage.setItem('selectedRoundPlayers', '{}');
+    localStorage.setItem('allPlayers', '{}');
+  }
+
   onFileSelect(event: Event): void {
     const file = (event.target! as HTMLInputElement).files![0]; // Here we use only the first file (single file)
     this.adminFile = file;

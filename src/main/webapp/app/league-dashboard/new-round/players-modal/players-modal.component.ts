@@ -11,7 +11,7 @@ export class PlayersModalComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal, public newRoundService: NewRoundService) {}
 
   ngOnInit(): void {
-    console.log('HELLO WORLD');
+    //console.log('HELLO WORLD');
     console.log(this.newRoundService.allPlayers);
   }
 
