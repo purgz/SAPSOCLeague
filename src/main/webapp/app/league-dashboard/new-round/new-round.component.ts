@@ -34,8 +34,6 @@ export class NewRoundComponent implements OnInit {
   //work on modal for new match results
   //updating the league model correctly.
 
-  @ViewChild('testModal') playerModal?: ElementRef;
-
   playerModalRef?: NgbModalRef;
 
   ngOnInit(): void {
@@ -58,6 +56,10 @@ export class NewRoundComponent implements OnInit {
       //no selected round players
       this.newRoundService.initAllPlayers();
     }
+
+    console.log('SETTING ALL AND NEW PLAYERS');
+    console.log(this.newRoundService.allPlayers);
+    console.log(this.newRoundService.selectedRoundPlayers);
   }
 
   openModal(): void {
