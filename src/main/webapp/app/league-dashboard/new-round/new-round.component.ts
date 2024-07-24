@@ -51,12 +51,15 @@ export class NewRoundComponent implements OnInit {
     const allPlayers = JSON.parse(localStorage.getItem('allPlayers') || '{}') as ILeaguePlayer[];
     this.newRoundService.allPlayers = allPlayers;
 
+    /*
     //check if there is already values stored
     if (Object.keys(localStorage.getItem('selectedRoundPlayers') || '{}').length === 0) {
       //no selected round players
-      this.newRoundService.initAllPlayers();
+
     }
 
+     */
+    this.newRoundService.initAllPlayers();
     console.log('SETTING ALL AND NEW PLAYERS');
     console.log(this.newRoundService.allPlayers);
     console.log(this.newRoundService.selectedRoundPlayers);
