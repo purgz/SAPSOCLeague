@@ -1,0 +1,34 @@
+<!-- Modal -->
+<div tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add / remove players</h5>
+      </div>
+      <div class="modal-body">
+        list of semester players
+
+        <div *ngFor="let player of this.newRoundService.allPlayers">
+          {{ player.firstName }}
+          {{ player.lastName }}
+          {{ player.id }}
+          <button (click)="this.newRoundService.addToWeek(player)">Select</button>
+        </div>
+        <br />
+        list of players added to this week
+
+        <div *ngFor="let player of this.newRoundService.selectedRoundPlayers">
+          {{ player.firstName }}
+          {{ player.lastName }}
+          <button (click)="this.newRoundService.removePlayer(player)">remove</button>
+        </div>
+        <button (click)="this.newRoundService.randomizeSelectedPlayers()">Test randomize button</button>
+        <button (click)="this.newRoundService.rotateSelectedPlayers()">Test rotate button</button>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="modalSave()" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,9 +10,10 @@ import { SortScorePipe } from './pipes/sort-score.pipe';
 import { SemesterViewComponent } from './semester-view/semester-view.component';
 import { SemesterScorePipe } from './pipes/semester-score-pipe';
 import { NewRoundComponent } from './new-round/new-round.component';
+import { PlayersModalComponent } from './new-round/players-modal/players-modal.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(leagueRoutes), SumScorePipe, SortScorePipe, SemesterScorePipe],
-  declarations: [LeagueYearsComponent, LeagueMainComponent, SemesterViewComponent, NewRoundComponent],
+  declarations: [LeagueYearsComponent, LeagueMainComponent, SemesterViewComponent, NewRoundComponent, PlayersModalComponent],
 })
 export class LeagueDashboardModule {}

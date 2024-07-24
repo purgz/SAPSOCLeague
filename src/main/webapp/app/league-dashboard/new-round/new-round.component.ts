@@ -15,6 +15,9 @@ import { SemesterScoreService } from '../../entities/semester-score/service/seme
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NewRoundService } from './new-round.service';
 import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
+
+import { PlayersModalComponent } from './players-modal/players-modal.component';
+
 @Component({
   selector: 'new-round',
   templateUrl: './new-round.component.html',
@@ -58,18 +61,6 @@ export class NewRoundComponent implements OnInit {
   }
 
   openModal(): void {
-    this.playerModalRef = this.modalService.open(this.playerModal);
-  }
-
-  modalSave(): void {
-    //save changes to players and close
-
-    this.playerModalRef?.close();
-  }
-
-  closeModal(): void {
-    //close without saving
-
-    this.playerModalRef?.close();
+    this.playerModalRef = this.modalService.open(PlayersModalComponent);
   }
 }
