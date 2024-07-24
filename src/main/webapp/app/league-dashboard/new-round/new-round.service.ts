@@ -105,10 +105,16 @@ export class NewRoundService {
     //rotate players for next generation
     this.rotateSelectedPlayers();
 
-    //todo fix local storage issue with all players list on production
-    //clear localstorage when saving week result
-    //todo Add the week data results to local storage
-    //todo Add a button to clear the week data
-    //todo make pipe to sort the players in the selection MODAL
+    //todo make match list pretty.
+    //todo functionality for filling in scores !!!!
+    //todo Add the week data results to local storage !!!
+    //todo make POJO for week data
+    //todo REST endpoint for receiving week data and persisting match results
+    //todo for each match results - update semester scores (and maybe ELO?)
+
+    //todo clear localstorage when saving week result !
+    //todo Add a button to clear the week data !
+    //todo make pipe to sort the players in the selection MODAL !
+    //todo clear matches when first navigating to page !!
   }
 }

@@ -5,25 +5,51 @@
 
   <!-- Button trigger modal -->
   <button (click)="openModal()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
-    Launch demo modal
+    Add/remove players
   </button>
 
-  <div *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue">
-    <hr />
-    <div *ngFor="let match of round.value.matches | keyvalue">
-      {{ match.key }}
-      {{ match.value.player1.firstName }}
-      {{ match.value.player1.lastName }}
-      {{ match.value.player2.firstName }}
-      {{ match.value.player2.lastName }}
+  <div id="roundContainer" class="roundContainer">
+    <div class="round" *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue">
+      <hr />
+      <div class="match" *ngFor="let match of round.value.matches | keyvalue">
+        <div class="match-names">
+          <p class="p1Name">
+            {{ match.value.player1.firstName }}
+            {{ match.value.player1.lastName }}
+          </p>
+          <p class="vs">v</p>
+          <p class="p2Name">
+            {{ match.value.player2.firstName }}
+            {{ match.value.player2.lastName }}
+          </p>
+        </div>
 
-      <input type="number" placeholder="score p1" />
-      <input type="number" placeholder="score p2" />
-    </div>
-    <div *ngIf="round.value.bye">
-      bye:
-      <div>{{ round.value.bye.firstName }}</div>
-      <div>{{ round.value.bye.lastName }}</div>
+        <div class="match-scores">
+          <div>
+            <input
+              (change)="updateMatchScore($event, match.value, true)"
+              value="{{ match.value.p1Score }}"
+              min="0"
+              max="1"
+              type="number"
+              placeholder=""
+            />
+            <input
+              (change)="updateMatchScore($event, match.value, false)"
+              value="{{ match.value.p2Score }}"
+              min="0"
+              max="1"
+              type="number"
+              placeholder=""
+            />
+          </div>
+        </div>
+      </div>
+      <div *ngIf="round.value.bye">
+        bye:
+        <div>{{ round.value.bye.firstName }}</div>
+        <div>{{ round.value.bye.lastName }}</div>
+      </div>
     </div>
   </div>
 </div>

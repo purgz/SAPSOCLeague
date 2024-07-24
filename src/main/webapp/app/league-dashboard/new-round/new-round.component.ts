@@ -17,10 +17,12 @@ import { NewRoundService } from './new-round.service';
 import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
 
 import { PlayersModalComponent } from './players-modal/players-modal.component';
+import { MatchModel } from './match.model';
 
 @Component({
   selector: 'new-round',
   templateUrl: './new-round.component.html',
+  styleUrls: ['./new-round.component.css'],
 })
 export class NewRoundComponent implements OnInit {
   constructor(
@@ -62,5 +64,16 @@ export class NewRoundComponent implements OnInit {
 
   openModal(): void {
     this.playerModalRef = this.modalService.open(PlayersModalComponent);
+  }
+
+  updateMatchScore(event: any, match: MatchModel, p1: boolean): void {
+    const otherScore = event.target.value == 1 ? 0 : 1;
+    if (p1) {
+      match.p1Score = event.target.value;
+      match.p2Score = otherScore;
+    } else {
+      match.p2Score = event.target.value;
+      match.p1Score = otherScore;
+    }
   }
 }

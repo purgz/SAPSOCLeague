@@ -1,0 +1,53 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.roundContainer {
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+  gap: 20px;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 350px;
+  width: 350px;
+}
+
+.match-names {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  width: 100%;
+}
+
+.match {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.p1Name {
+  width: 35%;
+}
+
+.p2Name {
+  width: 35%;
+  text-align: end;
+}
+
+.match-scores {
+  display: flex;
+  flex-direction: column;
+}
