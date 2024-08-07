@@ -51,3 +51,6 @@ input[type='number'] {
   display: flex;
   flex-direction: column;
 }
+
+#delete-match {
+}

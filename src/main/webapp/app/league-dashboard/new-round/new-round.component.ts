@@ -76,4 +76,12 @@ export class NewRoundComponent implements OnInit {
       match.p1Score = otherScore;
     }
   }
+
+  removeMatchFromRound(matchNo: string, roundNo: string): void {
+    const mNo = parseInt(matchNo);
+    const rNo = parseInt(roundNo);
+
+    delete this.newRoundService.newWeekData.rounds[rNo].matches[mNo];
+    console.log('Match removed');
+  }
 }

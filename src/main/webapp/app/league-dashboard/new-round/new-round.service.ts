@@ -111,6 +111,8 @@ export class NewRoundService {
     //todo make POJO for week data
     //todo REST endpoint for receiving week data and persisting match results
     //todo for each match results - update semester scores (and maybe ELO?)
+    //todo edit players mid round for a current match.
+    //todo buttons to manually delete and add custom match to a ongoing round.
 
     //todo clear localstorage when saving week result !
     //todo Add a button to clear the week data !
