@@ -1,0 +1,33 @@
+<!-- Modal -->
+<div tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add / remove players</h5>
+      </div>
+      <div class="modal-body">
+        Add new match manually
+
+        <div>
+          <select [(ngModel)]="player1" name="player1">
+            <option disabled selected value>-- select an option --</option>
+            <option *ngFor="let player of this.newRoundService.selectedRoundPlayers" [ngValue]="player">
+              <p>{{ player.firstName }}, {{ player.lastName }}</p>
+            </option>
+          </select>
+
+          <select [(ngModel)]="player2" name="player2">
+            <option disabled selected value>-- select an option --</option>
+            <option *ngFor="let player of this.newRoundService.selectedRoundPlayers" [ngValue]="player">
+              <p>{{ player.firstName }}, {{ player.lastName }}</p>
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="modalSave()" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

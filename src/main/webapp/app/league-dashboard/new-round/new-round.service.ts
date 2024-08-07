@@ -14,6 +14,8 @@ export class NewRoundService {
 
   public newWeekData: NewWeekModel = { rounds: [] } as NewWeekModel;
 
+  selectedRoundEdit: number = -1;
+
   //list the current semesters players;
 
   initAllPlayers(): void {
@@ -41,8 +43,6 @@ export class NewRoundService {
   removePlayer(player: ILeaguePlayer): void {
     this.allPlayers.push(player);
     this.selectedRoundPlayers.splice(this.selectedRoundPlayers.indexOf(player), 1);
-    console.log(this.selectedRoundPlayers);
-    console.log(this.allPlayers);
     this.setLocalStorage();
   }
 
@@ -94,7 +94,7 @@ export class NewRoundService {
       this.newWeekData.rounds[roundCount].matches[matchNo].player2 = this.selectedRoundPlayers[++i];
       matchNo++;
     }
-    console.log(this.newWeekData);
+
     if (byeCheck === 2) {
       console.log('Odd number of players');
       console.log('Bye is given to ' + this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1].firstName);

@@ -16,8 +16,10 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NewRoundService } from './new-round.service';
 import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
 
-import { PlayersModalComponent } from './players-modal/players-modal.component';
+import { PlayersModalComponent } from './modals/players-modal.component';
 import { MatchModel } from './match.model';
+import { NewMatchModalComponent } from './modals/new-match-modal.component';
+import { round } from '@popperjs/core/lib/utils/math';
 
 @Component({
   selector: 'new-round',
@@ -64,6 +66,11 @@ export class NewRoundComponent implements OnInit {
 
   openModal(): void {
     this.playerModalRef = this.modalService.open(PlayersModalComponent);
+  }
+
+  newMatchModal(roundNo: string): void {
+    this.newRoundService.selectedRoundEdit = parseInt(roundNo);
+    this.modalService.open(NewMatchModalComponent);
   }
 
   updateMatchScore(event: any, match: MatchModel, p1: boolean): void {

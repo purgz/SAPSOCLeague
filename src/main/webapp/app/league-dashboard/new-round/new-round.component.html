@@ -10,6 +10,9 @@
 
   <div id="roundContainer" class="roundContainer">
     <div class="round" *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue">
+      <div>
+        <button (click)="newMatchModal(round.key)">Add match</button>
+      </div>
       <hr />
       <div class="match" *ngFor="let match of round.value.matches | keyvalue">
         <div class="match-names">
