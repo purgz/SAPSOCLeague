@@ -112,11 +112,12 @@ export class NewRoundService {
     //todo REST endpoint for receiving week data and persisting match results
     //todo for each match results - update semester scores (and maybe ELO?)
     //todo edit players mid round for a current match.
-    //todo buttons to manually delete and add custom match to a ongoing round.
 
     //todo clear localstorage when saving week result !
     //todo Add a button to clear the week data !
     //todo make pipe to sort the players in the selection MODAL !
     //todo clear matches when first navigating to page !!
+
+    //todo score calculation once a round is submitted and added to the current semester scores - backend
   }
 }
