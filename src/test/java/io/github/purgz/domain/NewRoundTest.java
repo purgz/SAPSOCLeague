@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.github.purgz.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
-class RoundTest {
+class NewRoundTest {
 
     @Test
     void equalsVerifier() throws Exception {

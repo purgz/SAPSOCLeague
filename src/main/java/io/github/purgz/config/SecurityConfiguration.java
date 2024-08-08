@@ -93,6 +93,7 @@ public class SecurityConfiguration {
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers(HttpMethod.POST, "/api/new-week/**").hasAnyAuthority(AuthoritiesConstants.ADMIN)
         .and()
             .httpBasic()
         .and()

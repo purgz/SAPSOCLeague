@@ -9,7 +9,7 @@ import javax.annotation.Generated;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "matches", "bye" })
 @Generated("jsonschema2pojo")
-public class Round {
+public class NewRound {
 
     @JsonProperty("matches")
     private List<Match> matches;

@@ -12,19 +12,19 @@ import javax.annotation.Generated;
 public class NewWeekData {
 
     @JsonProperty("rounds")
-    private List<Round> rounds;
+    private List<NewRound> newRounds;
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     @JsonProperty("rounds")
-    public List<Round> getRounds() {
-        return rounds;
+    public List<NewRound> getRounds() {
+        return newRounds;
     }
 
     @JsonProperty("rounds")
-    public void setRounds(List<Round> rounds) {
-        this.rounds = rounds;
+    public void setRounds(List<NewRound> newRounds) {
+        this.newRounds = newRounds;
     }
 
     @JsonAnyGetter

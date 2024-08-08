@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-class RoundResourceIT {
+class NewRoundResourceIT {
 
     private static final Integer DEFAULT_ROUND_NO = 0;
     private static final Integer UPDATED_ROUND_NO = 1;

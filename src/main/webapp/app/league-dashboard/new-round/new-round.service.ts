@@ -3,10 +3,11 @@ import { LeagueDataService } from '../service/league-data.service';
 import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
 import { NewWeekModel } from './new-week.model';
 import { MatchModel } from './match.model';
+import { WeekService } from '../../entities/week/service/week.service';
 
 @Injectable({ providedIn: 'root' })
 export class NewRoundService {
-  constructor(private leagueDataService: LeagueDataService) {}
+  constructor(private leagueDataService: LeagueDataService, private weekService: WeekService) {}
 
   public selectedRoundPlayers: ILeaguePlayer[] = [];
 
@@ -121,5 +122,13 @@ export class NewRoundService {
     //todo score calculation once a round is submitted and added to the current semester scores - backend
     console.log('THIS IS NEW WEEK DATA');
     console.log(JSON.stringify(this.newWeekData));
+  }
+
+  uploadRound() {
+    const semId = this.leagueDataService.selectedSemesterData.semesters[0].id;
+    console.log('Selected semester ' + semId);
+    this.weekService.uploadNewRound(this.newWeekData, semId).subscribe(value => {
+      console.log(value.body);
+    });
   }
 }

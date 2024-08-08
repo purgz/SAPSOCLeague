@@ -9,6 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IWeek, NewWeek } from '../week.model';
+import { NewWeekModel } from '../../../league-dashboard/new-round/new-week.model';
 
 export type PartialUpdateWeek = Partial<IWeek> & Pick<IWeek, 'id'>;
 
@@ -28,12 +29,17 @@ export type EntityArrayResponseType = HttpResponse<IWeek[]>;
 @Injectable({ providedIn: 'root' })
 export class WeekService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/weeks');
+  protected newWeekResourceUrl = this.applicationConfigService.getEndpointFor('api/new-week');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(week: NewWeek): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(week);
     return this.http.post<RestWeek>(this.resourceUrl, copy, { observe: 'response' }).pipe(map(res => this.convertResponseFromServer(res)));
+  }
+
+  uploadNewRound(newWeekData: NewWeekModel, semesterId: number): Observable<EntityResponseType> {
+    return this.http.post<any>(`${this.newWeekResourceUrl}/${semesterId}`, newWeekData);
   }
 
   update(week: IWeek): Observable<EntityResponseType> {
