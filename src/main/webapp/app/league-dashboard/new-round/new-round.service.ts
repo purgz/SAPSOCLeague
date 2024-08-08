@@ -119,5 +119,7 @@ export class NewRoundService {
     //todo clear matches when first navigating to page !!
 
     //todo score calculation once a round is submitted and added to the current semester scores - backend
+    console.log('THIS IS NEW WEEK DATA');
+    console.log(JSON.stringify(this.newWeekData));
   }
 }
