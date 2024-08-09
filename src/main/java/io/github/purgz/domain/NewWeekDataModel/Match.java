@@ -16,6 +16,45 @@ public class Match {
     @JsonProperty("player2")
     private Player2 player2;
 
+    @JsonProperty("gameEnding")
+    private String gameEnding;
+
+    @JsonProperty("p1Score")
+    private int p1Score;
+
+    @JsonProperty("p2Score")
+    private int p2Score;
+
+    @JsonProperty("gameEnding")
+    public String getGameEnding() {
+        return gameEnding;
+    }
+
+    @JsonProperty("gameEnding")
+    public void setGameEnding(String gameEnding) {
+        this.gameEnding = gameEnding;
+    }
+
+    @JsonProperty("p1Score")
+    public int getP1Score() {
+        return p1Score;
+    }
+
+    @JsonProperty("p1Score")
+    public void setP1Score(int p1Score) {
+        this.p1Score = p1Score;
+    }
+
+    @JsonProperty("p2Score")
+    public int getP2Score() {
+        return p2Score;
+    }
+
+    @JsonProperty("p2Score")
+    public void setP2Score(int p2Score) {
+        this.p2Score = p2Score;
+    }
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 

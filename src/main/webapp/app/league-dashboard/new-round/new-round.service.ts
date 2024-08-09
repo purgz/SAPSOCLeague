@@ -106,13 +106,8 @@ export class NewRoundService {
     //rotate players for next generation
     this.rotateSelectedPlayers();
 
-    //todo make match list pretty.
-    //todo functionality for filling in scores !!!!
     //todo Add the week data results to local storage !!!
-    //todo make POJO for week data
-    //todo REST endpoint for receiving week data and persisting match results
     //todo for each match results - update semester scores (and maybe ELO?)
-    //todo edit players mid round for a current match.
 
     //todo clear localstorage when saving week result !
     //todo Add a button to clear the week data !
@@ -120,8 +115,6 @@ export class NewRoundService {
     //todo clear matches when first navigating to page !!
 
     //todo score calculation once a round is submitted and added to the current semester scores - backend
-    console.log('THIS IS NEW WEEK DATA');
-    console.log(JSON.stringify(this.newWeekData));
   }
 
   uploadRound() {
