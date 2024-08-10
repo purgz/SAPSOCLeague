@@ -7,11 +7,8 @@ import io.github.purgz.domain.NewWeekDataModel.NewWeekData;
 import io.github.purgz.domain.Round;
 import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.Week;
-import io.github.purgz.repository.RoundRepository;
-import io.github.purgz.repository.SemesterRepository;
-import io.github.purgz.repository.WeekRepository;
+import io.github.purgz.repository.*;
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.EntityManager;
 import org.hibernate.Hibernate;
@@ -29,18 +26,24 @@ public class NewWeekService {
 
     private final RoundRepository roundRepository;
 
+    private final GameResultRepository gameResultRepository;
+    private final LeaguePlayerRepository leaguePlayerRepository;
+
     @Autowired
     public NewWeekService(
         EntityManager entityManager,
         SemesterRepository semesterRepository,
         WeekRepository weekRepository,
-        RoundRepository roundRepository
+        RoundRepository roundRepository,
+        GameResultRepository gameResultRepository,
+        LeaguePlayerRepository leaguePlayerRepository
     ) {
         this.entityManager = entityManager;
-
         this.semesterRepository = semesterRepository;
         this.weekRepository = weekRepository;
         this.roundRepository = roundRepository;
+        this.gameResultRepository = gameResultRepository;
+        this.leaguePlayerRepository = leaguePlayerRepository;
     }
 
     public Week generateNewWeekData(Semester semester, NewWeekData newWeekData) {
@@ -91,6 +94,14 @@ public class NewWeekService {
     }
 
     private GameResult processGameResult(Match match, Round round) {
-        return null;
+        //need to get the players and update their scores here.
+
+        if (match == null) {
+            return null;
+        }
+
+        GameResult gameResult = new GameResult();
+
+        return gameResult;
     }
 }
