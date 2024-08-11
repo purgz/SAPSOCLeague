@@ -87,6 +87,8 @@ public class NewWeekService {
             .forEach(match -> {
                 //process the matches.
                 GameResult gameResult = processGameResult(match, round);
+                System.out.println("GAME RESULT");
+                System.out.println(gameResult);
             });
 
         return round;
@@ -94,6 +96,8 @@ public class NewWeekService {
 
     private GameResult processGameResult(Match match, Round round) {
         //need to get the players and update their scores here.
+
+        System.out.println("MARK 1");
 
         if (match == null) {
             return null;
@@ -104,9 +108,11 @@ public class NewWeekService {
 
         //// TODO: 11/08/2024 handle byes here - need to find which player is selected
 
-        if (p1Optional.isPresent() || p2Optional.isEmpty()) {
+        if (p1Optional.isEmpty() || p2Optional.isEmpty()) {
             return null;
         }
+
+        System.out.println("MARK 2");
 
         GameResult gameResult = new GameResult();
         gameResult.setPlayer1(p1Optional.get());
@@ -115,15 +121,17 @@ public class NewWeekService {
         gameResult.setp1Score(match.getP1Score());
         gameResult.setp2Score(match.getP2Score());
 
-        switch (match.getGameEnding()) {
-            case "DISH":
-                gameResult.setGameEnding(GameEnding.DISH);
-                break;
-            case "REVERSE_DISH":
-                gameResult.setGameEnding(GameEnding.REVERSE_DISH);
-                break;
-            default:
-                break;
+        if (match.getGameEnding() != null) {
+            switch (match.getGameEnding()) {
+                case "DISH":
+                    gameResult.setGameEnding(GameEnding.DISH);
+                    break;
+                case "REVERSE_DISH":
+                    gameResult.setGameEnding(GameEnding.REVERSE_DISH);
+                    break;
+                default:
+                    break;
+            }
         }
 
         gameResultRepository.save(gameResult);
