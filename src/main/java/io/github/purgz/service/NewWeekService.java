@@ -1,14 +1,13 @@
 package io.github.purgz.service;
 
-import io.github.purgz.domain.GameResult;
+import io.github.purgz.domain.*;
 import io.github.purgz.domain.NewWeekDataModel.Match;
 import io.github.purgz.domain.NewWeekDataModel.NewRound;
 import io.github.purgz.domain.NewWeekDataModel.NewWeekData;
-import io.github.purgz.domain.Round;
-import io.github.purgz.domain.Semester;
-import io.github.purgz.domain.Week;
+import io.github.purgz.domain.enumeration.GameEnding;
 import io.github.purgz.repository.*;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.EntityManager;
 import org.hibernate.Hibernate;
@@ -87,7 +86,7 @@ public class NewWeekService {
             .getMatches()
             .forEach(match -> {
                 //process the matches.
-                GameResult gameResults = processGameResult(match, round);
+                GameResult gameResult = processGameResult(match, round);
             });
 
         return round;
@@ -100,8 +99,34 @@ public class NewWeekService {
             return null;
         }
 
-        GameResult gameResult = new GameResult();
+        Optional<LeaguePlayer> p1Optional = this.leaguePlayerRepository.findById(match.getPlayer1().getId());
+        Optional<LeaguePlayer> p2Optional = this.leaguePlayerRepository.findById(match.getPlayer2().getId());
 
+        //// TODO: 11/08/2024 handle byes here - need to find which player is selected
+
+        if (p1Optional.isPresent() || p2Optional.isEmpty()) {
+            return null;
+        }
+
+        GameResult gameResult = new GameResult();
+        gameResult.setPlayer1(p1Optional.get());
+        gameResult.setPlayer2(p2Optional.get());
+        gameResult.setRound(round);
+        gameResult.setp1Score(match.getP1Score());
+        gameResult.setp2Score(match.getP2Score());
+
+        switch (match.getGameEnding()) {
+            case "DISH":
+                gameResult.setGameEnding(GameEnding.DISH);
+                break;
+            case "REVERSE_DISH":
+                gameResult.setGameEnding(GameEnding.REVERSE_DISH);
+                break;
+            default:
+                break;
+        }
+
+        gameResultRepository.save(gameResult);
         return gameResult;
     }
 }

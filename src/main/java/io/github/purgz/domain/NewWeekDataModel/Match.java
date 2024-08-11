@@ -20,10 +20,10 @@ public class Match {
     private String gameEnding;
 
     @JsonProperty("p1Score")
-    private int p1Score;
+    private float p1Score;
 
     @JsonProperty("p2Score")
-    private int p2Score;
+    private float p2Score;
 
     @JsonProperty("gameEnding")
     public String getGameEnding() {
@@ -36,22 +36,22 @@ public class Match {
     }
 
     @JsonProperty("p1Score")
-    public int getP1Score() {
+    public float getP1Score() {
         return p1Score;
     }
 
     @JsonProperty("p1Score")
-    public void setP1Score(int p1Score) {
+    public void setP1Score(float p1Score) {
         this.p1Score = p1Score;
     }
 
     @JsonProperty("p2Score")
-    public int getP2Score() {
+    public float getP2Score() {
         return p2Score;
     }
 
     @JsonProperty("p2Score")
-    public void setP2Score(int p2Score) {
+    public void setP2Score(float p2Score) {
         this.p2Score = p2Score;
     }
 
