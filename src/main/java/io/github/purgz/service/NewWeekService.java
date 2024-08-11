@@ -7,6 +7,7 @@ import io.github.purgz.domain.NewWeekDataModel.NewWeekData;
 import io.github.purgz.domain.enumeration.GameEnding;
 import io.github.purgz.repository.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.EntityManager;
@@ -28,6 +29,10 @@ public class NewWeekService {
     private final GameResultRepository gameResultRepository;
     private final LeaguePlayerRepository leaguePlayerRepository;
 
+    private final SemesterScoreRepository semesterScoreRepository;
+
+    private Long semId;
+
     @Autowired
     public NewWeekService(
         EntityManager entityManager,
@@ -35,7 +40,8 @@ public class NewWeekService {
         WeekRepository weekRepository,
         RoundRepository roundRepository,
         GameResultRepository gameResultRepository,
-        LeaguePlayerRepository leaguePlayerRepository
+        LeaguePlayerRepository leaguePlayerRepository,
+        SemesterScoreRepository semesterScoreRepository
     ) {
         this.entityManager = entityManager;
         this.semesterRepository = semesterRepository;
@@ -43,11 +49,14 @@ public class NewWeekService {
         this.roundRepository = roundRepository;
         this.gameResultRepository = gameResultRepository;
         this.leaguePlayerRepository = leaguePlayerRepository;
+        this.semesterScoreRepository = semesterScoreRepository;
     }
 
     public Week generateNewWeekData(Semester semester, NewWeekData newWeekData) {
         Hibernate.initialize(semester);
         entityManager.refresh(semester);
+
+        this.semId = semester.getId();
 
         int weekNum = semester.getWeeks().size() + 1;
         Week newWeek = new Week();
@@ -87,8 +96,6 @@ public class NewWeekService {
             .forEach(match -> {
                 //process the matches.
                 GameResult gameResult = processGameResult(match, round);
-                System.out.println("GAME RESULT");
-                System.out.println(gameResult);
             });
 
         return round;
@@ -96,8 +103,6 @@ public class NewWeekService {
 
     private GameResult processGameResult(Match match, Round round) {
         //need to get the players and update their scores here.
-
-        System.out.println("MARK 1");
 
         if (match == null) {
             return null;
@@ -111,8 +116,6 @@ public class NewWeekService {
         if (p1Optional.isEmpty() || p2Optional.isEmpty()) {
             return null;
         }
-
-        System.out.println("MARK 2");
 
         GameResult gameResult = new GameResult();
         gameResult.setPlayer1(p1Optional.get());
@@ -135,6 +138,36 @@ public class NewWeekService {
         }
 
         gameResultRepository.save(gameResult);
+        updatePlayerScores(gameResult.getPlayer1(), gameResult.getPlayer2(), gameResult.getp1Score(), gameResult.getp2Score());
         return gameResult;
+    }
+
+    private void updatePlayerScores(LeaguePlayer player1, LeaguePlayer player2, float p1Score, float p2Score) {
+        SemesterScore p1SemesterScore = null;
+        SemesterScore p2SemesterScore = null;
+
+        SemesterScore[] semesterScoresP1 = player1.getSemesterScores().toArray(new SemesterScore[0]);
+        SemesterScore[] semesterScoresP2 = player2.getSemesterScores().toArray(new SemesterScore[0]);
+
+        for (int i = 0; i < semesterScoresP1.length; i++) {
+            if (semesterScoresP1[i].getSemester().getId() == this.semId) {
+                p1SemesterScore = semesterScoresP1[i];
+            }
+        }
+        for (int i = 0; i < semesterScoresP2.length; i++) {
+            if (Objects.equals(semesterScoresP2[i].getSemester().getId(), this.semId)) {
+                p2SemesterScore = semesterScoresP2[i];
+            }
+        }
+
+        if (p1Score == 1f) {
+            if (p1SemesterScore != null) {
+                p1SemesterScore.setScore(p1SemesterScore.getScore() + 10f);
+            }
+        } else if (p2Score == 1f) {
+            if (p2SemesterScore != null) {
+                p2SemesterScore.setScore(p2SemesterScore.getScore() + 10f);
+            }
+        }
     }
 }
