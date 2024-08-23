@@ -55,8 +55,13 @@ export class NewRoundComponent implements OnInit {
     const allPlayers = JSON.parse(localStorage.getItem('allPlayers') || '{}') as ILeaguePlayer[];
     this.newRoundService.allPlayers = allPlayers;
 
-    const newWeekPlayers = JSON.parse(localStorage.getItem('newWeekData') || '{}') as NewWeekModel;
-    this.newRoundService.newWeekData = newWeekPlayers;
+    //responsible for fetching nw week data if it exists, this is updated as the matches progress
+    const newWeekData = JSON.parse(localStorage.getItem('newWeekData') || '{}');
+    if (localStorage.getItem('newWeekData') === null) {
+      this.newRoundService.newWeekData = { rounds: [] } as NewWeekModel;
+    } else {
+      this.newRoundService.newWeekData = newWeekData as NewWeekModel;
+    }
 
     //check if there is already values stored
     if (localStorage.getItem('selectedRoundPlayers') === '{}') {
@@ -85,13 +90,20 @@ export class NewRoundComponent implements OnInit {
       match.p2Score = event.target.value;
       match.p1Score = otherScore;
     }
+    this.newRoundService.setLocalStorage();
   }
 
   removeMatchFromRound(matchNo: string, roundNo: string): void {
     const mNo = parseInt(matchNo);
     const rNo = parseInt(roundNo);
 
-    delete this.newRoundService.newWeekData.rounds[rNo].matches[mNo];
+    //found this way to update object from chatgpt
+    //creates a new object without the key that needs to be removed.
+    const { [mNo]: _, ...remainingMatches } = this.newRoundService.newWeekData.rounds[rNo].matches;
+    this.newRoundService.newWeekData.rounds[rNo].matches = remainingMatches;
+
     console.log('Match removed');
+    this.newRoundService.setLocalStorage();
+    console.log(this.newRoundService.newWeekData);
   }
 }

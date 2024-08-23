@@ -76,6 +76,7 @@ export class NewRoundService {
   //need to create new round object in backend.
   //each round - many match results
   generateNewRound(): void {
+    console.log(this.newWeekData);
     if (Object.keys(this.newWeekData.rounds).length < 1) {
       console.log('First round randomizing players');
       this.randomizeSelectedPlayers();
@@ -122,5 +123,9 @@ export class NewRoundService {
     this.weekService.uploadNewRound(this.newWeekData, semId).subscribe(value => {
       console.log(value.body);
     });
+  }
+
+  clearLocalData(): void {
+    localStorage.removeItem('newWeekData');
   }
 }
