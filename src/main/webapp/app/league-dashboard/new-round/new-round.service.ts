@@ -33,6 +33,7 @@ export class NewRoundService {
   setLocalStorage(): void {
     localStorage.setItem('selectedRoundPlayers', JSON.stringify(this.selectedRoundPlayers));
     localStorage.setItem('allPlayers', JSON.stringify(this.allPlayers));
+    localStorage.setItem('newWeekData', JSON.stringify(this.newWeekData));
   }
 
   addToWeek(player: ILeaguePlayer): void {
@@ -106,14 +107,12 @@ export class NewRoundService {
     //rotate players for next generation
     this.rotateSelectedPlayers();
 
-    //todo Add the week data results to local storage !!!
-    //todo for each match results - update semester scores (and maybe ELO?)
+    this.setLocalStorage();
 
     //todo clear localstorage when saving week result !
     //todo Add a button to clear the week data !
     //todo make pipe to sort the players in the selection MODAL !
     //todo clear matches when first navigating to page !!
-
     //todo score calculation once a round is submitted and added to the current semester scores - backend
   }
 

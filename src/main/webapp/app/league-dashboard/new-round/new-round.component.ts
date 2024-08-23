@@ -20,6 +20,7 @@ import { PlayersModalComponent } from './modals/players-modal.component';
 import { MatchModel } from './match.model';
 import { NewMatchModalComponent } from './modals/new-match-modal.component';
 import { round } from '@popperjs/core/lib/utils/math';
+import { NewWeekModel } from './new-week.model';
 
 @Component({
   selector: 'new-round',
@@ -47,13 +48,15 @@ export class NewRoundComponent implements OnInit {
       this.leagueDataService.selectedSemesterData.year = saved.year;
       this.leagueDataService.selectedSemesterData.players = saved.players;
       this.leagueDataService.selectedSemesterData.semesters = saved.semesters;
-      console.log(saved);
     }
     const players = JSON.parse(localStorage.getItem('selectedRoundPlayers') || '{}') as ILeaguePlayer[];
     this.newRoundService.selectedRoundPlayers = players;
 
     const allPlayers = JSON.parse(localStorage.getItem('allPlayers') || '{}') as ILeaguePlayer[];
     this.newRoundService.allPlayers = allPlayers;
+
+    const newWeekPlayers = JSON.parse(localStorage.getItem('newWeekData') || '{}') as NewWeekModel;
+    this.newRoundService.newWeekData = newWeekPlayers;
 
     //check if there is already values stored
     if (localStorage.getItem('selectedRoundPlayers') === '{}') {
