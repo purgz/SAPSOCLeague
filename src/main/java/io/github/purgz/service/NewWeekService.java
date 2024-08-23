@@ -162,12 +162,32 @@ public class NewWeekService {
 
         if (p1Score == 1f) {
             if (p1SemesterScore != null) {
-                p1SemesterScore.setScore(p1SemesterScore.getScore() + 10f);
+                p1SemesterScore.setScore(p1SemesterScore.getScore() + 1f);
+
+                if (p2SemesterScore != null) {
+                    if (p1SemesterScore.getScore() < p2SemesterScore.getScore()) {
+                        p1SemesterScore.setScore(
+                            p1SemesterScore.getScore() + calculateExtraPoints(p1SemesterScore.getScore(), p2SemesterScore.getScore())
+                        );
+                    }
+                }
             }
         } else if (p2Score == 1f) {
             if (p2SemesterScore != null) {
-                p2SemesterScore.setScore(p2SemesterScore.getScore() + 10f);
+                p2SemesterScore.setScore(p2SemesterScore.getScore() + 1f);
+                if (p1SemesterScore != null) {
+                    if (p2SemesterScore.getScore() < p1SemesterScore.getScore()) {
+                        p2SemesterScore.setScore(
+                            p2SemesterScore.getScore() + calculateExtraPoints(p2SemesterScore.getScore(), p1SemesterScore.getScore())
+                        );
+                    }
+                }
             }
         }
+    }
+
+    private float calculateExtraPoints(float p1, float p2) {
+        float diff = p2 - p1;
+        return diff * 0.2f;
     }
 }
