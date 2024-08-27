@@ -3,9 +3,11 @@ package io.github.purgz.web.rest;
 import io.github.purgz.domain.LeaguePlayer;
 import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
+import io.github.purgz.domain.SemesterScore;
 import io.github.purgz.repository.LeaguePlayerRepository;
 import io.github.purgz.repository.LeagueYearRepository;
 import io.github.purgz.repository.SemesterRepository;
+import io.github.purgz.repository.SemesterScoreRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,17 +45,21 @@ public class LeaguePlayerResource {
     private final SemesterRepository semesterRepository;
     private final LeagueYearRepository leagueYearRepository;
 
+    private final SemesterScoreRepository semesterScoreRepository;
+
     private final EntityManager entityManager;
 
     public LeaguePlayerResource(
         LeaguePlayerRepository leaguePlayerRepository,
         SemesterRepository semesterRepository,
         LeagueYearRepository leagueYearRepository,
+        SemesterScoreRepository semesterScoreRepository,
         EntityManager entityManager
     ) {
         this.leaguePlayerRepository = leaguePlayerRepository;
         this.semesterRepository = semesterRepository;
         this.leagueYearRepository = leagueYearRepository;
+        this.semesterScoreRepository = semesterScoreRepository;
         this.entityManager = entityManager;
     }
 
@@ -72,6 +77,21 @@ public class LeaguePlayerResource {
             throw new BadRequestAlertException("A new leaguePlayer cannot already have an ID", ENTITY_NAME, "idexists");
         }
         LeaguePlayer result = leaguePlayerRepository.save(leaguePlayer);
+
+        //create semester scores for each semester
+        //todo do this later
+        result
+            .getSemesters()
+            .forEach(semester -> {
+                Hibernate.initialize(semester);
+                System.out.println(semester);
+                SemesterScore semesterScore = new SemesterScore();
+                semesterScore.setScore(0f);
+                semesterScoreRepository.save(semesterScore);
+                semesterScore.setPlayer(leaguePlayer);
+                semesterScore.setSemester(semester);
+            });
+
         return ResponseEntity
             .created(new URI("/api/league-players/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
