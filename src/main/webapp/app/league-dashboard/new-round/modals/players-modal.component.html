@@ -4,6 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Add / remove players</h5>
+        <button (click)="createNewLeaguePlayer()">New player</button>
       </div>
       <div class="modal-body">
         list of semester players
@@ -32,3 +33,13 @@
     </div>
   </div>
 </div>
+
+<ng-template #templateRef>
+  <form [formGroup]="userForm" (ngSubmit)="submitNewPlayer()" action="">
+    <label for="new-name">First name</label>
+    <input id="new-name" formControlName="firstName" type="text" />
+    <label for="new-last-name">Last name</label>
+    <input id="new-last-name" formControlName="lastName" type="text" />
+    <button type="submit">Create</button>
+  </form>
+</ng-template>
