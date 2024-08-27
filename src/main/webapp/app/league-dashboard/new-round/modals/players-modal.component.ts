@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewRoundService } from '../new-round.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NewLeaguePlayer } from '../../../entities/league-player/league-player.model';
+import { ILeaguePlayer, NewLeaguePlayer } from '../../../entities/league-player/league-player.model';
 import { ISemester } from '../../../entities/semester/semester.model';
 import { LeagueDataService } from '../../service/league-data.service';
 import { LeaguePlayerService } from '../../../entities/league-player/service/league-player.service';
@@ -51,9 +51,8 @@ export class PlayersModalComponent implements OnInit {
   }
 
   submitNewPlayer(): void {
-    console.log(this.userForm.value);
-
     const newPlayer = {} as NewLeaguePlayer;
+    let player = {} as ILeaguePlayer;
     newPlayer.firstName = this.userForm.value.firstName;
     newPlayer.lastName = this.userForm.value.lastName;
     newPlayer.dishes = 0;
@@ -64,10 +63,12 @@ export class PlayersModalComponent implements OnInit {
     const semId = this.leagueDataService.selectedSemesterData.semesters[0].id;
     const semester = { id: semId } as ISemester;
     newPlayer.semesters = [semester];
-    console.log(semester);
-    console.log(newPlayer.semesters);
     this.leaguePlayerService.create(newPlayer).subscribe(value => {
+      console.log('Response');
       console.log(value.body);
+      player = value.body!;
+      this.newRoundService.selectedRoundPlayers.unshift(player);
+      this.newRoundService.setLocalStorage();
     });
   }
 }
