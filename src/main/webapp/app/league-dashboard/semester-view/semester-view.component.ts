@@ -44,6 +44,7 @@ export class SemesterViewComponent implements OnInit {
   clearRoundStorage(): void {
     localStorage.setItem('selectedRoundPlayers', '{}');
     localStorage.setItem('allPlayers', '{}');
+    localStorage.removeItem('newWeekData');
   }
 
   onFileSelect(event: Event): void {

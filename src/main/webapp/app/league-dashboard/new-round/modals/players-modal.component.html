@@ -9,7 +9,7 @@
       <div class="modal-body">
         list of semester players
 
-        <div *ngFor="let player of this.newRoundService.allPlayers">
+        <div *ngFor="let player of this.newRoundService.allPlayers | sortPlayer">
           {{ player.firstName }}
           {{ player.lastName }}
           {{ player.id }}

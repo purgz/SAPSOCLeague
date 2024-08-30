@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewRoundService } from '../new-round.service';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -64,11 +64,15 @@ export class PlayersModalComponent implements OnInit {
     const semester = { id: semId } as ISemester;
     newPlayer.semesters = [semester];
     this.leaguePlayerService.create(newPlayer).subscribe(value => {
-      console.log('Response');
-      console.log(value.body);
-      player = value.body!;
-      this.newRoundService.selectedRoundPlayers.unshift(player);
-      this.newRoundService.setLocalStorage();
+      if (value.status != 201) {
+        console.log('Error creating new player - check internet');
+        console.log(value.statusText);
+        alert('Failed to create new league player try again');
+      } else {
+        player = value.body!;
+        this.newRoundService.selectedRoundPlayers.unshift(player);
+        this.newRoundService.setLocalStorage();
+      }
     });
   }
 }

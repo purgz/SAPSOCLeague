@@ -12,9 +12,10 @@ import { SemesterScorePipe } from './pipes/semester-score-pipe';
 import { NewRoundComponent } from './new-round/new-round.component';
 import { PlayersModalComponent } from './new-round/modals/players-modal.component';
 import { NewMatchModalComponent } from './new-round/modals/new-match-modal.component';
+import { SortPlayerListPipe } from './pipes/sort-player-list.pipe';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(leagueRoutes), SumScorePipe, SortScorePipe, SemesterScorePipe],
+  imports: [SharedModule, RouterModule.forChild(leagueRoutes), SumScorePipe, SortScorePipe, SemesterScorePipe, SortPlayerListPipe],
   declarations: [
     LeagueYearsComponent,
     LeagueMainComponent,
