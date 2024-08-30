@@ -3,28 +3,34 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add / remove players</h5>
-        <button (click)="createNewLeaguePlayer()">New player</button>
+        <h4 class="modal-title" id="exampleModalLongTitle">Add / remove players</h4>
+        <button class="btn btn-primary" (click)="createNewLeaguePlayer()">New player</button>
       </div>
       <div class="modal-body">
-        list of semester players
-
-        <div *ngFor="let player of this.newRoundService.allPlayers | sortPlayer">
-          {{ player.firstName }}
-          {{ player.lastName }}
-          {{ player.id }}
-          <button (click)="this.newRoundService.addToWeek(player)">Select</button>
+        <div class="player-option-container">
+          <h6 class="display-6">Available players</h6>
+          <div *ngIf="this.newRoundService.allPlayers.length == 0">All players selected</div>
+          <div class="player-option" *ngFor="let player of this.newRoundService.allPlayers | sortPlayer">
+            {{ player.firstName }}
+            {{ player.lastName }}
+            {{ player.id }}
+            <button class="btn btn-primary" (click)="this.newRoundService.addToWeek(player)">Select</button>
+          </div>
         </div>
+
         <br />
-        list of players added to this week
 
-        <div *ngFor="let player of this.newRoundService.selectedRoundPlayers">
-          {{ player.firstName }}
-          {{ player.lastName }}
-          <button (click)="this.newRoundService.removePlayer(player)">remove</button>
+        <div class="player-option-container">
+          <h6 class="display-6">Selected players</h6>
+          <div *ngIf="this.newRoundService.selectedRoundPlayers.length == 0">No players selected</div>
+          <div class="player-option" *ngFor="let player of this.newRoundService.selectedRoundPlayers">
+            {{ player.firstName }}
+            {{ player.lastName }}
+            <button class="btn btn-primary" (click)="this.newRoundService.removePlayer(player)">remove</button>
+          </div>
+          <button style="width: 25%" class="btn btn-secondary" (click)="this.newRoundService.randomizeSelectedPlayers()">Randomize</button>
+          <button style="width: 25%" class="btn btn-secondary" (click)="this.newRoundService.rotateSelectedPlayers()">Rotate</button>
         </div>
-        <button (click)="this.newRoundService.randomizeSelectedPlayers()">Test randomize button</button>
-        <button (click)="this.newRoundService.rotateSelectedPlayers()">Test rotate button</button>
       </div>
       <div class="modal-footer">
         <button (click)="closeModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

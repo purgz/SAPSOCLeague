@@ -1,0 +1,11 @@
+.player-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.player-option-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}

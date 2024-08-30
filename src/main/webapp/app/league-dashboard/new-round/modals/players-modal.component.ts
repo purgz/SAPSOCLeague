@@ -11,6 +11,7 @@ import { LeaguePlayerService } from '../../../entities/league-player/service/lea
 @Component({
   selector: 'players-list',
   templateUrl: './players-modal.component.html',
+  styleUrls: ['./players-modal.component.scss'],
 })
 export class PlayersModalComponent implements OnInit {
   @ViewChild('templateRef', { static: true }) newPlayerModal!: any;
