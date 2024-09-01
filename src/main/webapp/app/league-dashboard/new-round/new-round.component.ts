@@ -97,12 +97,8 @@ export class NewRoundComponent implements OnInit {
     const mNo = parseInt(matchNo);
     const rNo = parseInt(roundNo);
 
-    //found this way to update object from chatgpt
-    //creates a new object without the key that needs to be removed.
-    const { [mNo]: _, ...remainingMatches } = this.newRoundService.newWeekData.rounds[rNo].matches;
-    this.newRoundService.newWeekData.rounds[rNo].matches = remainingMatches;
+    delete this.newRoundService.newWeekData.rounds[rNo].matches[mNo];
 
-    console.log('Match removed');
     this.newRoundService.setLocalStorage();
     console.log(this.newRoundService.newWeekData);
   }
