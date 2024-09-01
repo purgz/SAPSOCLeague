@@ -1,17 +1,11 @@
-npm # SapsocLeague
+## Snooker and Pool league University of Birmingham
 
-Boilerplate generated using JHipster
+Angular and Spring boot boilerplate generated using JHipster.
 
-Application developed for University Of Birmingham Pool and Snooker league to aid with the weekly leagues which are run. The application will be responsible for calculating and tracking results and scores for all members of the leagues, as well as displaying historical league data.
-Also aims to introduce a new ELO style leaderboard system which will be continuous across multiple league semesters.
+## Continuous integration / deployment
 
-## Continous integration / deployment
-
-Hosting using ngrok and free private domain
-ngrok http --domain=normal-haddock-nearly.ngrok-free.app 9000 --host-header="localhost:9000"
-
-GitHub actions CI pipeline created to run java:docker to generate and publish docker image to henrybrooks/sapsoc [docker registry].
-CD pipeline to come in future with ngrok as a hosting mechanism.
+Application self-hosted with production accessible at www.uobsapsoc.co.uk.
+Secured using nginx reverse proxy and letsencrypt free public certificates.
 
 ## Using Docker to simplify development
 
@@ -43,26 +37,6 @@ docker-compose -f src/main/docker/app.yml up -d
 
 npm run start to launch frontend.
 ./mvnw to launch backend
-
-### Using Angular CLI
-
-You can also use [Angular CLI][] to generate some custom client code.
-
-For example, the following command:
-
-```
-ng generate component my-component
-```
-
-will generate few files:
-
-```
-create src/main/webapp/app/my-component/my-component.component.html
-create src/main/webapp/app/my-component/my-component.component.ts
-update src/main/webapp/app/app.module.ts
-```
-
-## Building for production
 
 ### Packaging as jar
 
@@ -108,27 +82,3 @@ npm test
 ```
 
 For more information, refer to the [Running tests page][].
-
-### Code quality
-
-Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
-
-```
-docker-compose -f src/main/docker/sonar.yml up -d
-```
-
-Note: we have turned off authentication in [src/main/docker/sonar.yml](src/main/docker/sonar.yml) for out of the box experience while trying out SonarQube, for real use cases turn it back on.
-
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
-
-Then, run a Sonar analysis:
-
-```
-./mvnw -Pprod clean verify sonar:sonar
-```
-
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
-
-```
-./mvnw initialize sonar:sonar
-```
