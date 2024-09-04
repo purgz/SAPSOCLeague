@@ -1,6 +1,9 @@
 package io.github.purgz.service;
 
+import io.github.purgz.domain.LeaguePlayer;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EloWorker {
@@ -25,5 +28,32 @@ public class EloWorker {
     public float newRating(float expectedScore, float score, float ratingA) {
         //rating adjustment formula
         return ratingA + K_FACTOR * (score - expectedScore);
+    }
+
+    @Transactional
+    public boolean updatePlayer(LeaguePlayer playerA, LeaguePlayer playerB) {
+        /*
+        Updates both players at the same time
+        Player A must be passed in as the winner.
+        At this time there is no option for a draw
+        so game results are binary.
+         */
+        try {
+            float ratingA = playerA.getEloRating();
+            float ratingB = playerB.getEloRating();
+
+            float eA = expectedScore(ratingA, ratingB);
+            float eB = expectedScore(ratingB, ratingA);
+
+            newRating(eA, 1f, ratingA);
+            newRating(eB, 0f, ratingB);
+
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Error with elo adjustment - could be a player missing elo rating");
+            System.out.println("Make this better later");
+            return false;
+        }
     }
 }
