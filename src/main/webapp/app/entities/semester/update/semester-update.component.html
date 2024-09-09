@@ -54,7 +54,7 @@
           <select class="form-control" id="field_year" data-cy="year" name="year" formControlName="year" [compareWith]="compareLeagueYear">
             <option [ngValue]="null"></option>
             <option [ngValue]="leagueYearOption" *ngFor="let leagueYearOption of leagueYearsSharedCollection">
-              {{ leagueYearOption.id }}
+              {{ 'Year: ' + leagueYearOption.yearStart + '/' + leagueYearOption.yearEnd + ' (' + leagueYearOption.id + ')' }}
             </option>
           </select>
         </div>
