@@ -31,6 +31,8 @@ public class NewWeekService {
 
     private final SemesterScoreRepository semesterScoreRepository;
 
+    private final EloWorker eloWorker;
+
     private Long semId;
 
     @Autowired
@@ -41,7 +43,8 @@ public class NewWeekService {
         RoundRepository roundRepository,
         GameResultRepository gameResultRepository,
         LeaguePlayerRepository leaguePlayerRepository,
-        SemesterScoreRepository semesterScoreRepository
+        SemesterScoreRepository semesterScoreRepository,
+        EloWorker eloWorker
     ) {
         this.entityManager = entityManager;
         this.semesterRepository = semesterRepository;
@@ -50,6 +53,7 @@ public class NewWeekService {
         this.gameResultRepository = gameResultRepository;
         this.leaguePlayerRepository = leaguePlayerRepository;
         this.semesterScoreRepository = semesterScoreRepository;
+        this.eloWorker = eloWorker;
     }
 
     public Week generateNewWeekData(Semester semester, NewWeekData newWeekData) {
@@ -161,26 +165,26 @@ public class NewWeekService {
         }
 
         if (p1Score == 1f) {
-            if (p1SemesterScore != null) {
-                p1SemesterScore.setScore(p1SemesterScore.getScore() + 1f);
-
-                if (p2SemesterScore != null) {
-                    if (p1SemesterScore.getScore() < p2SemesterScore.getScore()) {
-                        p1SemesterScore.setScore(
-                            p1SemesterScore.getScore() + calculateExtraPoints(p1SemesterScore.getScore(), p2SemesterScore.getScore())
-                        );
-                    }
-                }
-            }
+            updateEloAndScores(player2, player1, p2SemesterScore, p1SemesterScore);
         } else if (p2Score == 1f) {
-            if (p2SemesterScore != null) {
-                p2SemesterScore.setScore(p2SemesterScore.getScore() + 1f);
-                if (p1SemesterScore != null) {
-                    if (p2SemesterScore.getScore() < p1SemesterScore.getScore()) {
-                        p2SemesterScore.setScore(
-                            p2SemesterScore.getScore() + calculateExtraPoints(p2SemesterScore.getScore(), p1SemesterScore.getScore())
-                        );
-                    }
+            updateEloAndScores(player1, player2, p1SemesterScore, p2SemesterScore);
+        }
+    }
+
+    private void updateEloAndScores(
+        LeaguePlayer player1,
+        LeaguePlayer player2,
+        SemesterScore p1SemesterScore,
+        SemesterScore p2SemesterScore
+    ) {
+        updateELO(player2, player1);
+        if (p2SemesterScore != null) {
+            p2SemesterScore.setScore(p2SemesterScore.getScore() + 1f);
+            if (p1SemesterScore != null) {
+                if (p2SemesterScore.getScore() < p1SemesterScore.getScore()) {
+                    p2SemesterScore.setScore(
+                        p2SemesterScore.getScore() + calculateExtraPoints(p2SemesterScore.getScore(), p1SemesterScore.getScore())
+                    );
                 }
             }
         }
@@ -189,5 +193,15 @@ public class NewWeekService {
     private float calculateExtraPoints(float p1, float p2) {
         float diff = p2 - p1;
         return diff * 0.2f;
+    }
+
+    private void updateELO(LeaguePlayer playerA, LeaguePlayer playerB) {
+        System.out.println("PREVIOUS ELO");
+        System.out.println(playerA.getEloRating());
+        System.out.println(playerB.getEloRating());
+        this.eloWorker.updatePlayers(playerA, playerB);
+        System.out.println("ELO UPDATED NEW RATINGS:");
+        System.out.println(playerA.getEloRating());
+        System.out.println(playerB.getEloRating());
     }
 }

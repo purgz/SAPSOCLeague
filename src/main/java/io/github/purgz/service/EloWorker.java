@@ -31,7 +31,7 @@ public class EloWorker {
     }
 
     @Transactional
-    public boolean updatePlayer(LeaguePlayer playerA, LeaguePlayer playerB) {
+    public boolean updatePlayers(LeaguePlayer playerA, LeaguePlayer playerB) {
         /*
         Updates both players at the same time
         Player A must be passed in as the winner.
@@ -45,8 +45,8 @@ public class EloWorker {
             float eA = expectedScore(ratingA, ratingB);
             float eB = expectedScore(ratingB, ratingA);
 
-            newRating(eA, 1f, ratingA);
-            newRating(eB, 0f, ratingB);
+            playerA.setEloRating(newRating(eA, 1f, ratingA));
+            playerB.setEloRating(newRating(eB, 0f, ratingB));
 
             return true;
         } catch (Exception e) {
