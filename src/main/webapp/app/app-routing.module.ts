@@ -22,6 +22,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         },
         {
           path: 'account',
+          data: {
+            authorities: [Authority.ADMIN],
+          },
+          canActivate: [UserRouteAccessService],
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },
         {
