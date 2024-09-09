@@ -166,7 +166,11 @@ public class NewWeekService {
 
         if (p1Score == 1f) {
             updateEloAndScores(player2, player1, p2SemesterScore, p1SemesterScore);
+            player1.setWins(player1.getWins() + 1);
+            player2.setLosses(player2.getLosses() + 1);
         } else if (p2Score == 1f) {
+            player2.setWins(player2.getWins() + 1);
+            player1.setLosses(player1.getLosses() + 1);
             updateEloAndScores(player1, player2, p1SemesterScore, p2SemesterScore);
         }
     }

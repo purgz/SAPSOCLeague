@@ -13,6 +13,7 @@ import { NewRoundComponent } from './new-round/new-round.component';
 import { PlayersModalComponent } from './new-round/modals/players-modal.component';
 import { NewMatchModalComponent } from './new-round/modals/new-match-modal.component';
 import { SortPlayerListPipe } from './pipes/sort-player-list.pipe';
+import { PlayerProfileComponent } from './player-profile/player-profile.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(leagueRoutes), SumScorePipe, SortScorePipe, SemesterScorePipe, SortPlayerListPipe],
@@ -23,6 +24,7 @@ import { SortPlayerListPipe } from './pipes/sort-player-list.pipe';
     NewRoundComponent,
     PlayersModalComponent,
     NewMatchModalComponent,
+    PlayerProfileComponent,
   ],
 })
 export class LeagueDashboardModule {}
