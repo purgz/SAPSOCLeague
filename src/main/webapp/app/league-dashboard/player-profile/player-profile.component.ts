@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { accountState } from '../../account/account.route';
+import { LeaguePlayerService } from '../../entities/league-player/service/league-player.service';
+import { ILeaguePlayer } from '../../entities/league-player/league-player.model';
+import { HttpStatusCode } from '@angular/common/http';
+import { error } from '@angular/compiler-cli/src/transformers/util';
 
 @Component({
   selector: 'player-profile',
@@ -16,14 +20,26 @@ export class PlayerProfileComponent implements OnInit {
 
   public profileId: number | null = null;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  public leaguePlayer: ILeaguePlayer | null = null;
+
+  constructor(private activatedRoute: ActivatedRoute, private leaguePlayerService: LeaguePlayerService) {}
 
   ngOnInit(): void {
-    console.log('ACTIVATED ROUTE');
-
     this.activatedRoute.params.subscribe(value => {
-      console.log(value['profile-id']);
       this.profileId = value['profile-id'];
+      if (this.profileId != null) {
+        this.leaguePlayerService.find(this.profileId).subscribe(
+          value => {
+            if (value.status == HttpStatusCode.Ok) {
+              this.leaguePlayer = value.body;
+            }
+          },
+          error => {
+            alert('Player not found how did you get here?');
+            console.log(error);
+          }
+        );
+      }
     });
   }
 }
