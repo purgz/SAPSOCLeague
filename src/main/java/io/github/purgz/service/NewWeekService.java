@@ -102,6 +102,20 @@ public class NewWeekService {
                 GameResult gameResult = processGameResult(match, round);
             });
 
+        Optional<LeaguePlayer> byeOptional = this.leaguePlayerRepository.findById(Long.valueOf(newRound.getBye().getId()));
+        if (byeOptional.isPresent()) {
+            SemesterScore byeSemesterScore = null;
+            SemesterScore[] semesterScoresBye = byeOptional.get().getSemesterScores().toArray(new SemesterScore[0]);
+
+            for (int i = 0; i < semesterScoresBye.length; i++) {
+                if (semesterScoresBye[i].getSemester().getId() == this.semId) {
+                    byeSemesterScore = semesterScoresBye[i];
+
+                    byeSemesterScore.setScore(byeSemesterScore.getScore() + 0.5f);
+                }
+            }
+        }
+
         return round;
     }
 
