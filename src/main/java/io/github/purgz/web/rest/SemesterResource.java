@@ -1,5 +1,6 @@
 package io.github.purgz.web.rest;
 
+import io.github.purgz.domain.LeaguePlayer;
 import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
 import io.github.purgz.repository.LeagueYearRepository;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -65,6 +67,30 @@ public class SemesterResource {
             .created(new URI("/api/semesters/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @PostMapping("/semesters/{id}/add-players")
+    public ResponseEntity<List<LeaguePlayer>> addPlayersToSemester(
+        @Valid @RequestBody List<LeaguePlayer> leaguePlayers,
+        @PathVariable Long semesterId
+    ) throws URISyntaxException {
+        log.debug("REST request to add list of players to semester");
+
+        Optional<Semester> semesterOptional = this.semesterRepository.findById(semesterId);
+        if (semesterOptional.isEmpty()) {
+            throw new BadRequestAlertException("Semester not found", ENTITY_NAME, "semesternotfound");
+        }
+
+        leaguePlayers.forEach(leaguePlayer -> {
+            try {
+                semesterOptional.get().addPlayers(leaguePlayer);
+            } catch (Error error) {
+                System.out.println(error);
+                System.out.println("Failed to add league player with id: " + leaguePlayer.getId());
+            }
+        });
+
+        return new ResponseEntity<>(leaguePlayers, HttpStatus.OK);
     }
 
     /**
