@@ -123,3 +123,6 @@ export class NewRoundService {
     localStorage.removeItem('newWeekData');
   }
 }
+
+//todo option to add players to the semester in both the semester view and new week view
+// if added in the new week view, then auto add to the list of selected players
