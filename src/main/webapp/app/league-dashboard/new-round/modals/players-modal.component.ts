@@ -7,6 +7,7 @@ import { ILeaguePlayer, NewLeaguePlayer } from '../../../entities/league-player/
 import { ISemester } from '../../../entities/semester/semester.model';
 import { LeagueDataService } from '../../service/league-data.service';
 import { LeaguePlayerService } from '../../../entities/league-player/service/league-player.service';
+import { SemesterService } from '../../../entities/semester/service/semester.service';
 
 @Component({
   selector: 'players-list',
@@ -21,18 +22,46 @@ export class PlayersModalComponent implements OnInit {
     lastName: new FormControl(''), // FormControl for last name
   });
 
+  allPlayers: ILeaguePlayer[] = [];
+
   constructor(
     public activeModal: NgbActiveModal,
     public modalService: NgbModal,
     public newRoundService: NewRoundService,
     public leagueDataService: LeagueDataService,
-    public leaguePlayerService: LeaguePlayerService
+    public leaguePlayerService: LeaguePlayerService,
+    public semesterService: SemesterService
   ) {}
 
   ngOnInit(): void {
     //console.log('HELLO WORLD');
 
-    console.log(this.newRoundService.allPlayers);
+    this.leaguePlayerService.findAll().subscribe(value => {
+      if (value.body) {
+        console.log(value.body);
+        console.log(this.newRoundService.allPlayers);
+        this.allPlayers = value.body.filter(val => !this.containsPlayer(this.newRoundService.allPlayers, val));
+        console.log(this.allPlayers);
+      }
+    });
+  }
+
+  containsPlayer(players: ILeaguePlayer[], player: ILeaguePlayer): boolean {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id === player.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  addToSemesterList(player: ILeaguePlayer): void {
+    const players = [player];
+
+    console.log(players);
+    this.semesterService.addPlayersToSemester(players, this.leagueDataService.selectedSemesterData.semesters[0].id).subscribe(value => {
+      console.log(value);
+    });
   }
 
   modalSave(): void {

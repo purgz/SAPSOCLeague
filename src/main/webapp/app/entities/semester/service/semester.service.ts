@@ -6,17 +6,23 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ISemester, NewSemester } from '../semester.model';
+import { ILeaguePlayer } from '../../league-player/league-player.model';
 
 export type PartialUpdateSemester = Partial<ISemester> & Pick<ISemester, 'id'>;
 
 export type EntityResponseType = HttpResponse<ISemester>;
 export type EntityArrayResponseType = HttpResponse<ISemester[]>;
+export type OtherEntityArrayResponseType = HttpResponse<ILeaguePlayer[]>;
 
 @Injectable({ providedIn: 'root' })
 export class SemesterService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/semesters');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+
+  addPlayersToSemester(players: ILeaguePlayer[], semesterId: number): Observable<HttpResponse<ILeaguePlayer[]>> {
+    return this.http.post<ILeaguePlayer[]>(`${this.resourceUrl}/${semesterId}/add-players`, players, { observe: 'response' });
+  }
 
   create(semester: NewSemester): Observable<EntityResponseType> {
     return this.http.post<ISemester>(this.resourceUrl, semester, { observe: 'response' });

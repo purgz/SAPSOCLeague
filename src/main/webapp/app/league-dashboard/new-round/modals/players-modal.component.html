@@ -48,4 +48,11 @@
     <input id="new-last-name" formControlName="lastName" type="text" />
     <button type="submit">Create</button>
   </form>
+
+  <div>
+    Add a player to this semester
+    <div *ngFor="let player of allPlayers">
+      <div (click)="addToSemesterList(player)">{{ player.firstName }}{{ player.lastName }}</div>
+    </div>
+  </div>
 </ng-template>

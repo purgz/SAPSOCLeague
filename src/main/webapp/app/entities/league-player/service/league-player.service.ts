@@ -39,6 +39,10 @@ export class LeaguePlayerService {
     return this.http.get<ILeaguePlayer>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findAll(): Observable<EntityArrayResponseType> {
+    return this.http.get<ILeaguePlayer[]>(`${this.resourceUrl}`, { observe: 'response' });
+  }
+
   findBySemester(id: number): Observable<EntityArrayResponseType> {
     return this.http.get<ILeaguePlayer[]>(`${this.resourceUrl}/semester/${id}`, { observe: 'response' });
   }

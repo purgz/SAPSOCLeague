@@ -3,6 +3,7 @@ package io.github.purgz.web.rest;
 import io.github.purgz.domain.LeaguePlayer;
 import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
+import io.github.purgz.repository.LeaguePlayerRepository;
 import io.github.purgz.repository.LeagueYearRepository;
 import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
@@ -12,10 +13,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import javax.persistence.EntityManager;
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,9 +44,16 @@ public class SemesterResource {
     private final SemesterRepository semesterRepository;
     private final LeagueYearRepository leagueYearRepository;
 
-    public SemesterResource(SemesterRepository semesterRepository, LeagueYearRepository leagueYearRepository) {
+    private final LeaguePlayerRepository leaguePlayerRepository;
+
+    public SemesterResource(
+        SemesterRepository semesterRepository,
+        LeagueYearRepository leagueYearRepository,
+        LeaguePlayerRepository leaguePlayerRepository
+    ) {
         this.semesterRepository = semesterRepository;
         this.leagueYearRepository = leagueYearRepository;
+        this.leaguePlayerRepository = leaguePlayerRepository;
     }
 
     /**
@@ -69,7 +76,7 @@ public class SemesterResource {
             .body(result);
     }
 
-    @PostMapping("/semesters/{id}/add-players")
+    @PostMapping("/semesters/{semesterId}/add-players")
     public ResponseEntity<List<LeaguePlayer>> addPlayersToSemester(
         @Valid @RequestBody List<LeaguePlayer> leaguePlayers,
         @PathVariable Long semesterId
@@ -83,7 +90,12 @@ public class SemesterResource {
 
         leaguePlayers.forEach(leaguePlayer -> {
             try {
-                semesterOptional.get().addPlayers(leaguePlayer);
+                Optional<LeaguePlayer> leaguePlayerOptional = this.leaguePlayerRepository.findById(leaguePlayer.getId());
+                if (leaguePlayerOptional.isEmpty()) {
+                    throw new BadRequestAlertException("Player not found", ENTITY_NAME, "playernotfound");
+                }
+
+                leaguePlayerOptional.get().getSemesters().add(semesterOptional.get());
             } catch (Error error) {
                 System.out.println(error);
                 System.out.println("Failed to add league player with id: " + leaguePlayer.getId());
