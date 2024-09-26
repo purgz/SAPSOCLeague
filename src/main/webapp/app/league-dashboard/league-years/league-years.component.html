@@ -48,7 +48,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore; index as i">
+            <tr
+              routerLink="profile/{{ player.player.id }}"
+              *ngFor="let player of leagueDataService.leagueData[selectedYear!.id].players | sortScore; index as i"
+            >
               <th scope="row">{{ i + 1 }}</th>
               <th>{{ player.player.firstName }} {{ player.player.lastName }}</th>
               <th *ngFor="let sem of leagueDataService.leagueData[selectedYear!.id].semesters; let i = index">

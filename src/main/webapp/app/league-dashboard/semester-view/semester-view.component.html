@@ -26,7 +26,10 @@ Semester view
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let player of leagueDataService.selectedSemesterData.players | sortScore; index as i">
+    <tr
+      routerLink="../profile/{{ player.player.id }}"
+      *ngFor="let player of leagueDataService.selectedSemesterData.players | sortScore; index as i"
+    >
       <th scope="row">{{ i + 1 }}</th>
       <th>{{ player.player.firstName }} {{ player.player.lastName }}</th>
       <th>{{ player.score | sumScore }}</th>
