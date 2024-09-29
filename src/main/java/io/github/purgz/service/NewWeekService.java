@@ -102,6 +102,9 @@ public class NewWeekService {
                 GameResult gameResult = processGameResult(match, round);
             });
 
+        if (newRound.getBye() == null) {
+            return round;
+        }
         Optional<LeaguePlayer> byeOptional = this.leaguePlayerRepository.findById(Long.valueOf(newRound.getBye().getId()));
         if (byeOptional.isPresent()) {
             SemesterScore byeSemesterScore = null;
