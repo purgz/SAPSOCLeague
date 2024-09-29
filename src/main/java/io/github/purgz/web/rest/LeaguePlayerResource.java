@@ -86,7 +86,7 @@ public class LeaguePlayerResource {
                 Hibernate.initialize(semester);
                 System.out.println(semester);
                 SemesterScore semesterScore = new SemesterScore();
-                semesterScore.setScore(0f);
+                semesterScore.setScore(1000f);
                 semesterScoreRepository.save(semesterScore);
                 semesterScore.setPlayer(leaguePlayer);
                 semesterScore.setSemester(semester);

@@ -3,9 +3,11 @@ package io.github.purgz.web.rest;
 import io.github.purgz.domain.LeaguePlayer;
 import io.github.purgz.domain.LeagueYear;
 import io.github.purgz.domain.Semester;
+import io.github.purgz.domain.SemesterScore;
 import io.github.purgz.repository.LeaguePlayerRepository;
 import io.github.purgz.repository.LeagueYearRepository;
 import io.github.purgz.repository.SemesterRepository;
+import io.github.purgz.repository.SemesterScoreRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,7 +17,6 @@ import java.util.Optional;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,14 +47,18 @@ public class SemesterResource {
 
     private final LeaguePlayerRepository leaguePlayerRepository;
 
+    private final SemesterScoreRepository semesterScoreRepository;
+
     public SemesterResource(
         SemesterRepository semesterRepository,
         LeagueYearRepository leagueYearRepository,
-        LeaguePlayerRepository leaguePlayerRepository
+        LeaguePlayerRepository leaguePlayerRepository,
+        SemesterScoreRepository semesterScoreRepository
     ) {
         this.semesterRepository = semesterRepository;
         this.leagueYearRepository = leagueYearRepository;
         this.leaguePlayerRepository = leaguePlayerRepository;
+        this.semesterScoreRepository = semesterScoreRepository;
     }
 
     /**
@@ -96,6 +101,12 @@ public class SemesterResource {
                 }
 
                 leaguePlayerOptional.get().getSemesters().add(semesterOptional.get());
+                //create semester score
+                SemesterScore semesterScore = new SemesterScore();
+                semesterScore.setScore(0f);
+                semesterScoreRepository.save(semesterScore);
+                semesterScore.setPlayer(leaguePlayer);
+                semesterScore.setSemester(semesterOptional.get());
             } catch (Error error) {
                 System.out.println(error);
                 System.out.println("Failed to add league player with id: " + leaguePlayer.getId());
