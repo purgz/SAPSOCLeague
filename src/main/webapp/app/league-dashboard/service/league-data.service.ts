@@ -106,6 +106,10 @@ export class LeagueDataService {
 
     console.log('getting semester specific info');
 
+    if (!this.leagueData[yearId]) {
+      this.addYear(yearId);
+    }
+
     this.selectedSemesterData.year = this.leagueData[yearId].year;
 
     this.semesterService.find(semId).subscribe(value => {

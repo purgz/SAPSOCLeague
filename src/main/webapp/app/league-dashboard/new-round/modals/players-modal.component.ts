@@ -57,13 +57,17 @@ export class PlayersModalComponent implements OnInit {
     const players = [player];
 
     this.semesterService.addPlayersToSemester(players, this.leagueDataService.selectedSemesterData.semesters[0].id).subscribe(value => {
+      console.log(this.allPlayers.indexOf(value.body![0]));
+      console.log(value.body![0]);
+      this.allPlayers.splice(this.allPlayers.indexOf(player), 1);
+
       this.newRoundService.allPlayers = this.newRoundService.allPlayers.concat(value.body!);
-      this.leagueDataService.refresh();
 
       this.leagueDataService.setSemesterDetails(
         this.leagueDataService.selectedSemesterData.semesters[0].id,
         this.leagueDataService.selectedSemesterData.semesters[0].year!.id
       );
+      this.newRoundService.setLocalStorage();
     });
   }
 

@@ -49,10 +49,12 @@
     <button type="submit">Create</button>
   </form>
 
-  <div>
-    Add a player to this semester
-    <div *ngFor="let player of allPlayers">
-      <div (click)="addToSemesterList(player)">{{ player.firstName }}{{ player.lastName }}</div>
+  <div class="player-option-container">
+    Add existing players to the current semester
+    <div class="player-option" *ngFor="let player of allPlayers">
+      {{ player.firstName }}
+      {{ player.lastName }}
+      <button class="btn btn-primary" (click)="addToSemesterList(player)">Select</button>
     </div>
   </div>
 </ng-template>
