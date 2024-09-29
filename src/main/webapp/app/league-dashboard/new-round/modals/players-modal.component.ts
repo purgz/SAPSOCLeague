@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewRoundService } from '../new-round.service';
@@ -30,7 +30,8 @@ export class PlayersModalComponent implements OnInit {
     public newRoundService: NewRoundService,
     public leagueDataService: LeagueDataService,
     public leaguePlayerService: LeaguePlayerService,
-    public semesterService: SemesterService
+    public semesterService: SemesterService,
+    private changeDetection: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -38,10 +39,7 @@ export class PlayersModalComponent implements OnInit {
 
     this.leaguePlayerService.findAll().subscribe(value => {
       if (value.body) {
-        console.log(value.body);
-        console.log(this.newRoundService.allPlayers);
         this.allPlayers = value.body.filter(val => !this.containsPlayer(this.newRoundService.allPlayers, val));
-        console.log(this.allPlayers);
       }
     });
   }
@@ -58,9 +56,14 @@ export class PlayersModalComponent implements OnInit {
   addToSemesterList(player: ILeaguePlayer): void {
     const players = [player];
 
-    console.log(players);
     this.semesterService.addPlayersToSemester(players, this.leagueDataService.selectedSemesterData.semesters[0].id).subscribe(value => {
-      console.log(value);
+      this.newRoundService.allPlayers = this.newRoundService.allPlayers.concat(value.body!);
+      this.leagueDataService.refresh();
+
+      this.leagueDataService.setSemesterDetails(
+        this.leagueDataService.selectedSemesterData.semesters[0].id,
+        this.leagueDataService.selectedSemesterData.semesters[0].year!.id
+      );
     });
   }
 
