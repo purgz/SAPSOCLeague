@@ -45,5 +45,7 @@ export class LeagueYearsComponent implements OnInit {
 
   switchYear(): void {
     this.leagueDataService.addYear(this.selectedYear.id);
+    console.log(this.selectedYear.id);
+    console.log('HELLO');
   }
 }

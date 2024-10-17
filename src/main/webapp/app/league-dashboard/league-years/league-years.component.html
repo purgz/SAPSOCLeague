@@ -5,8 +5,8 @@
 
   <div *ngIf="leagueYears.length > 0; else noYearsFound">
     <div *ngIf="isDataLoaded$" class="form-floating">
-      <select [(ngModel)]="selectedYear" id="year-select" class="form-select">
-        <option (click)="switchYear()" [ngValue]="year" *ngFor="let year of leagueYears">{{ year.yearStart }}/{{ year.yearEnd }}</option>
+      <select (click)="switchYear()" [(ngModel)]="selectedYear" id="year-select" class="form-select">
+        <option [ngValue]="year" *ngFor="let year of leagueYears">{{ year.yearStart }}/{{ year.yearEnd }}</option>
       </select>
       <label for="year-select">Year</label>
     </div>
