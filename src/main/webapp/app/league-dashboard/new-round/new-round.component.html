@@ -9,7 +9,8 @@
   </button>
 
   <div id="roundContainer" class="roundContainer">
-    <div class="round" *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue">
+    <div class="round" *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue: newRoundService.unsorted; index as i">
+      <h2>Round {{ i }}</h2>
       <div>
         <button (click)="newMatchModal(round.key)">Add match</button>
       </div>

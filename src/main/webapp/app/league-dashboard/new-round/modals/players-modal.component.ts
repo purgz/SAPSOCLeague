@@ -107,6 +107,14 @@ export class PlayersModalComponent implements OnInit {
         alert('Failed to create new league player try again');
       } else {
         player = value.body!;
+        if (this.newRoundService.selectedRoundPlayers.includes(this.newRoundService.nullPlayer)) {
+          this.newRoundService.selectedRoundPlayers.splice(
+            this.newRoundService.selectedRoundPlayers.indexOf(this.newRoundService.nullPlayer),
+            1
+          );
+        } else {
+          this.newRoundService.selectedRoundPlayers.push(this.newRoundService.nullPlayer);
+        }
         this.newRoundService.selectedRoundPlayers.unshift(player);
         this.newRoundService.setLocalStorage();
       }

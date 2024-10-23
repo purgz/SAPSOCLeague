@@ -4,6 +4,7 @@ import { ILeaguePlayer } from '../../entities/league-player/league-player.model'
 import { NewWeekModel } from './new-week.model';
 import { MatchModel } from './match.model';
 import { WeekService } from '../../entities/week/service/week.service';
+import { round } from '@popperjs/core/lib/utils/math';
 
 @Injectable({ providedIn: 'root' })
 export class NewRoundService {
@@ -14,6 +15,8 @@ export class NewRoundService {
   public allPlayers: ILeaguePlayer[] = [];
 
   public newWeekData: NewWeekModel = { rounds: [] } as NewWeekModel;
+
+  public nullPlayer: ILeaguePlayer = {} as ILeaguePlayer;
 
   selectedRoundEdit: number = -1;
 
@@ -39,12 +42,26 @@ export class NewRoundService {
   addToWeek(player: ILeaguePlayer): void {
     this.selectedRoundPlayers.unshift(player);
     this.allPlayers.splice(this.allPlayers.indexOf(player), 1);
+
+    if (this.selectedRoundPlayers.includes(this.nullPlayer)) {
+      this.selectedRoundPlayers.splice(this.selectedRoundPlayers.indexOf(this.nullPlayer), 1);
+    } else {
+      this.selectedRoundPlayers.push(this.nullPlayer);
+    }
+
     this.setLocalStorage();
   }
 
   removePlayer(player: ILeaguePlayer): void {
     this.allPlayers.push(player);
     this.selectedRoundPlayers.splice(this.selectedRoundPlayers.indexOf(player), 1);
+
+    if (this.selectedRoundPlayers.includes(this.nullPlayer)) {
+      this.selectedRoundPlayers.splice(this.selectedRoundPlayers.indexOf(this.nullPlayer), 1);
+    } else {
+      this.selectedRoundPlayers.push(this.nullPlayer);
+    }
+
     this.setLocalStorage();
   }
 
@@ -76,7 +93,6 @@ export class NewRoundService {
   //need to create new round object in backend.
   //each round - many match results
   generateNewRound(): void {
-    console.log(this.newWeekData);
     if (Object.keys(this.newWeekData.rounds).length < 1) {
       console.log('First round randomizing players');
       this.randomizeSelectedPlayers();
@@ -84,30 +100,36 @@ export class NewRoundService {
     const roundCount = Object.keys(this.newWeekData.rounds).length;
     this.newWeekData.rounds[roundCount] = { matches: [], bye: null };
 
-    //loop through each pair of players;
-
-    let matchNo = 0;
-    let byeCheck = 2;
-    if (this.selectedRoundPlayers.length % 2 === 0) {
-      byeCheck = 1;
-    }
-    for (let i = 0; i < this.selectedRoundPlayers.length - byeCheck; i++) {
-      this.newWeekData.rounds[roundCount].matches[matchNo] = {} as MatchModel;
-      this.newWeekData.rounds[roundCount].matches[matchNo].player1 = this.selectedRoundPlayers[i];
-      this.newWeekData.rounds[roundCount].matches[matchNo].player2 = this.selectedRoundPlayers[++i];
-      matchNo++;
+    const numPlayers = this.selectedRoundPlayers.length;
+    let byePlayer: ILeaguePlayer | null = null;
+    const bye = this.selectedRoundPlayers.length % 2 !== 0;
+    if (bye) {
+      if (!this.selectedRoundPlayers.includes(this.nullPlayer)) {
+        this.selectedRoundPlayers.push(this.nullPlayer);
+      }
     }
 
-    if (byeCheck === 2) {
-      console.log('Odd number of players');
-      console.log('Bye is given to ' + this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1].firstName);
-      this.newWeekData.rounds[roundCount].bye = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1];
-    } else {
-      this.newWeekData.rounds[roundCount].bye = null;
-    }
-    //rotate players for next generation
-    this.rotateSelectedPlayers();
+    //rotate about the fixed first player;
 
+    const firstPlayer = this.selectedRoundPlayers[0];
+    this.selectedRoundPlayers = [firstPlayer, ...this.selectedRoundPlayers.slice(-1), ...this.selectedRoundPlayers.slice(1, -1)];
+
+    const numMatches = Math.floor(this.selectedRoundPlayers.length / 2);
+
+    for (let i = 0; i < numMatches; i++) {
+      if (Object.keys(this.selectedRoundPlayers[i]).length == 0) {
+        byePlayer = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i];
+      } else if (Object.keys(this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i]).length == 0) {
+        byePlayer = this.selectedRoundPlayers[i];
+      } else {
+        this.newWeekData.rounds[roundCount].matches[i] = {} as MatchModel;
+        this.newWeekData.rounds[roundCount].matches[i].player1 = this.selectedRoundPlayers[i];
+        this.newWeekData.rounds[roundCount].matches[i].player2 = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i];
+      }
+    }
+
+    //null if no bye player
+    this.newWeekData.rounds[roundCount].bye = byePlayer;
     this.setLocalStorage();
   }
 
@@ -121,6 +143,10 @@ export class NewRoundService {
 
   clearLocalData(): void {
     localStorage.removeItem('newWeekData');
+  }
+
+  unsorted(a: any, b: any) {
+    return a;
   }
 }
 
