@@ -15,7 +15,7 @@
         <button (click)="newMatchModal(round.key)">Add match</button>
       </div>
       <hr />
-      <div *ngFor="let match of round.value.matches | keyvalue">
+      <div *ngFor="let match of round.value.matches | keyvalue: newRoundService.unsorted">
         <div class="match" *ngIf="match.value">
           <div class="match-names">
             <p class="p1Name">
