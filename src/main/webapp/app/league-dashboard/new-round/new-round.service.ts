@@ -6,6 +6,10 @@ import { MatchModel } from './match.model';
 import { WeekService } from '../../entities/week/service/week.service';
 import { round } from '@popperjs/core/lib/utils/math';
 
+interface MatchHistory {
+  [playerId: number]: Set<number>; // Store a set of player IDs they have faced
+}
+
 @Injectable({ providedIn: 'root' })
 export class NewRoundService {
   constructor(private leagueDataService: LeagueDataService, private weekService: WeekService) {}
@@ -17,6 +21,10 @@ export class NewRoundService {
   public newWeekData: NewWeekModel = { rounds: [] } as NewWeekModel;
 
   public nullPlayer: ILeaguePlayer = {} as ILeaguePlayer;
+
+  public matchHistory: MatchHistory = {} as MatchHistory;
+
+  private hasPlayersChanged: boolean = false;
 
   selectedRoundEdit: number = -1;
 
@@ -62,6 +70,9 @@ export class NewRoundService {
       this.selectedRoundPlayers.push(this.nullPlayer);
     }
 
+    //randomize when a player is removed to try and reduce dupes
+    //this.randomizeSelectedPlayers();
+    // this.hasPlayersChanged = true;
     this.setLocalStorage();
   }
 
@@ -111,24 +122,35 @@ export class NewRoundService {
 
     //rotate about the fixed first player;
 
-    const firstPlayer = this.selectedRoundPlayers[0];
-    this.selectedRoundPlayers = [firstPlayer, ...this.selectedRoundPlayers.slice(-1), ...this.selectedRoundPlayers.slice(1, -1)];
+    if (this.hasPlayersChanged) {
+      const firstPlayer = this.selectedRoundPlayers[0];
+      this.selectedRoundPlayers = [firstPlayer, ...this.selectedRoundPlayers.slice(-1), ...this.selectedRoundPlayers.slice(1, -1)];
+      this.selectedRoundPlayers = [firstPlayer, ...this.selectedRoundPlayers.slice(-1), ...this.selectedRoundPlayers.slice(1, -1)];
+      this.selectedRoundPlayers = [firstPlayer, ...this.selectedRoundPlayers.slice(-1), ...this.selectedRoundPlayers.slice(1, -1)];
+    } else {
+      const firstPlayer = this.selectedRoundPlayers[0];
+      this.selectedRoundPlayers = [firstPlayer, ...this.selectedRoundPlayers.slice(-1), ...this.selectedRoundPlayers.slice(1, -1)];
+    }
+
+    this.hasPlayersChanged = false;
 
     const numMatches = Math.floor(this.selectedRoundPlayers.length / 2);
 
     for (let i = 0; i < numMatches; i++) {
-      if (Object.keys(this.selectedRoundPlayers[i]).length == 0) {
-        byePlayer = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i];
-      } else if (Object.keys(this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i]).length == 0) {
-        byePlayer = this.selectedRoundPlayers[i];
+      const player1 = this.selectedRoundPlayers[i];
+      const player2 = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i];
+
+      if (Object.keys(player1).length == 0) {
+        byePlayer = player2;
+      } else if (Object.keys(player2).length == 0) {
+        byePlayer = player1;
       } else {
         this.newWeekData.rounds[roundCount].matches[i] = {} as MatchModel;
-        this.newWeekData.rounds[roundCount].matches[i].player1 = this.selectedRoundPlayers[i];
-        this.newWeekData.rounds[roundCount].matches[i].player2 = this.selectedRoundPlayers[this.selectedRoundPlayers.length - 1 - i];
+        this.newWeekData.rounds[roundCount].matches[i].player1 = player1;
+        this.newWeekData.rounds[roundCount].matches[i].player2 = player2;
       }
     }
 
-    //null if no bye player
     this.newWeekData.rounds[roundCount].bye = byePlayer;
     this.setLocalStorage();
   }
