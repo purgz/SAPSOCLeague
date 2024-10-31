@@ -45,8 +45,9 @@ spring:
   jpa:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev
-    # drop-first: true
+    contexts:
+      dev
+      #  drop-first: true
   mail:
     host: localhost
     port: 25
