@@ -60,6 +60,7 @@
           </div>
         </div>
       </div>
+
       <div *ngIf="round.value.bye">
         bye:
         <div>{{ round.value.bye.firstName }}</div>
@@ -68,6 +69,18 @@
         <button (click)="removeByeFromRound(round.key)" id="delete-bye" onclick='return confirm("Are you sure you want to remove bye?")'>
           X
         </button>
+      </div>
+
+      <div *ngIf="!round.value.bye">
+        Add a bye
+        <select class="byeSelect" [(ngModel)]="byePlayer" name="byePlayer">
+          <option disabled selected value>--select an option--</option>
+          <option *ngFor="let player of this.newRoundService.selectedRoundPlayers" [ngValue]="player">
+            <p>{{ player.firstName }}, {{ player.lastName }}</p>
+          </option>
+        </select>
+
+        <button (click)="addByePlayer(round.key)">Save</button>
       </div>
     </div>
   </div>

@@ -41,6 +41,8 @@ export class NewRoundComponent implements OnInit {
 
   playerModalRef?: NgbModalRef;
 
+  byePlayer: ILeaguePlayer | null = null;
+
   ngOnInit(): void {
     if (Object.keys(this.leagueDataService.selectedSemesterData).length === 0) {
       console.log('Semester data is empty');
@@ -107,5 +109,17 @@ export class NewRoundComponent implements OnInit {
     const rNo = parseInt(roundNo);
 
     this.newRoundService.newWeekData.rounds[rNo].bye = null;
+  }
+
+  addByePlayer(roundNo: string): void {
+    const rNo = parseInt(roundNo);
+
+    this.newRoundService.newWeekData.rounds[rNo].bye = this.byePlayer;
+
+    //this is gross but it works
+    const sBox = <HTMLCollectionOf<HTMLSelectElement>>document.getElementsByClassName('byeSelect');
+    for (let i = 0; i < sBox.length; i++) {
+      sBox[i].selectedIndex = -1;
+    }
   }
 }
