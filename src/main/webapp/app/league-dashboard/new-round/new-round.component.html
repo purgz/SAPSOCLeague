@@ -64,6 +64,10 @@
         bye:
         <div>{{ round.value.bye.firstName }}</div>
         <div>{{ round.value.bye.lastName }}</div>
+
+        <button (click)="removeByeFromRound(round.key)" id="delete-bye" onclick='return confirm("Are you sure you want to remove bye?")'>
+          X
+        </button>
       </div>
     </div>
   </div>

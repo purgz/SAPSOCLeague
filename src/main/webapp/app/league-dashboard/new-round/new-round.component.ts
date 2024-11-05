@@ -102,4 +102,10 @@ export class NewRoundComponent implements OnInit {
     this.newRoundService.setLocalStorage();
     console.log(this.newRoundService.newWeekData);
   }
+
+  removeByeFromRound(roundNo: string): void {
+    const rNo = parseInt(roundNo);
+
+    this.newRoundService.newWeekData.rounds[rNo].bye = null;
+  }
 }
