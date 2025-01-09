@@ -22,6 +22,8 @@ export class PlayerProfileComponent implements OnInit {
 
   public leaguePlayer: ILeaguePlayer | null = null;
 
+  public winPercentage: number | null = null;
+
   constructor(private activatedRoute: ActivatedRoute, private leaguePlayerService: LeaguePlayerService) {}
 
   ngOnInit(): void {
@@ -32,6 +34,9 @@ export class PlayerProfileComponent implements OnInit {
           value => {
             if (value.status == HttpStatusCode.Ok) {
               this.leaguePlayer = value.body;
+
+              this.winPercentage =
+                (Math.round((this.leaguePlayer!.wins! / (this.leaguePlayer!.losses! + this.leaguePlayer!.wins!)) * 100) * 100) / 100;
             }
           },
           error => {
