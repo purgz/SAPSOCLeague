@@ -1,19 +1,20 @@
 package io.github.purgz.web.rest;
 
+import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.Week;
 import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.repository.WeekRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -182,5 +183,30 @@ public class WeekResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/weeks/semester/{id}")
+    public ResponseEntity<List<Week>> getWeeksBySemester(@PathVariable Long id) {
+        log.debug("REST request to get weeks by semester id");
+        Optional<Semester> semesterOptional = this.semesterRepository.findById(id);
+
+        if (semesterOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Hibernate.initialize(semesterOptional.get().getWeeks());
+
+        Set<Week> weeks = semesterOptional.get().getWeeks();
+
+        List<Week> weeksList = new ArrayList<>();
+        weeksList.addAll(weeks);
+
+        //eager load all weeks ?
+
+        for (Week week : weeks) {
+            Hibernate.initialize(week.getRounds());
+        }
+
+        return new ResponseEntity<>(weeksList, HttpStatus.OK);
     }
 }
