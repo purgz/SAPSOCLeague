@@ -1,6 +1,7 @@
 package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.Week;
+import io.github.purgz.repository.SemesterRepository;
 import io.github.purgz.repository.WeekRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -36,8 +37,11 @@ public class WeekResource {
 
     private final WeekRepository weekRepository;
 
-    public WeekResource(WeekRepository weekRepository) {
+    private final SemesterRepository semesterRepository;
+
+    public WeekResource(WeekRepository weekRepository, SemesterRepository semesterRepository) {
         this.weekRepository = weekRepository;
+        this.semesterRepository = semesterRepository;
     }
 
     /**
