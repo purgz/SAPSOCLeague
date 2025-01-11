@@ -62,6 +62,12 @@ export class WeekService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
+  getBySemId(id: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestWeek[]>(`${this.resourceUrl}/semester/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

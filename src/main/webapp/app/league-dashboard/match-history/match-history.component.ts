@@ -9,6 +9,9 @@ import { LeagueDataService } from '../service/league-data.service';
 import { SemesterScoreService } from '../../entities/semester-score/service/semester-score.service';
 
 import { ActivatedRoute } from '@angular/router';
+import { WeekService } from '../../entities/week/service/week.service';
+import { IWeek } from '../../entities/week/week.model';
+import { WeekExtended } from './week-extended.model';
 
 @Component({
   selector: 'match-history',
@@ -18,7 +21,9 @@ import { ActivatedRoute } from '@angular/router';
 export class MatchHistoryComponent implements OnInit {
   public semId: number | null = null;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  public weeks: WeekExtended[] | null = null;
+
+  constructor(private activatedRoute: ActivatedRoute, private weekService: WeekService) {}
 
   ngOnInit(): void {
     //get semester id
@@ -26,6 +31,12 @@ export class MatchHistoryComponent implements OnInit {
       this.semId = value['semester'];
 
       //get week data for semester
+
+      this.weekService.getBySemId(this.semId!).subscribe(value => {
+        this.weeks = value.body;
+
+        console.log(this.weeks);
+      });
     });
   }
 }

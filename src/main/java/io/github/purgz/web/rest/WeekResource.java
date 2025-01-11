@@ -1,5 +1,6 @@
 package io.github.purgz.web.rest;
 
+import com.sun.xml.bind.v2.TODO;
 import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.Week;
 import io.github.purgz.repository.SemesterRepository;
@@ -209,4 +210,8 @@ public class WeekResource {
 
         return new ResponseEntity<>(weeksList, HttpStatus.OK);
     }
+    //TODO need to make frontend nice to display list of weeks
+    //when selecting a particular week, collect all the matches from each round in that week
+    //store that in the frontend and display
+
 }

@@ -1,1 +1,11 @@
 <div *ngIf="this.semId">Match history for semester with id: {{ this.semId }}</div>
+
+<div class="card" *ngFor="let week of this.weeks">
+  Num rounds in this week {{ week.rounds!.length }}
+  <br />
+  {{ week.date }}
+  <br />
+  {{ week.weekNum }}
+
+  <button class="btn">View matches</button>
+</div>
