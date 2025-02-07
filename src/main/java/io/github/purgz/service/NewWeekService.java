@@ -122,6 +122,33 @@ public class NewWeekService {
         return round;
     }
 
+    private boolean findPlayersFromNames(Match match) {
+        if (match == null) {
+            return true;
+        }
+
+        Optional<LeaguePlayer> p1Optional =
+            this.leaguePlayerRepository.findAllByFirstNameAndLastName(match.getPlayer1().getFirstName(), match.getPlayer1().getLastName());
+        Optional<LeaguePlayer> p2Optional =
+            this.leaguePlayerRepository.findAllByFirstNameAndLastName(match.getPlayer2().getFirstName(), match.getPlayer2().getLastName());
+
+        if (p1Optional.isEmpty()) {
+            System.out.println("COULDNT FIND " + match.getPlayer1().getFirstName());
+            return false;
+        } else if (p2Optional.isEmpty()) {
+            System.out.println("COULDNT FIND " + match.getPlayer2().getFirstName());
+            return false;
+        }
+
+        System.out.println(p1Optional.get().getFirstName());
+        System.out.println(p1Optional.get().getLastName());
+
+        System.out.println(p2Optional.get().getFirstName());
+        System.out.println(p2Optional.get().getLastName());
+
+        return true;
+    }
+
     private GameResult processGameResult(Match match, Round round) {
         //need to get the players and update their scores here.
 

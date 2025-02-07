@@ -8,6 +8,8 @@
     Add/remove players
   </button>
 
+  <button (click)="this.newRoundService.printNewWeekData()">Print to console</button>
+
   <div id="roundContainer" class="roundContainer">
     <div class="round" *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue: newRoundService.unsorted; index as i">
       <h2>Round {{ i }}</h2>

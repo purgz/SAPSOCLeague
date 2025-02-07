@@ -170,7 +170,52 @@ export class NewRoundService {
   unsorted(a: any, b: any) {
     return a;
   }
-}
 
-//todo option to add players to the semester in both the semester view and new week view
-// if added in the new week view, then auto add to the list of selected players
+  //epic name
+  fillNewWeekDataFromPrintFormat(): void {
+    //TODO write function to populate new week data based on below
+  }
+
+  printNewWeekData(): void {
+    //would like a method to display the new week data
+    // format
+    /*
+     rounds separated by empty new line
+     matches separated by newline
+     match ->   p1name p1surname p2name p2surname p1score p2score
+     ...
+     bye : byeplayername
+
+     */
+    let outFormat = '';
+
+    for (let roundsKey in this.newWeekData.rounds) {
+      let round = this.newWeekData.rounds[roundsKey];
+
+      for (let matchesKey in round.matches) {
+        let match = round.matches[matchesKey];
+        if (match == null) {
+          continue;
+        }
+        outFormat +=
+          match.player1.firstName +
+          ' ' +
+          match.player1.lastName +
+          ' ' +
+          match.player2.firstName +
+          ' ' +
+          match.player2.lastName +
+          ' ' +
+          match.p1Score +
+          ' ' +
+          match.p2Score +
+          '\n';
+      }
+      outFormat += 'bye ' + round.bye?.firstName + ' ' + round.bye?.lastName;
+      outFormat += '\n\n';
+    }
+    outFormat += 'END';
+    console.log(outFormat);
+    navigator.clipboard.writeText(outFormat);
+  }
+}
