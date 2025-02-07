@@ -1,8 +1,10 @@
-Hello world
-
 <div *ngIf="profileId">
-  Hello this is profile for
-  {{ profileId }}
-  {{ this.leaguePlayer!.firstName }}
-  {{ this.leaguePlayer!.lastName }}
+  <p>{{ this.leaguePlayer!.firstName }} {{ this.leaguePlayer!.lastName }}</p>
+
+  ELO: {{ this.leaguePlayer!.eloRating }} Win percentage (All time): {{ this.winPercentage }}%
+  <br />
+  Wins: {{ this.leaguePlayer!.wins }}
+  <br />
+  Losses: {{ this.leaguePlayer!.losses }}
+  <br />
 </div>

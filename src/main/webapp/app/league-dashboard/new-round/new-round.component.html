@@ -11,7 +11,10 @@
   <button (click)="this.newRoundService.printNewWeekData()">Print to console</button>
 
   <div id="roundContainer" class="roundContainer">
-    <div class="round" *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue: newRoundService.unsorted; index as i">
+    <div
+      class="round bg-gradient"
+      *ngFor="let round of this.newRoundService.newWeekData.rounds | keyvalue: newRoundService.unsorted; index as i"
+    >
       <h2>Round {{ i }}</h2>
       <div>
         <button (click)="newMatchModal(round.key)">Add match</button>
@@ -52,13 +55,7 @@
             </div>
           </div>
           <div>
-            <button
-              (click)="removeMatchFromRound(match.key, round.key)"
-              id="delete-match"
-              onclick='return confirm("Are you sure you want to remove this match?")'
-            >
-              X
-            </button>
+            <button (click)="removeMatchFromRound(match.key, round.key)" id="delete-match">X</button>
           </div>
         </div>
       </div>

@@ -1,5 +1,9 @@
 Semester view
 
+<button class="btn btn-primary" routerLink="../match-history/{{ this.leagueDataService.selectedSemesterData.semesters[0].id }}">
+  View match history
+</button>
+
 <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
   <form (ngSubmit)="upload()">
     <label for="fileUpload">Scores file</label>
