@@ -171,9 +171,62 @@ export class NewRoundService {
     return a;
   }
 
+  findPlayerByFirstAndLastName(fname: String, lname: String): ILeaguePlayer | null {
+    let players = this.getAvailablePlayers();
+
+    for (let i = 0; i < players.length; i++) {
+      //continue this
+      if (players[i].firstName == fname && players[i].lastName == lname) {
+        return players[i];
+      }
+    }
+    return null;
+  }
+
   //epic name
-  fillNewWeekDataFromPrintFormat(): void {
+  fillNewWeekDataFromPrintFormat(data: String): void {
     //TODO write function to populate new week data based on below
+
+    let lines = data.split('\n');
+    console.log(lines);
+
+    let i = 0;
+    let roundCount = 0;
+    let matchCount = 0;
+    this.newWeekData.rounds[roundCount] = { matches: [], bye: null };
+    while (lines[i] != 'END') {
+      console.log(lines[i]);
+
+      let matchOrBye = lines[i].split(' ');
+
+      if (matchOrBye[0] == 'bye') {
+        this.newWeekData.rounds[roundCount].bye = this.findPlayerByFirstAndLastName(matchOrBye[1], matchOrBye[2]);
+      } else if (lines[i]) {
+        //create new match
+        const player1 = this.findPlayerByFirstAndLastName(matchOrBye[0], matchOrBye[1]);
+        const player2 = this.findPlayerByFirstAndLastName(matchOrBye[2], matchOrBye[3]);
+        const p1score = parseInt(matchOrBye[4]);
+        const p2score = parseInt(matchOrBye[5]);
+        this.newWeekData.rounds[roundCount].matches[matchCount] = {} as MatchModel;
+        this.newWeekData.rounds[roundCount].matches[matchCount].player1 = player1!;
+        this.newWeekData.rounds[roundCount].matches[matchCount].player2 = player2!;
+        this.newWeekData.rounds[roundCount].matches[matchCount].p1Score = p1score;
+        this.newWeekData.rounds[roundCount].matches[matchCount].p2Score = p2score;
+        matchCount++;
+      }
+      //
+      if (lines[i] == '' && i + 1 < lines.length && lines[i + 1] != 'END') {
+        //create new round
+        console.log('NEW ROUND');
+        roundCount++;
+        matchCount = 0;
+        this.newWeekData.rounds[roundCount] = { matches: [], bye: null };
+        //fix later
+      }
+
+      i++;
+    }
+    console.log(this.newWeekData);
   }
 
   printNewWeekData(): void {
@@ -217,5 +270,7 @@ export class NewRoundService {
     outFormat += 'END';
     console.log(outFormat);
     navigator.clipboard.writeText(outFormat);
+
+    this.fillNewWeekDataFromPrintFormat(outFormat);
   }
 }
