@@ -5,6 +5,7 @@ import { NewWeekModel } from './new-week.model';
 import { MatchModel } from './match.model';
 import { WeekService } from '../../entities/week/service/week.service';
 import { round } from '@popperjs/core/lib/utils/math';
+import { FormControl } from '@angular/forms';
 
 interface MatchHistory {
   [playerId: number]: Set<number>; // Store a set of player IDs they have faced
@@ -25,6 +26,8 @@ export class NewRoundService {
   public matchHistory: MatchHistory = {} as MatchHistory;
 
   private hasPlayersChanged: boolean = false;
+
+  public match_data: FormControl = new FormControl<String>('');
 
   selectedRoundEdit: number = -1;
 
@@ -183,6 +186,10 @@ export class NewRoundService {
     return null;
   }
 
+  updateCurrentMatchesFromFormat(): void {
+    this.fillNewWeekDataFromPrintFormat(this.match_data.value);
+  }
+
   //epic name
   fillNewWeekDataFromPrintFormat(data: String): void {
     //TODO write function to populate new week data based on below
@@ -270,7 +277,5 @@ export class NewRoundService {
     outFormat += 'END';
     console.log(outFormat);
     navigator.clipboard.writeText(outFormat);
-
-    this.fillNewWeekDataFromPrintFormat(outFormat);
   }
 }

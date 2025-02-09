@@ -10,6 +10,11 @@
 
   <button (click)="this.newRoundService.printNewWeekData()">Print to console</button>
 
+  <form action="" (submit)="this.newRoundService.updateCurrentMatchesFromFormat()">
+    <textarea [formControl]="this.newRoundService.match_data" id="match-text-area"></textarea>
+    <button type="submit">Upload</button>
+  </form>
+
   <div id="roundContainer" class="roundContainer">
     <div
       class="round bg-gradient"
