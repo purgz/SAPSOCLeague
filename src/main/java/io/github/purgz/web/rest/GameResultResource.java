@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +53,11 @@ public class GameResultResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(roundOptional.get().getRoundResults(), HttpStatus.OK);
+        Round round = roundOptional.get();
+
+        Hibernate.initialize(round.getRoundResults());
+
+        return new ResponseEntity<>(round.getRoundResults(), HttpStatus.OK);
     }
 
     /**
