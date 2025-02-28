@@ -1,6 +1,7 @@
 package io.github.purgz.web.rest;
 
 import com.sun.xml.bind.v2.TODO;
+import io.github.purgz.domain.Round;
 import io.github.purgz.domain.Semester;
 import io.github.purgz.domain.Week;
 import io.github.purgz.repository.SemesterRepository;
@@ -207,7 +208,6 @@ public class WeekResource {
         for (Week week : weeks) {
             Hibernate.initialize(week.getRounds());
         }
-
         return new ResponseEntity<>(weeksList, HttpStatus.OK);
     }
     //TODO need to make frontend nice to display list of weeks

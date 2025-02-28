@@ -15,6 +15,7 @@ import { NewMatchModalComponent } from './new-round/modals/new-match-modal.compo
 import { SortPlayerListPipe } from './pipes/sort-player-list.pipe';
 import { PlayerProfileComponent } from './player-profile/player-profile.component';
 import { MatchHistoryComponent } from './match-history/match-history.component';
+import { RoundViewComponent } from './match-history/round-view.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(leagueRoutes), SumScorePipe, SortScorePipe, SemesterScorePipe, SortPlayerListPipe],
@@ -27,6 +28,7 @@ import { MatchHistoryComponent } from './match-history/match-history.component';
     NewMatchModalComponent,
     PlayerProfileComponent,
     MatchHistoryComponent,
+    RoundViewComponent,
   ],
 })
 export class LeagueDashboardModule {}

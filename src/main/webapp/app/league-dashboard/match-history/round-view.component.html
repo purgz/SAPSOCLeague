@@ -1,0 +1,7 @@
+<div>Week matches</div>
+
+<div style="border: 1px solid black" *ngFor="let round of this.gameResults">
+  <div *ngFor="let match of round">
+    {{ match.player1!.firstName }}, {{ match.player2!.firstName }}, {{ match.p1Score }}, {{ match.p2Score }}
+  </div>
+</div>

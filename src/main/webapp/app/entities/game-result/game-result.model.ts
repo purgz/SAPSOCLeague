@@ -7,8 +7,8 @@ export interface IGameResult {
   gameEnding?: GameEnding | null;
   p1Score?: number | null;
   p2Score?: number | null;
-  player1?: Pick<ILeaguePlayer, 'id'> | null;
-  player2?: Pick<ILeaguePlayer, 'id'> | null;
+  player1?: ILeaguePlayer | null;
+  player2?: ILeaguePlayer | null;
   round?: Pick<IRound, 'id'> | null;
 }
 

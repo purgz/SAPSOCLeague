@@ -1,18 +1,19 @@
 package io.github.purgz.web.rest;
 
 import io.github.purgz.domain.GameResult;
+import io.github.purgz.domain.Round;
 import io.github.purgz.repository.GameResultRepository;
+import io.github.purgz.repository.RoundRepository;
 import io.github.purgz.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,22 @@ public class GameResultResource {
 
     private final GameResultRepository gameResultRepository;
 
-    public GameResultResource(GameResultRepository gameResultRepository) {
+    private final RoundRepository roundRepository;
+
+    public GameResultResource(GameResultRepository gameResultRepository, RoundRepository roundRepository) {
         this.gameResultRepository = gameResultRepository;
+        this.roundRepository = roundRepository;
+    }
+
+    @GetMapping("/game-results/round/{id}")
+    public ResponseEntity<Set<GameResult>> getWeeksBySemester(@PathVariable Long id) {
+        Optional<Round> roundOptional = this.roundRepository.findById(id);
+
+        if (roundOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(roundOptional.get().getRoundResults(), HttpStatus.OK);
     }
 
     /**
