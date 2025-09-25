@@ -9,6 +9,7 @@ import { error } from '@angular/compiler-cli/src/transformers/util';
 @Component({
   selector: 'player-profile',
   templateUrl: './player-profile.component.html',
+  styleUrls: ['./player-profile.component.scss'],
 })
 export class PlayerProfileComponent implements OnInit {
   //todo
