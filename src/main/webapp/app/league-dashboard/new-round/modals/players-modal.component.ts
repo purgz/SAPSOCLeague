@@ -117,6 +117,9 @@ export class PlayersModalComponent implements OnInit {
         }
         this.newRoundService.selectedRoundPlayers.unshift(player);
         this.newRoundService.setLocalStorage();
+
+        // Clear out the name fields
+        this.userForm.reset();
       }
     });
   }
