@@ -23,7 +23,7 @@ input[type='number'] {
   flex-direction: column;
   gap: 10px;
   min-width: 350px;
-  width: 350px;
+  width: 30%;
   padding: 20px;
   border-radius: 3px;
 }
@@ -42,12 +42,14 @@ input[type='number'] {
 }
 
 .p1Name {
-  width: 35%;
+  width: 45%;
+  overflow: hidden;
 }
 
 .p2Name {
-  width: 35%;
+  width: 45%;
   text-align: end;
+  overflow: hidden;
 }
 
 .match-scores {
@@ -56,4 +58,9 @@ input[type='number'] {
 }
 
 #delete-match {
+}
+
+.new-round-admin-tools {
+  display: flex;
+  justify-content: space-between;
 }
