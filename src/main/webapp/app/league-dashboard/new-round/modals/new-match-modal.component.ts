@@ -25,9 +25,19 @@ export class NewMatchModalComponent implements OnInit {
     newMatch.player1 = this.player1!;
     newMatch.player2 = this.player2!;
 
+    /*
     const currentRound = this.newRoundService.selectedRoundEdit;
     const numMatches = Object.keys(this.newRoundService.newWeekData.rounds[currentRound].matches).length;
     this.newRoundService.newWeekData.rounds[currentRound].matches[numMatches + 1] = newMatch;
+
+     */
+
+    const currentRound = this.newRoundService.selectedRoundEdit;
+    const matches = this.newRoundService.newWeekData.rounds[currentRound].matches;
+    const keys = Object.keys(matches).map(Number);
+    const nextKey = keys.length ? Math.max(...keys) + 1 : 1;
+    matches[nextKey] = newMatch;
+
     this.activeModal.close();
   }
 
