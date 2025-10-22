@@ -1,7 +1,9 @@
-<div *ngIf="profileId">
+<div class="profile_card" *ngIf="profileId">
   <p>{{ this.leaguePlayer!.firstName }} {{ this.leaguePlayer!.lastName }}</p>
 
-  ELO: {{ this.leaguePlayer!.eloRating }} Win percentage (All time): {{ this.winPercentage }}%
+  ELO: {{ this.leaguePlayer!.eloRating }}
+  <br />
+  Win percentage (All time): {{ this.winPercentage }}%
   <br />
   Wins: {{ this.leaguePlayer!.wins }}
   <br />

@@ -1,0 +1,18 @@
+<h2>ELO Ranking</h2>
+
+<table id="leaderboard" class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Total Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr routerLink="../profile/{{ player.id }}" *ngFor="let player of allPlayers; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <th class="player_name">{{ player.firstName }} {{ player.lastName }}</th>
+      <th>{{ player.eloRating }}</th>
+    </tr>
+  </tbody>
+</table>

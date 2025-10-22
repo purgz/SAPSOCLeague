@@ -1,8 +1,6 @@
 Semester view
 
-<button class="btn btn-primary" routerLink="../match-history/{{ this.leagueDataService.selectedSemesterData.semesters[0].id }}">
-  View match history
-</button>
+<button (click)="setHistoryData()" class="btn btn-primary">View match history</button>
 
 <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
   <form (ngSubmit)="upload()">
@@ -35,7 +33,7 @@ Semester view
       *ngFor="let player of leagueDataService.selectedSemesterData.players | sortScore; index as i"
     >
       <th scope="row">{{ i + 1 }}</th>
-      <th>{{ player.player.firstName }} {{ player.player.lastName }}</th>
+      <th class="player_name">{{ player.player.firstName }} {{ player.player.lastName }}</th>
       <th>{{ player.score | sumScore }}</th>
     </tr>
   </tbody>

@@ -11,6 +11,8 @@ import { LeagueDataModel } from '../service/league-data.model';
 //service
 import { LeagueDataService } from '../service/league-data.service';
 import { SemesterScoreService } from '../../entities/semester-score/service/semester-score.service';
+import { HistoryService } from '../match-history/history-service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'semester-view',
   templateUrl: './semester-view.component.html',
@@ -22,10 +24,18 @@ export class SemesterViewComponent implements OnInit {
   constructor(
     private leagueYearService: LeagueYearService,
     public leagueDataService: LeagueDataService,
-    public semesterScoreService: SemesterScoreService
+    public semesterScoreService: SemesterScoreService,
+    private historyService: HistoryService,
+    private router: Router
   ) {}
 
   scoresFile = new FormControl();
+
+  setHistoryData(): void {
+    this.historyService.setWeeks(this.leagueDataService.selectedSemesterData.semesters[0].id);
+    //routerLink="../match-history/{{ this.leagueDataService.selectedSemesterData.semesters[0].id }}"
+    this.router.navigate(['/league/match-history/' + this.leagueDataService.selectedSemesterData.semesters[0].id]);
+  }
 
   ngOnInit(): void {
     //check if selected semester is set

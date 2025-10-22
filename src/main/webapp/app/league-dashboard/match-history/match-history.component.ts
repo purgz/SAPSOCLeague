@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WeekService } from '../../entities/week/service/week.service';
 import { IWeek } from '../../entities/week/week.model';
 import { WeekExtended } from './week-extended.model';
+import { HistoryService } from './history-service';
 
 @Component({
   selector: 'match-history',
@@ -21,9 +22,7 @@ import { WeekExtended } from './week-extended.model';
 export class MatchHistoryComponent implements OnInit {
   public semId: number | null = null;
 
-  public weeks: WeekExtended[] | null = null;
-
-  constructor(private activatedRoute: ActivatedRoute, private weekService: WeekService) {}
+  constructor(private activatedRoute: ActivatedRoute, private weekService: WeekService, public historyService: HistoryService) {}
 
   ngOnInit(): void {
     //get semester id
@@ -32,11 +31,13 @@ export class MatchHistoryComponent implements OnInit {
 
       //get week data for semester
 
-      this.weekService.getBySemId(this.semId!).subscribe(value => {
-        this.weeks = value.body;
-
-        console.log(this.weeks);
-      });
+      // this.weekService.getBySemId(this.semId!).subscribe(value => {
+      //   this.weeks = value.body;
+      //
+      //   console.log(this.weeks);
+      // });
+      // Moved to set in the onclick of previous page
+      //this.historyService.setWeeks(this.semId!);
     });
   }
 }
