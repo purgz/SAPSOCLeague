@@ -1,7 +1,68 @@
-<div>Week matches</div>
+<div class="round-view-wrapper">
+  <header class="rv-header">
+    <a routerLink="../" class="rv-back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      All Weeks
+    </a>
 
-<div style="border: 1px solid black" *ngFor="let round of this.gameResults">
-  <div *ngFor="let match of round">
-    {{ match.player1!.firstName }}, {{ match.player2!.firstName }}, {{ match.p1Score }}, {{ match.p2Score }}
+    <div class="rv-header__meta" *ngIf="week">
+      <div class="rv-eyebrow">Week {{ week.weekNum }}</div>
+      <h1 class="rv-title">{{ week.date!.toDate() | date: 'MMMM d, yyyy' }}</h1>
+      <p class="rv-sub">{{ week.rounds?.length }} round{{ week.rounds?.length !== 1 ? 's' : '' }}</p>
+    </div>
+  </header>
+
+  <button class="copy-btn" (click)="copyToClipboard()">Copy Results</button>
+  <div class="rounds-list" *ngIf="gameResults">
+    <div class="round-block" *ngFor="let matches of gameResults; let roundIdx = index" [style.animation-delay]="roundIdx * 80 + 'ms'">
+      <div class="round-label">
+        <span class="round-pill">Round {{ roundIdx + 1 }}</span>
+      </div>
+
+      <div class="matches-stack">
+        <div class="match-card" *ngFor="let match of matches">
+          <!-- Player 1 -->
+          <div class="player-row" [class.player-row--winner]="(match.p1Score ?? 0) > (match.p2Score ?? 0)">
+            <div class="player-info">
+              <div class="player-avatar">{{ match.player1?.firstName?.charAt(0) }}{{ match.player1?.lastName?.charAt(0) }}</div>
+              <div class="player-name">
+                <span class="player-first">{{ match.player1?.firstName }}</span>
+                <span class="player-last">{{ match.player1?.lastName }}</span>
+              </div>
+            </div>
+            <div class="player-score" [class.score--high]="(match.p1Score ?? 0) > (match.p2Score ?? 0)">
+              {{ match.p1Score }}
+            </div>
+          </div>
+
+          <div class="match-divider">
+            <span class="vs-badge">VS</span>
+          </div>
+
+          <!-- Player 2 -->
+          <div class="player-row" [class.player-row--winner]="(match.p2Score ?? 0) > (match.p1Score ?? 0)">
+            <div class="player-info">
+              <div class="player-avatar">{{ match.player2?.firstName?.charAt(0) }}{{ match.player2?.lastName?.charAt(0) }}</div>
+              <div class="player-name">
+                <span class="player-first">{{ match.player2?.firstName }}</span>
+                <span class="player-last">{{ match.player2?.lastName }}</span>
+              </div>
+            </div>
+            <div class="player-score" [class.score--high]="(match.p2Score ?? 0) > (match.p1Score ?? 0)">
+              {{ match.p2Score }}
+            </div>
+          </div>
+        </div>
+
+        <div class="no-matches" *ngIf="!matches || matches.length === 0">No matches recorded for this round.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="!gameResults">
+    <div class="spinner"></div>
+    <p>Loading matches…</p>
   </div>
 </div>

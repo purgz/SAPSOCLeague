@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+:host {
+  --bg: #0e0f13;
+  --surface: #17191f;
+  --surface-2: #1f2129;
+  --border: #2a2d38;
+  --accent: #b8f53a;
+  --accent-dim: rgba(184, 245, 58, 0.12);
+  --text-1: #f0f2f5;
+  --text-2: #8a8fa8;
+  --text-3: #5a5f72;
+  --radius: 14px;
+  display: block;
+  min-height: 100vh;
+}
+
+/* ── WRAPPER ── */
+.history-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+
+/* ── HEADER ── */
+.history-header {
+  margin-bottom: 48px;
+}
+
+.header-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(42px, 6vw, 64px);
+  line-height: 1;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.header-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 0;
+
+  .sem-id {
+    color: var(--text-1);
+    font-weight: 500;
+  }
+}
+
+/* ── GRID ── */
+.weeks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* ── WEEK CARD ── */
+.week-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  animation: cardIn 0.4s ease both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(184, 245, 58, 0.1);
+
+    &::before {
+      opacity: 1;
+    }
+    .week-card__cta {
+      color: var(--accent);
+    }
+    .week-card__number {
+      color: var(--accent);
+    }
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.week-card__number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 1;
+  color: var(--text-3);
+  transition: color 0.2s;
+  letter-spacing: -0.02em;
+}
+
+.week-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.week-card__date {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--text-1);
+}
+
+.rounds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text-2);
+  background: var(--surface-2);
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+
+.week-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.2s;
+  align-self: flex-start;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  width: 100%;
+
+  svg {
+    transition: transform 0.2s;
+  }
+  &:hover svg {
+    transform: translateX(4px);
+  }
+}

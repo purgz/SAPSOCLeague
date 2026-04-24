@@ -53,4 +53,42 @@ export class RoundViewComponent implements OnInit {
       });
     });
   }
+
+  copyGameResults(): string {
+    let formattedResults = '';
+
+    if (!this.gameResults) return formattedResults;
+
+    for (let i = 0; i < this.gameResults.length; i++) {
+      const roundResults = this.gameResults[i];
+
+      if (!roundResults) continue;
+
+      for (let j = 0; j < roundResults.length; j++) {
+        const game = roundResults[j];
+
+        formattedResults += `${game.player1!.firstName}, ${game.player1!.lastName}, ${game.player2!.firstName}, ${
+          game.player2!.lastName
+        }, ${game.p1Score!}, ${game.p2Score!}\n`;
+      }
+
+      // Add ONE blank line between rounds (but not after the last one)
+      if (i < this.gameResults.length - 1) {
+        formattedResults += '\n';
+      }
+    }
+
+    return formattedResults;
+  }
+
+  copyToClipboard(): void {
+    const text = this.copyGameResults();
+
+    if (!text) return;
+
+    navigator.clipboard
+      .writeText(text)
+      .then(() => alert('Results copied!'))
+      .catch(() => alert('Copy failed'));
+  }
 }

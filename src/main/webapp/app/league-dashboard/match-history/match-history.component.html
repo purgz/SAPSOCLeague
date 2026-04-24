@@ -1,11 +1,35 @@
-<div *ngIf="this.semId">Match history for semester with id: {{ this.semId }}</div>
+<div class="history-wrapper">
+  <header class="history-header">
+    <div class="header-eyebrow">League Records</div>
+    <h1 class="header-title">Match History</h1>
+    <p class="header-sub" *ngIf="this.semId">
+      Semester · <span class="sem-id">#{{ this.semId }}</span>
+    </p>
+  </header>
 
-<div class="card" *ngFor="let week of this.historyService.weeks">
-  Num rounds in this week {{ week.rounds!.length }}
-  <br />
-  {{ week.date }}
-  <br />
-  {{ week.weekNum }}
+  <div class="weeks-grid">
+    <div class="week-card" *ngFor="let week of this.historyService.weeks; let i = index" [style.animation-delay]="i * 60 + 'ms'">
+      <div class="week-card__number">W{{ week.weekNum }}</div>
 
-  <button routerLink="./{{ week.id }}" class="btn">View matches</button>
+      <div class="week-card__body">
+        <div class="week-card__date">{{ week.date!.toDate()! | date: 'EEE, MMM d' }}</div>
+        <div class="week-card__meta">
+          <span class="rounds-badge">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5" />
+              <path d="M6 3v3l2 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            {{ week.rounds!.length }} round{{ week.rounds!.length !== 1 ? 's' : '' }}
+          </span>
+        </div>
+      </div>
+
+      <a [routerLink]="'./' + week.id" class="week-card__cta">
+        View Matches
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </div>
+  </div>
 </div>
