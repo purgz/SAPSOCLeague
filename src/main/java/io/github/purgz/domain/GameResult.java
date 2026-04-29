@@ -46,7 +46,7 @@ public class GameResult implements Serializable {
     private LeaguePlayer player2;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "week", "roundResults" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "roundResults" }, allowSetters = true)
     private Round round;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

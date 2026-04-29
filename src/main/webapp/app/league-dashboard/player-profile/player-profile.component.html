@@ -1,12 +1,27 @@
-<div class="profile_card" *ngIf="profileId">
-  <p>{{ this.leaguePlayer!.firstName }} {{ this.leaguePlayer!.lastName }}</p>
+<div class="profile_card" *ngIf="profileId && leaguePlayer">
+  <h2>{{ leaguePlayer.firstName }} {{ leaguePlayer.lastName }}</h2>
 
-  ELO: {{ this.leaguePlayer!.eloRating }}
+  <p>ELO: {{ leaguePlayer.eloRating }}</p>
+
+  <label>Year:</label>
+  <select (change)="onYearChange($event)">
+    <option [value]="null">All Time</option>
+    <option *ngFor="let year of years" [value]="year.id">
+      {{ year.yearStart }}
+    </option>
+  </select>
+
+  <label>Semester:</label>
+  <select (change)="onSemesterChange($event)">
+    <option [value]="null">All</option>
+    <option *ngFor="let semester of semesters" [value]="semester.id">Semester {{ semester.semesterNum }}</option>
+  </select>
+
   <br />
-  Win percentage (All time): {{ this.winPercentage }}%
+
+  Win percentage: {{ winPercentage }}%
   <br />
-  Wins: {{ this.leaguePlayer!.wins }}
+  Wins: {{ filteredWins }}
   <br />
-  Losses: {{ this.leaguePlayer!.losses }}
-  <br />
+  Losses: {{ filteredLosses }}
 </div>

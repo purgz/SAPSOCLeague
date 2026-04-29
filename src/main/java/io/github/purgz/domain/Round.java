@@ -32,7 +32,7 @@ public class Round implements Serializable {
     private Integer roundNo;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "semester", "rounds" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "rounds" }, allowSetters = true)
     private Week week;
 
     @OneToMany(mappedBy = "round")

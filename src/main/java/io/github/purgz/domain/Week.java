@@ -36,7 +36,7 @@ public class Week implements Serializable {
     private LocalDate date;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "year", "weeks", "semesterScores", "players" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "weeks", "semesterScores", "players" }, allowSetters = true)
     private Semester semester;
 
     @OneToMany(mappedBy = "week")
