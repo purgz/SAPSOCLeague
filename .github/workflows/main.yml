@@ -55,7 +55,7 @@ jobs:
       -
         name: Deploy container
         run: |
-          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ubuntu@140.238.89.46 "docker pull henrybrooks/sapsoc:latest && docker-compose -f ~/sapsoc/app.yml up -d && docker system prune --force"
+          ssh -o StrictHostKeyChecking=no -i $SSH_KEY_PATH ubuntu@140.238.89.46 "docker pull henrybrooks/sapsoc:latest && docker compose -f ~/sapsoc/fixed_app.yml up -d && docker system prune --force"
         env:
           SSH_KEY_PATH: ${{ github.workspace }}/../private.key
 

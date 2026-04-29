@@ -43,58 +43,52 @@ export class LeagueDataService {
   }
 
   refreshYear(yearId: number): boolean {
-    console.info('Attempting to add year ' + yearId + ' to the cached years.');
-    //if a year is already found, then refresh it from backend
-
-    const sources = [this.leagueYearService.find(yearId), this.semesterService.findByYear(yearId)];
-
     const yearData: LeagueDataModel = {} as LeagueDataModel;
     yearData.year = {} as ILeagueYear;
     yearData.semesters = [];
-    yearData.players = {} as {
-      [playerId: number]: {
-        player: ILeaguePlayer;
-        score: Array<ISemesterScore>;
-      };
-    };
+    yearData.players = {} as any;
 
-    //find semesters and years
-    forkJoin(sources).subscribe(value => {
-      console.log(value);
+    this.leagueData[yearId] = yearData;
 
-      if (value[0].body != null) {
-        yearData.year = value[0].body as ILeagueYear;
+    // Step 1: get year + semesters + players all at once
+    forkJoin([
+      this.leagueYearService.find(yearId),
+      this.semesterService.findByYear(yearId),
+      this.leaguePlayerService.findByYear(yearId),
+    ]).subscribe(([yearRes, semestersRes, playersRes]) => {
+      if (yearRes.body) {
+        yearData.year = yearRes.body as ILeagueYear;
+      }
+      if (semestersRes.body) {
+        yearData.semesters = semestersRes.body as ISemester[];
       }
 
-      if (value[1].body != null) {
-        yearData.semesters = value[1].body as ISemester[];
-      }
-    });
+      if (playersRes.body && playersRes.body.length > 0) {
+        const players = playersRes.body;
 
-    //find each player and their scores for the year
-    this.playerSubscription = this.leaguePlayerService.findByYear(yearId).subscribe(value => {
-      if (value.body != null) {
-        value.body.forEach(player => {
-          yearData.players[player.id] = {} as any;
-          yearData.players[player.id].player = player;
-          yearData.players[player.id].score = [];
+        // Step 2: fire ALL score requests simultaneously
+        const scoreRequests = players.map(player => this.semesterScoreService.findByPlayerAndYear(player.id, yearId));
 
-          this.semesterScoreService.findByPlayerAndYear(player.id, yearId).subscribe(value => {
-            if (value.body != null) {
-              if (value.body.length > 0) {
-                yearData.players[player.id].score = value.body;
-              }
-            }
+        forkJoin(scoreRequests).subscribe(scoreResponses => {
+          // Step 3: assign ALL players at once — single re-render
+          players.forEach((player, index) => {
+            yearData.players[player.id] = {
+              player: player,
+              score: scoreResponses[index].body ?? [],
+            };
           });
+
+          // Trigger change detection once with a new reference
+          this.leagueData[yearId] = { ...yearData };
         });
       }
     });
 
-    this.leagueData[yearId] = yearData;
     return false;
   }
 
   setSemesterDetails(semId: number, yearId: number): void {
+    this.selectedSemesterData = {} as LeagueDataModel;
     this.selectedSemesterData.year = {} as ILeagueYear;
     this.selectedSemesterData.semesters = [];
     this.selectedSemesterData.players = {} as {
@@ -104,35 +98,37 @@ export class LeagueDataService {
       };
     };
 
-    console.log('getting semester specific info');
-
     if (!this.leagueData[yearId]) {
       this.addYear(yearId);
     }
 
-    this.selectedSemesterData.year = this.leagueData[yearId].year;
-
-    this.semesterService.find(semId).subscribe(value => {
-      if (value.body != null) {
-        this.selectedSemesterData.semesters = [value.body];
+    // Step 1: get semester + players at once
+    forkJoin([this.semesterService.find(semId), this.leaguePlayerService.findBySemester(semId)]).subscribe(([semesterRes, playersRes]) => {
+      if (semesterRes.body) {
+        this.selectedSemesterData.year = this.leagueData[yearId].year;
+        this.selectedSemesterData.semesters = [semesterRes.body];
       }
-    });
 
-    this.leaguePlayerService.findBySemester(semId).subscribe(value => {
-      if (value.body != null) {
-        value.body.forEach(player => {
-          this.selectedSemesterData.players[player.id] = {} as any;
-          this.selectedSemesterData.players[player.id].player = player;
-          this.selectedSemesterData.players[player.id].score = [];
+      if (playersRes.body && playersRes.body.length > 0) {
+        const players = playersRes.body;
 
-          this.semesterScoreService.findByPlayerAndSem(player.id, semId).subscribe(value => {
-            if (value.body != null) {
-              if (value.body.length > 0) {
-                this.selectedSemesterData.players[player.id].score = value.body;
-                localStorage.setItem('selectedSemesterData', JSON.stringify(this.selectedSemesterData));
-              }
-            }
+        // Step 2: fire ALL score requests simultaneously
+        const scoreRequests = players.map(player => this.semesterScoreService.findByPlayerAndSem(player.id, semId));
+
+        forkJoin(scoreRequests).subscribe(scoreResponses => {
+          // Step 3: assign ALL players at once — single re-render
+          players.forEach((player, index) => {
+            this.selectedSemesterData.players[player.id] = {
+              player: player,
+              score: scoreResponses[index].body ?? [],
+            };
           });
+
+          // Save to localStorage once everything is ready
+          localStorage.setItem('selectedSemesterData', JSON.stringify(this.selectedSemesterData));
+
+          // Trigger change detection once with a new reference
+          this.selectedSemesterData = { ...this.selectedSemesterData };
         });
       }
     });
